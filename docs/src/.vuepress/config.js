@@ -11,7 +11,7 @@ module.exports = {
   description: description,
 
   /**
-   * Extra tags to be injected to the page HTML `<head>`
+   * Extra tags to be injected to the pages HTML `<head>`
    *
    * ref：https://v1.vuepress.vuejs.org/config/#head
    */

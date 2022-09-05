@@ -15,7 +15,7 @@ const Template = () => ({
   components: { MyPage },
 
   // Here we define the `template`
-  template: '<my-page />',
+  template: '<my-pages />',
 });
 
 export const LoggedOut = Template.bind({});

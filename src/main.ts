@@ -1,10 +1,12 @@
 import { createApp } from 'vue'
 import './style.css'
 import App from './App.vue'
-import router from "./resources/router"
-import store from "./resources/store"
+import router from './resources/router'
+import store from './resources/store'
+import { createApi } from './resources/api'
 
-createApp(App)
-    .use(store)
-    .use(router)
-    .mount('#app')
+const api = createApi({
+  baseUrl: '',
+})
+
+createApp(App).use(api).use(store).use(router).mount('#app')

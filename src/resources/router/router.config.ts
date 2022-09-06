@@ -1,12 +1,21 @@
 import { createWebHistory, RouterOptions } from 'vue-router'
-import Main from "../../presentation/pages/Main.vue";
+import Main from '../../presentation/pages/Main.vue'
+import Test from '../../presentation/pages/Test.vue'
 
 const config: RouterOptions = {
   routes: [
-    { 
-      path: "/", 
-      component: Main
-    }
+    {
+      path: '/',
+      name: 'Main',
+      component: Main,
+      children: [
+        {
+          name: 'Test',
+          path: 'Test',
+          component: Test,
+        },
+      ],
+    },
   ],
   history: createWebHistory(),
 }

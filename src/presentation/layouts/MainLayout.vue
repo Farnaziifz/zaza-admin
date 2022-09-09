@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import {ref} from 'vue'
+import LayoutSideBar from "../components/specific/MainLayout/LayoutSideBar.vue";
+import LayoutHeader from "../components/specific/MainLayout/LayoutHeader.vue";
 import CollapsableIcon from "../components/specific/MainLayout/CollapsableIcon.vue";
-import LayoutHeaderItemGroup from "../components/specific/MainLayout/LayoutHeaderItemGroup.vue"
-import LayoutHeaderItem from "../components/specific/MainLayout/LayoutHeaderItem.vue";
-import LogoIcon from "../components/shared/atoms/logoIcon.vue";
 
 const collapseState = ref<boolean>(false)
 
@@ -13,38 +12,32 @@ const changeCollapse = () => {
 </script>
 
 <template>
-  <a-layout style="height: 100vh; width: 100vw; direction: rtl;">
-    <a-layout-header style="background-color: #FF003D">
-      <layout-header-item-group>
-        <layout-header-item>
+  <a-config-provider direction="rtl">
+    <!--  APPLICATION LAYOUT  -->
+    <a-layout style="height: 100vh; width: 100vw;">
+      <!--  APPLICATION HEADER   -->
+      <layout-header>
+        <template #collapseIcon>
           <collapsable-icon class="mx-2" :is-collapsed="collapseState" @change-collapse="changeCollapse"/>
-          business name
-        </layout-header-item>
-        <layout-header-item>
-          admin Name
-        </layout-header-item>
-      </layout-header-item-group>
-    </a-layout-header>
-    <a-layout>
-      <a-layout-sider
-          v-model:collapsed="collapseState"
-          collapsible
-          breakpoint="lg"
-          reverse-arrow
-          :trigger="null"
-          collapsed-width="0"
-          theme="light"
-          class="shadow-[0px_2px_8px_rgba(0,0,0,0.15)]"
-      >
-        <logo-icon class="mt-4"/>
-      </a-layout-sider>
+        </template>
+        <template #businessName> business Name</template>
+        <template #adminName> admin Name</template>
+      </layout-header>
+
+      <!--   APPLICATION BODY   -->
       <a-layout>
-        <!--    PAGE CONTENT IS HERE    -->
-        <a-layout-content style=" background-color: #fff">
-          <slot/>
-        </a-layout-content>
+        <!--    APPLICATION SIDE BAR    -->
+        <layout-side-bar :collapsed="collapseState"/>
+
+        <!--    APPLICATION CONTENT IS HERE    -->
+        <a-layout>
+          <a-layout-content style=" background-color: #fff">
+            <slot name="pageContent"/>
+          </a-layout-content>
+        </a-layout>
       </a-layout>
+
     </a-layout>
-  </a-layout>
+  </a-config-provider>
 </template>
 

@@ -1,12 +1,13 @@
-import { createApp } from 'vue'
 import './style.css'
 import App from './App.vue'
-import router from './resources/router'
+import {createApp} from 'vue'
 import store from './resources/store'
-import { createApi } from './resources/api'
+import 'ant-design-vue/dist/antd.css'
+import router from './resources/router'
+import {createApi} from './resources/api'
 
 const api = createApi({
-  baseUrl: '',
+    baseUrl: '',
 })
 
 createApp(App).use(api).use(store).use(router).mount('#app')

@@ -4,9 +4,8 @@ import MainLayout from "../layouts/MainLayout.vue"
 
 <template>
   <MainLayout>
-    <router-view />
+    <template #pageContent>
+      <router-view/>
+    </template>
   </MainLayout>
-
 </template>
-
-

@@ -27,7 +27,7 @@ const changeCollapse = () => {
       <!--   APPLICATION BODY   -->
       <a-layout>
         <!--    APPLICATION SIDE BAR    -->
-        <layout-side-bar :collapsed="collapseState"/>
+        <layout-side-bar v-model:collapsed="collapseState"/>
 
         <!--    APPLICATION CONTENT IS HERE    -->
         <a-layout>
@@ -40,4 +40,8 @@ const changeCollapse = () => {
     </a-layout>
   </a-config-provider>
 </template>
+
+<style lang="sass">
+@import "src/assets/styles/mainLayout"
+</style>
 

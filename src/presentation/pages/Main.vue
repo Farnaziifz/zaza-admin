@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import MainLayout from "../layouts/MainLayout.vue"
+import MainLayout from '../layouts/MainLayout.vue'
 </script>
 
 <template>
   <MainLayout>
     <template #pageContent>
-      <router-view/>
+      <router-view />
     </template>
   </MainLayout>
 </template>

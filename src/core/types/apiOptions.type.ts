@@ -1,4 +1,4 @@
 export type ApiOptions = {
-    baseUrl?: string
-    token?: string,
+  baseUrl?: string
+  token?: string
 }

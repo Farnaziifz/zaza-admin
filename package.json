@@ -23,7 +23,8 @@
     "pinia": "^2.0.21",
     "vite-plugin-eslint": "^1.8.1",
     "vue": "^3.2.37",
-    "vue-router": "4"
+    "vue-router": "4",
+    "vui18n": "^1.1.25"
   },
   "devDependencies": {
     "@babel/core": "^7.18.13",

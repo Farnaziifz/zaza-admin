@@ -11,7 +11,9 @@
     "build-storybook": "build-storybook",
     "format": "prettier --write ./src",
     "lint": "eslint ./src --ext .vue,.js,.ts",
-    "lint-fix": "eslint --fix ./src --ext .vue,.js,.ts"
+    "lint-fix": "eslint --fix ./src --ext .vue,.js,.ts",
+    "prepare": "husky install",
+    "add-lint-staged": "husky add .husky/pre-commit 'yarn lint-staged'"
   },
   "dependencies": {
     "ant-design-vue": "^3.2.12",
@@ -41,6 +43,8 @@
     "eslint": "8.22.0",
     "eslint-plugin-storybook": "^0.6.4",
     "eslint-plugin-vue": "^9.4.0",
+    "husky": "^8.0.1",
+    "lint-staged": "^13.0.3",
     "postcss": "^8.4.16",
     "prettier": "2.7.1",
     "sass": "^1.54.8",

@@ -1,8 +1,4 @@
-<script setup lang="ts">
-import { t } from 'vui18n'
-
-console.log(t('name'))
-</script>
+<script setup lang="ts"></script>
 
 <template>
   <router-view />

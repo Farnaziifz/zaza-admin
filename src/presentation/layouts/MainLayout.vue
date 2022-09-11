@@ -3,6 +3,7 @@ import { ref } from 'vue'
 import LayoutSideBar from '../components/specific/MainLayout/LayoutSideBar.vue'
 import LayoutHeader from '../components/specific/MainLayout/LayoutHeader.vue'
 import CollapsableIcon from '../components/specific/MainLayout/CollapsableIcon.vue'
+import { t } from 'vui18n'
 
 const collapseState = ref<boolean>(false)
 
@@ -13,9 +14,7 @@ const changeCollapse = () => {
 
 <template>
   <a-config-provider direction="rtl">
-    <!--  APPLICATION LAYOUT  -->
     <a-layout style="height: 100vh; width: 100vw">
-      <!--  APPLICATION HEADER   -->
       <layout-header>
         <template #collapseIcon>
           <collapsable-icon
@@ -28,14 +27,13 @@ const changeCollapse = () => {
         <template #adminName> admin Name</template>
       </layout-header>
 
-      <!--   APPLICATION BODY   -->
       <a-layout>
-        <!--    APPLICATION SIDE BAR    -->
         <layout-side-bar :collapsed="collapseState" />
 
-        <!--    APPLICATION CONTENT IS HERE    -->
         <a-layout>
           <a-layout-content style="background-color: #fff">
+            {{ t('name') }}
+            {{ t('hey') }}
             <slot name="pageContent" />
           </a-layout-content>
         </a-layout>

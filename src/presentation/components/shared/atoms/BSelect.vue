@@ -18,18 +18,11 @@ const expandIcon = () => {
   isActivated.value = !isActivated.value
 }
 
-const selectedValue = ref(props.value)
+const selectedValue = ref(props.placeHolder)
 watch(
   selectedValue,
   () => {
     emits('update:value', selectedValue.value)
-  },
-  { deep: true }
-)
-watch(
-  props,
-  () => {
-    selectedValue.value = props.value
   },
   { deep: true }
 )

@@ -1,29 +1,39 @@
-<script setup lang="ts">
-import {ComputedRef, ref} from 'vue'
+<script async setup lang="ts">
+import { ComputedRef, onBeforeMount, ref, Ref } from 'vue'
 import BSelectRtl from '../components/shared/atoms/BSelectRtl.vue'
-import {degreeOptions} from '../../core/constants/degree.options'
-import {degreeTypeEnum} from '../../core/enums/degreeType.enum'
+import { degreeOptions } from '../../core/constants/degree.options'
+import { scoreType } from '../../core/enums/scoreType.enum'
 import HintCollapse from '../components/shared/organisms/HintCollapse.vue'
 import InputWithHeadlineAndUnit from '../components/shared/molecules/InputWithHeadlineAndUnit.vue'
-import {computedPropertiesFactory} from '../../logics/specific/labelSettingsDegreeComputedProperties.factory'
+import { computedPropertiesFactory } from '../factory/specific/labelSettings/labelSettingsDegreeComputedProperties.factory'
 import ContentLayout from '../layouts/ContentLayout.vue'
+import {
+  changeServerDataHandler,
+  initPageHandler,
+} from '../../logics/specific/labelSettingsDegree.handler'
+import { score } from '../../core/types/score.type'
 
 const value = ref('')
-const switchCheck = ref(false)
-const orderCount = ref('')
-const degreeCount = ref('')
-const priceAmount = ref('')
-
-const computedProperties = computedPropertiesFactory({
-  value,
-  switchCheck,
-  orderCount,
-  degreeCount,
-  priceAmount,
+const serverData: Ref<score> = ref({
+  amount: 0,
+  isActive: false,
+  type: null,
+  unit: 0,
 })
 
+const computedProperties = computedPropertiesFactory(value, serverData)
+
 const isSubmitButtonDisabled: ComputedRef<boolean> =
-    computedProperties.isSubmitButtonDisabledComputedFactory()
+  computedProperties.isSubmitButtonDisabledComputedFactory()
+
+onBeforeMount(async () => {
+  serverData.value = await initPageHandler()
+})
+
+const changeServerData = async () => {
+  serverData.value.type = value.value
+  await changeServerDataHandler(serverData.value)
+}
 </script>
 
 <template>
@@ -31,12 +41,12 @@ const isSubmitButtonDisabled: ComputedRef<boolean> =
     <template #content-title> درجه</template>
 
     <template #content-body>
-      <hint-collapse :hints="[{ body: 'درجه' }]" header="راهنما"/>
+      <hint-collapse :hints="[{ body: 'درجه' }]" header="راهنما" />
 
       <a-card style="margin: 8px 0; background-color: #f6f6f6">
         <div class="flex justify-between">
           <h2>فعال سازی اطلاع رسانی برچسب</h2>
-          <a-switch v-model:checked="switchCheck"/>
+          <a-switch v-model:checked="serverData.isActive" />
         </div>
       </a-card>
 
@@ -46,65 +56,66 @@ const isSubmitButtonDisabled: ComputedRef<boolean> =
         <div class="mt-4">
           <h3>نوع محاسبه درجه</h3>
           <b-select-rtl
-              v-model:value="value"
-              style="width: 254px"
-              :disabled="!switchCheck"
-              :options="degreeOptions"
-              suffix-icon-color="#1894FF"
-              place-holder="نوع محاسبه را انتخاب کنید"
+            v-model:value="value"
+            style="width: 254px"
+            :disabled="!serverData.isActive"
+            :options="degreeOptions"
+            suffix-icon-color="#1894FF"
+            place-holder="نوع محاسبه را انتخاب کنید"
           />
         </div>
 
         <div
-            v-if="value === degreeTypeEnum.PER_ORDER"
-            class="flex flex-wrap items-center pt-4"
+          v-if="value === scoreType.ORDER"
+          class="flex flex-wrap items-center pt-4"
         >
           <input-with-headline-and-unit
-              v-model:value="orderCount"
-              class="ml-4 sm:mb-4"
-              headline="تعداد سفارش"
-              unit="تعداد"
-              placeholder=" تعداد سفارش را وارد کنید"
-              style="width: 254px"
+            v-model:value="serverData.unit"
+            class="ml-4 sm:mb-4"
+            headline="تعداد سفارش"
+            unit="تعداد"
+            placeholder=" تعداد سفارش را وارد کنید"
+            style="width: 254px"
           />
 
           <input-with-headline-and-unit
-              v-model:value="degreeCount"
-              unit="درجه"
-              headline="مقدار درجه"
-              style="width: 254px"
-              placeholder="مقدار درجه را وارد کنید"
+            v-model:value="serverData.amount"
+            unit="درجه"
+            headline="مقدار درجه"
+            style="width: 254px"
+            placeholder="مقدار درجه را وارد کنید"
           />
         </div>
 
         <div
-            v-else-if="value === degreeTypeEnum.PER_PRICE"
-            class="flex flex-wrap items-center pt-4"
+          v-else-if="value === scoreType.PRICE"
+          class="flex flex-wrap items-center pt-4"
         >
           <input-with-headline-and-unit
-              v-model:value="priceAmount"
-              class="ml-4 sm:mb-4"
-              unit="تومان"
-              placeholder="مبلغ را وارد کنید"
-              style="width: 254px"
-              headline="مبلغ مورد نظر"
+            v-model:value="serverData.unit"
+            class="ml-4 sm:mb-4"
+            unit="تومان"
+            placeholder="مبلغ را وارد کنید"
+            style="width: 254px"
+            headline="مبلغ مورد نظر"
           />
 
           <input-with-headline-and-unit
-              v-model:value="degreeCount"
-              unit="درجه"
-              headline="مقدار درجه"
-              placeholder="مقدار درجه را وارد کنید"
-              style="width: 254px"
+            v-model:value="serverData.amount"
+            unit="درجه"
+            headline="مقدار درجه"
+            placeholder="مقدار درجه را وارد کنید"
+            style="width: 254px"
           />
         </div>
       </a-card>
 
       <div class="text-left">
         <a-button
-            type="primary"
-            style="padding: 0 56px"
-            :disabled="isSubmitButtonDisabled"
+          type="primary"
+          style="padding: 0 56px"
+          :disabled="isSubmitButtonDisabled"
+          @click="changeServerData"
         >
           ثبت تغییرات
         </a-button>

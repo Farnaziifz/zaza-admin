@@ -31,4 +31,5 @@ initLanguage({
   ],
 })
 
-createApp(App).use(api).use(store).use(router).mount('#app')
+
+createApp(App).use(store).use(router).mount('#app')

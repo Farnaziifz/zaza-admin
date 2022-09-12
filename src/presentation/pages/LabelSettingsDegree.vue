@@ -1,6 +1,6 @@
 <script async setup lang="ts">
 import { ComputedRef, onBeforeMount, ref, Ref } from 'vue'
-import BSelectRtl from '../components/shared/atoms/BSelectRtl.vue'
+import BSelect from '../components/shared/atoms/BSelect.vue'
 import { degreeOptions } from '../../core/constants/degree.options'
 import { scoreType } from '../../core/enums/scoreType.enum'
 import HintCollapse from '../components/shared/organisms/HintCollapse.vue'
@@ -13,13 +13,13 @@ import {
 } from '../../logics/specific/labelSettingsDegree.handler'
 import { score } from '../../core/types/score.type'
 
-const value = ref('')
 const serverData: Ref<score> = ref({
   amount: 0,
   isActive: false,
-  type: null,
+  type: 'ORDER',
   unit: 0,
 })
+const value: Ref<string | null> = ref('')
 
 const computedProperties = computedPropertiesFactory(value, serverData)
 
@@ -28,10 +28,10 @@ const isSubmitButtonDisabled: ComputedRef<boolean> =
 
 onBeforeMount(async () => {
   serverData.value = await initPageHandler()
+  value.value = serverData.value.type
 })
 
 const changeServerData = async () => {
-  serverData.value.type = value.value
   await changeServerDataHandler(serverData.value)
 }
 </script>
@@ -55,7 +55,7 @@ const changeServerData = async () => {
 
         <div class="mt-4">
           <h3>نوع محاسبه درجه</h3>
-          <b-select-rtl
+          <b-select
             v-model:value="value"
             style="width: 254px"
             :disabled="!serverData.isActive"

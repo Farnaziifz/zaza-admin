@@ -23,14 +23,17 @@ watch(
 <template>
   <div>
     {{ props.headline }}
-    <a-input v-model:value="inputValue" :placeholder="placeholder">
+    <a-input
+      v-model:value="inputValue"
+      :placeholder="placeholder"
+      type="number"
+    >
       <template #addonAfter>
         <span> {{ props.unit }} </span>
       </template>
     </a-input>
   </div>
 </template>
-
 
 <style lang="sass">
 .ant-input-group-addon

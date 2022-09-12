@@ -1,4 +1,5 @@
-export type ApiOptions = {
-    baseUrl?: string
-    token?: string,
+export type apiOptions = {
+  path: string
+  queryString: string
+  model: object
 }

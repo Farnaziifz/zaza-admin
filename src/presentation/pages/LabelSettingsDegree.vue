@@ -1,38 +1,35 @@
 <script async setup lang="ts">
-import { ComputedRef, onBeforeMount, ref, Ref } from 'vue'
+import { onBeforeMount, ref, Ref } from 'vue'
 import BSelect from '../components/shared/atoms/BSelect.vue'
 import { degreeOptions } from '../../core/constants/degree.options'
 import { scoreType } from '../../core/enums/scoreType.enum'
 import HintCollapse from '../components/shared/organisms/HintCollapse.vue'
 import InputWithHeadlineAndUnit from '../components/shared/molecules/InputWithHeadlineAndUnit.vue'
-import { computedPropertiesFactory } from '../factory/specific/labelSettings/labelSettingsDegreeComputedProperties.factory'
 import ContentLayout from '../layouts/ContentLayout.vue'
 import {
   changeServerDataHandler,
   initPageHandler,
 } from '../../logics/specific/labelSettingsDegree.handler'
 import { score } from '../../core/types/score.type'
+import { t } from 'vui18n'
 
 const serverData: Ref<score> = ref({
   amount: 0,
   isActive: false,
-  type: 'ORDER',
+  type: '',
   unit: 0,
 })
-const value: Ref<string | null> = ref('')
-
-const computedProperties = computedPropertiesFactory(value, serverData)
-
-const isSubmitButtonDisabled: ComputedRef<boolean> =
-  computedProperties.isSubmitButtonDisabledComputedFactory()
 
 onBeforeMount(async () => {
   serverData.value = await initPageHandler()
-  value.value = serverData.value.type
 })
 
 const changeServerData = async () => {
   await changeServerDataHandler(serverData.value)
+}
+
+const changeType = () => {
+  serverData.value.amount = serverData.value.unit = 0
 }
 </script>
 
@@ -41,12 +38,18 @@ const changeServerData = async () => {
     <template #content-title> درجه</template>
 
     <template #content-body>
-      <hint-collapse :hints="[{ body: 'درجه' }]" header="راهنما" />
+      <hint-collapse
+        :hints="[{ body: t('label-settings-degree-hint') }]"
+        header="راهنما"
+      />
 
       <a-card style="margin: 8px 0; background-color: #f6f6f6">
         <div class="flex justify-between">
           <h2>فعال سازی اطلاع رسانی برچسب</h2>
-          <a-switch v-model:checked="serverData.isActive" />
+          <a-switch
+            v-model:checked="serverData.isActive"
+            @click="changeServerData"
+          />
         </div>
       </a-card>
 
@@ -56,17 +59,17 @@ const changeServerData = async () => {
         <div class="mt-4">
           <h3>نوع محاسبه درجه</h3>
           <b-select
-            v-model:value="value"
+            v-model:value="serverData.type"
             style="width: 254px"
-            :disabled="!serverData.isActive"
             :options="degreeOptions"
-            suffix-icon-color="#1894FF"
+            suffix-icon-color="#ff003d"
             place-holder="نوع محاسبه را انتخاب کنید"
+            @change="changeType"
           />
         </div>
 
         <div
-          v-if="value === scoreType.ORDER"
+          v-if="serverData.type === scoreType.ORDER"
           class="flex flex-wrap items-center pt-4"
         >
           <input-with-headline-and-unit
@@ -80,6 +83,7 @@ const changeServerData = async () => {
 
           <input-with-headline-and-unit
             v-model:value="serverData.amount"
+            class="ml-4 sm:mb-4"
             unit="درجه"
             headline="مقدار درجه"
             style="width: 254px"
@@ -88,7 +92,7 @@ const changeServerData = async () => {
         </div>
 
         <div
-          v-else-if="value === scoreType.PRICE"
+          v-else-if="serverData.type === scoreType.PRICE"
           class="flex flex-wrap items-center pt-4"
         >
           <input-with-headline-and-unit
@@ -102,6 +106,7 @@ const changeServerData = async () => {
 
           <input-with-headline-and-unit
             v-model:value="serverData.amount"
+            class="ml-4 sm:mb-4"
             unit="درجه"
             headline="مقدار درجه"
             placeholder="مقدار درجه را وارد کنید"
@@ -114,7 +119,7 @@ const changeServerData = async () => {
         <a-button
           type="primary"
           style="padding: 0 56px"
-          :disabled="isSubmitButtonDisabled"
+          class="button-secondary"
           @click="changeServerData"
         >
           ثبت تغییرات

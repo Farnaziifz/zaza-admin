@@ -19,7 +19,7 @@ const Template = (args: collapsableIconPropsType) => ({
   },
 
   template:
-    '<collapsable-icon :is-collapsed="isCollapsed" @changeCollapse="isCollapsed != isCollapsed"  />',
+    '<collapsable-icon :is-collapsed="isCollapsed" @changeCollapse="isCollapsed = !isCollapsed"  />',
 })
 
 export const IconTest = Template.bind({})

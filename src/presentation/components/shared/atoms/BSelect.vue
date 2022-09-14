@@ -3,15 +3,15 @@ import { ref, watch } from 'vue'
 import { CascaderOptionType } from 'ant-design-vue/es/cascader'
 import ChevronUpIcon from './ChevronUpIcon.vue'
 
-type ASelectRtlPropsType = {
+type BSelectPropsType = {
   placeHolder: string
   options: CascaderOptionType
   suffixIconColor: string
-  disabled: boolean
-  value: boolean | string | number | object | []
+  disabled?: boolean
+  value: string
 }
-const props = defineProps<ASelectRtlPropsType>()
-const emits = defineEmits(['update:value'])
+const props = defineProps<BSelectPropsType>()
+const emits = defineEmits(['update:value', 'change'])
 
 const isActivated = ref(false)
 const expandIcon = () => {
@@ -19,6 +19,14 @@ const expandIcon = () => {
 }
 
 const selectedValue = ref(props.placeHolder)
+watch(
+  props,
+  () => {
+    selectedValue.value = props.value
+  },
+  { deep: true }
+)
+
 watch(
   selectedValue,
   () => {
@@ -36,6 +44,7 @@ watch(
     :options="props.options"
     :placeholder="props.placeHolder"
     @click="expandIcon"
+    @change="emits('change')"
   >
     <template #suffixIcon>
       <chevron-up-icon

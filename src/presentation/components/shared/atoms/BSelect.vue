@@ -7,11 +7,11 @@ type BSelectPropsType = {
   placeHolder: string
   options: CascaderOptionType
   suffixIconColor: string
-  disabled: boolean
+  disabled?: boolean
   value: string
 }
 const props = defineProps<BSelectPropsType>()
-const emits = defineEmits(['update:value'])
+const emits = defineEmits(['update:value', 'change'])
 
 const isActivated = ref(false)
 const expandIcon = () => {
@@ -44,6 +44,7 @@ watch(
     :options="props.options"
     :placeholder="props.placeHolder"
     @click="expandIcon"
+    @change="emits('change')"
   >
     <template #suffixIcon>
       <chevron-up-icon

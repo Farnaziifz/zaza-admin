@@ -1,7 +1,6 @@
 $primary: #ff003d;
 $secondary: #1894ff;
 
-
 .button-secondary {
   background-color: $secondary !important;
   border: 1px solid $secondary !important;
@@ -16,7 +15,6 @@ $secondary: #1894ff;
   background-color: $secondary !important;
 }
 
-
 :export {
-  secondaryColor: $secondary
+  secondaryColor: $secondary;
 }

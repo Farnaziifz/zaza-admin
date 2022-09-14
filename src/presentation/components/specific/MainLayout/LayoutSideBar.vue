@@ -1,40 +1,40 @@
 <script lang="ts" setup>
-import LogoIcon from '/src/presentation/components/shared/atoms/logoIcon.vue';
-import { ref, watch, computed } from 'vue';
+import LogoIcon from '/src/presentation/components/shared/atoms/logoIcon.vue'
+import { ref, watch, computed } from 'vue'
 // import LabelsIcon from '../../shared/atoms/LabelsIcon.vue';
-import { TagsOutlined } from '@ant-design/icons-vue';
-import router from '../../../../resources/router';
+import { TagsOutlined } from '@ant-design/icons-vue'
+import router from '../../../../resources/router'
 
 const props = defineProps({
   collapsed: {
     required: true,
     type: Boolean,
   },
-});
+})
 const sideBarEffectClasses = computed(() => {
-  if (collapsed.value === true) return 'side-bar-effect-base';
+  if (collapsed.value === true) return 'side-bar-effect-base'
 
-  return 'side-bar-effect-base side-bar-effect-active';
-});
-const emits = defineEmits(['update:collapsed']);
+  return 'side-bar-effect-base side-bar-effect-active'
+})
+const emits = defineEmits(['update:collapsed'])
 
 watch(
   props,
   (newProp) => {
-    collapsed.value = newProp.collapsed;
+    collapsed.value = newProp.collapsed
   },
   { deep: true }
-);
+)
 
-const collapsed = ref(props.collapsed);
+const collapsed = ref(props.collapsed)
 const changeCollapse = () => {
-  collapsed.value = !collapsed.value;
-  emits('update:collapsed', collapsed.value);
-};
+  collapsed.value = !collapsed.value
+  emits('update:collapsed', collapsed.value)
+}
 
 const changeRoute = () => {
-  router.push('/label-settings/degree');
-};
+  router.push('/label-settings/degree')
+}
 </script>
 
 <template>

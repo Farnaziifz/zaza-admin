@@ -4,7 +4,7 @@ const props = defineProps({
     default: '#000',
     type: String,
   },
-});
+})
 </script>
 <template>
   <svg

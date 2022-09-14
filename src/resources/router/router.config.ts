@@ -1,6 +1,6 @@
-import { createWebHistory, RouterOptions } from 'vue-router';
-import Main from '../../presentation/pages/Main.vue';
-import { labelSettingsRouterConfig } from './labelSettingsRouter.config';
+import { createWebHistory, RouterOptions } from 'vue-router'
+import Main from '../../presentation/pages/Main.vue'
+import { labelSettingsRouterConfig } from './labelSettingsRouter.config'
 
 const config: RouterOptions = {
   routes: [
@@ -12,6 +12,6 @@ const config: RouterOptions = {
     },
   ],
   history: createWebHistory(),
-};
+}
 
-export default config;
+export default config

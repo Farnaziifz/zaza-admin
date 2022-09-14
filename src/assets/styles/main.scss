@@ -1,11 +1,11 @@
-$secondary: #1894FF;
+$secondary: #1894ff;
 
 .button-secondary {
   background-color: $secondary !important;
   border: 1px solid $secondary !important;
   &:disabled {
-    background-color: #F6F6F6 !important;
-    border: 1px solid #E2E2E2 !important;
+    background-color: #f6f6f6 !important;
+    border: 1px solid #e2e2e2 !important;
   }
 }
 .ant-switch-checked {

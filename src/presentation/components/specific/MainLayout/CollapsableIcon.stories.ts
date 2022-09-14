@@ -1,13 +1,13 @@
-import CollapsableIcon from './CollapsableIcon.vue';
+import CollapsableIcon from './CollapsableIcon.vue'
 
 type collapsableIconPropsType = {
-  isCollapsed: boolean;
-};
+  isCollapsed: boolean
+}
 
 export default {
   title: 'MainLayout/CollapsableIcon',
   component: CollapsableIcon,
-};
+}
 
 const Template = (args: collapsableIconPropsType) => ({
   components: {
@@ -15,17 +15,17 @@ const Template = (args: collapsableIconPropsType) => ({
   },
 
   setup() {
-    return args;
+    return args
   },
 
   template:
     '<collapsable-icon :is-collapsed="isCollapsed" @changeCollapse="isCollapsed = !isCollapsed"  />',
-});
+})
 
-export const IconTest = Template.bind({});
+export const IconTest = Template.bind({})
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 IconTest.args = {
   isCollapsed: false,
-};
+}

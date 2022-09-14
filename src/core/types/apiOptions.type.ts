@@ -1,5 +1,5 @@
 export type apiOptions = {
-  path: string;
-  queryString: string;
-  model: object;
-};
+  path: string
+  queryString: string
+  model: object
+}

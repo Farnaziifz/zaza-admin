@@ -1,5 +1,5 @@
-import { CascaderOptionType } from 'ant-design-vue/es/cascader'
-import { scoreType } from '../enums/scoreType.enum'
+import { CascaderOptionType } from 'ant-design-vue/es/cascader';
+import { scoreType } from '../enums/scoreType.enum';
 
 export const degreeOptions: CascaderOptionType = [
   {
@@ -10,4 +10,4 @@ export const degreeOptions: CascaderOptionType = [
     value: scoreType.ORDER,
     label: 'به ازای تعداد مشخصی سفارش',
   },
-]
+];

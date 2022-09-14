@@ -1,0 +1,13 @@
+$secondary: #1894FF;
+
+.button-secondary {
+  background-color: $secondary !important;
+  border: 1px solid $secondary !important;
+  &:disabled {
+    background-color: #F6F6F6 !important;
+    border: 1px solid #E2E2E2 !important;
+  }
+}
+.ant-switch-checked {
+  background-color: $secondary !important;
+}

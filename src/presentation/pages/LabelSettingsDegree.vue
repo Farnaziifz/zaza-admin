@@ -80,6 +80,7 @@ const changeServerData = async () => {
 
           <input-with-headline-and-unit
             v-model:value="serverData.amount"
+            class="ml-4 sm:mb-4"
             unit="درجه"
             headline="مقدار درجه"
             style="width: 254px"
@@ -102,6 +103,7 @@ const changeServerData = async () => {
 
           <input-with-headline-and-unit
             v-model:value="serverData.amount"
+            class="ml-4 sm:mb-4"
             unit="درجه"
             headline="مقدار درجه"
             placeholder="مقدار درجه را وارد کنید"
@@ -115,6 +117,7 @@ const changeServerData = async () => {
           type="primary"
           style="padding: 0 56px"
           :disabled="isSubmitButtonDisabled"
+          class="button-secondary"
           @click="changeServerData"
         >
           ثبت تغییرات

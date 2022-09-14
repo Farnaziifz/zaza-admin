@@ -9,3 +9,7 @@ import MainLayout from '../layouts/MainLayout.vue'
     </template>
   </MainLayout>
 </template>
+
+<style lang="scss">
+@import 'src/assets/styles/main';
+</style>

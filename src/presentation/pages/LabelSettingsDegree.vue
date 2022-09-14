@@ -60,7 +60,7 @@ const changeServerData = async () => {
             style="width: 254px"
             :disabled="!serverData.isActive"
             :options="degreeOptions"
-            suffix-icon-color="#1894FF"
+            suffix-icon-color="#ff003d"
             place-holder="نوع محاسبه را انتخاب کنید"
           />
         </div>

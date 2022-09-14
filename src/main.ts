@@ -2,7 +2,7 @@ import './style.css'
 import App from './App.vue'
 import { createApp } from 'vue'
 import store from './resources/store'
-import 'ant-design-vue/dist/antd.css'
+import 'ant-design-vue/dist/antd.less'
 import router from './resources/router'
 
 // SETS UP VUE i18n

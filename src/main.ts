@@ -11,9 +11,9 @@ import en from './core/languages/en.json'
 import fa from './core/languages/fa.json'
 
 initLanguage({
-  defaultLanguage: 'en',
+  defaultLanguage: 'fa',
   persistLocalstorage: true,
-  setLanguage: 'en',
+  setLanguage: 'fa',
   languages: [
     {
       code: 'en',

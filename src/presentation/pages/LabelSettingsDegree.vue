@@ -12,6 +12,7 @@ import {
   initPageHandler,
 } from '../../logics/specific/labelSettingsDegree.handler'
 import { score } from '../../core/types/score.type'
+import { t } from 'vui18n'
 
 const serverData: Ref<score> = ref({
   amount: 0,
@@ -41,7 +42,10 @@ const changeServerData = async () => {
     <template #content-title> درجه</template>
 
     <template #content-body>
-      <hint-collapse :hints="[{ body: 'درجه' }]" header="راهنما" />
+      <hint-collapse
+        :hints="[{ body: t('label-settings-degree-hint') }]"
+        header="راهنما"
+      />
 
       <a-card style="margin: 8px 0; background-color: #f6f6f6">
         <div class="flex justify-between">

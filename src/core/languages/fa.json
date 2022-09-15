@@ -1,6 +1,5 @@
 {
   "label-settings-degree-hint": "با انتخاب مشتریان هدف، شما می\u200Cتوانید مشخص کنیدکد تخفیف شامل کدام  یک از دسته بندی های مشتریان شما شود.",
-
   "components": {
     "organisms": {
       "HintCollapse": {
@@ -8,14 +7,17 @@
       }
     }
   },
-
   "pages": {
     "LabelSettings": {},
     "LabelSettingsDegree": {
       "hint": "با انتخاب مشتریان هدف، شما می\u200Cتوانید مشخص کنیدکد تخفیف شامل کدام  یک از دسته بندی های مشتریان شما شود."
     },
     "LabelSettingsLabels": {
-      "hint": "راهنمای صفحه برچسب ها"
+      "pageTitle": "برچسب",
+      "inputUnit": "درجه",
+      "bodyTitle": "اطلاعات برچسب",
+      "hint": "راهنمای صفحه برچسب ها",
+      "inputPlaceHolder": "میزان درجه را وارد کنید"
     }
   }
 }

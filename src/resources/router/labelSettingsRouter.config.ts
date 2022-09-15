@@ -1,5 +1,6 @@
 import LabelSettings from '/src/presentation/pages/LabelSettings.vue'
 import LabelSettingsDegree from '/src/presentation/pages/LabelSettingsDegree.vue'
+import LabelSettingsLabels from '/src/presentation/pages/LabelSettingsLabels.vue'
 
 export const labelSettingsRouterConfig = {
   path: 'label-settings',
@@ -12,5 +13,10 @@ export const labelSettingsRouterConfig = {
       name: 'Degree',
       component: LabelSettingsDegree,
     },
+    {
+      path: 'label',
+      name: 'Label',
+      component: LabelSettingsLabels
+    }
   ],
 }

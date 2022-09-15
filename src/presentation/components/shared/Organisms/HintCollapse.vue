@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import ChevronDownIcon from '../atoms/ChevronDownIcon.vue'
+import { t } from 'vui18n'
 import { ref } from 'vue'
 
 type HintType = {
@@ -11,6 +12,7 @@ type HintCollapseProps = {
 }
 
 const props = defineProps<HintCollapseProps>()
+
 const activated = ref([])
 
 const isCollapseActive = (key: string) => {
@@ -49,7 +51,11 @@ const isCollapseActive = (key: string) => {
     >
       <template #header>
         <h2 :style="{ color: isCollapseActive('1') ? '#1894FF' : '#000' }">
-          {{ props.header }}
+          {{
+            props.header
+              ? props.header
+              : t('components.organisms.HintCollapse.defaultHeader')
+          }}
         </h2>
       </template>
 

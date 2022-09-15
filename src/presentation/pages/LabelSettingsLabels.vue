@@ -1,7 +1,13 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import ContentLayout from '../layouts/ContentLayout.vue'
+</script>
 
 <template>
-  <div>
-    <h1>برچسب</h1>
-  </div>
+  <content-layout>
+    <template #content-title> برچسب </template>
+
+    <template #content-body> </template>
+  </content-layout>
 </template>
+
+<style lang="sass"></style>

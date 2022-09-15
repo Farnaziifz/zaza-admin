@@ -8,7 +8,7 @@ type HintType = {
 }
 type HintCollapseProps = {
   hints: [HintType]
-  header: string
+  header?: string
 }
 
 const props = defineProps<HintCollapseProps>()

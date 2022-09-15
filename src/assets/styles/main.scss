@@ -3,7 +3,7 @@ $secondary: #1894ff;
 $pureWhite: #fff;
 
 .background-color-pure-white {
-  background-color: $pureWhite
+  background-color: $pureWhite;
 }
 
 .button-secondary {
@@ -31,5 +31,4 @@ $pureWhite: #fff;
   &:last-child {
     right: -1px !important;
   }
-
 }

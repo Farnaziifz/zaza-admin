@@ -2,12 +2,10 @@
 import ChevronDownIcon from '../atoms/ChevronDownIcon.vue'
 import { t } from 'vui18n'
 import { ref } from 'vue'
+import { hintType } from '../../../../core/types/hints.type'
 
-type HintType = {
-  body: string
-}
 type HintCollapseProps = {
-  hints: [HintType]
+  hints: hintType[]
   header?: string
 }
 

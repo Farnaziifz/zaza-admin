@@ -16,7 +16,7 @@ export const labelSettingsRouterConfig = {
     {
       path: 'label',
       name: 'Label',
-      component: LabelSettingsLabels
-    }
+      component: LabelSettingsLabels,
+    },
   ],
 }

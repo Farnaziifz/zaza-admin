@@ -1,4 +1,3 @@
 export type hintType = {
-  body? : string
+  body?: string
 }
-

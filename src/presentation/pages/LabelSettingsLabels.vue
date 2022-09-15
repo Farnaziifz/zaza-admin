@@ -17,9 +17,9 @@ const labelsData = labelsDataFactory()
 
 <template>
   <content-layout>
-    <template #content-title>{{
-      t('pages.LabelSettingsLabels.pageTitle')
-    }}</template>
+    <template #content-title
+      >{{ t('pages.LabelSettingsLabels.pageTitle') }}
+    </template>
 
     <template #content-body>
       <hint-collapse :hints="hints"></hint-collapse>

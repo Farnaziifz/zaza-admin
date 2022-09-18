@@ -9,7 +9,7 @@ export enum labelsType {
 export const labelsDataFactory = () =>
   ref([
     {
-      value: 0,
+      value: undefined,
       title: 'طلایی',
       type: labelsType.GOLDEN,
       outlineColor: '#ffeb80',
@@ -17,7 +17,7 @@ export const labelsDataFactory = () =>
       textColor: '#e3c000',
     },
     {
-      value: 0,
+      value: undefined,
       title: 'نقره ای',
       type: labelsType.SILVER,
       outlineColor: '#E0E0E0',
@@ -25,7 +25,7 @@ export const labelsDataFactory = () =>
       textColor: '#7A7A7A',
     },
     {
-      value: 0,
+      value: undefined,
       title: 'برنزی',
       type: labelsType.BRONZE,
       outlineColor: '#E6BF99',

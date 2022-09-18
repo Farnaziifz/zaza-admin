@@ -5,6 +5,7 @@ import { t } from 'vui18n'
 import { hintType } from '../../core/types/hints.type'
 import InputBadgeLabel from '../components/specific/LabelSettings/InputBadgeLabel.vue'
 import { labelsDataFactory } from '../factory/specific/labelSettings/labelSettingsLabelsData.factory'
+import { validateAndChangeServerData } from '../../logics/specific/labelSettingsBadge'
 
 const hints: hintType[] = [
   {
@@ -13,6 +14,10 @@ const hints: hintType[] = [
 ]
 
 const labelsData = labelsDataFactory()
+
+const submitData = async () => {
+  await validateAndChangeServerData(labelsData)
+}
 </script>
 
 <template>
@@ -55,6 +60,17 @@ const labelsData = labelsDataFactory()
           </a-input>
         </div>
       </a-card>
+
+      <div class="text-left">
+        <a-button
+          type="primary"
+          style="padding: 0 56px"
+          class="button-secondary"
+          @click="submitData"
+        >
+          ثبت تغییرات
+        </a-button>
+      </div>
     </template>
   </content-layout>
 </template>

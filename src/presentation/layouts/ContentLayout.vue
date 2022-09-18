@@ -1,7 +1,7 @@
 <script setup lang="ts"></script>
 
 <template>
-  <div class="px-6 pt-10">
+  <div class="px-6 py-10 background-color-pure-white">
     <h1 class="mb-6">
       <slot name="content-title"></slot>
     </h1>

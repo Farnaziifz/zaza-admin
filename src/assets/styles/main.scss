@@ -1,5 +1,10 @@
 $primary: #ff003d;
 $secondary: #1894ff;
+$pureWhite: #fff;
+
+.background-color-pure-white {
+  background-color: $pureWhite;
+}
 
 .button-secondary {
   background-color: $secondary !important;
@@ -15,6 +20,16 @@ $secondary: #1894ff;
   background-color: $secondary !important;
 }
 
-:export {
-  secondaryColor: $secondary;
+.ant-input-group-addon {
+  border-radius: unset;
+  padding: 0 !important;
+  border: 1px solid #d9d9d9 !important;
+
+  &:nth-child(1) {
+    left: -1px !important;
+  }
+
+  &:last-child {
+    right: -1px !important;
+  }
 }

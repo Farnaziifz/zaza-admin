@@ -14,7 +14,7 @@ const scorePut = async (data: score): Promise<response> => {
 }
 
 const scoreGet = async (): Promise<response> => {
-  const res = await api.get('score')
+  const res = await api.get(pageUrl)
   return res.data
 }
 

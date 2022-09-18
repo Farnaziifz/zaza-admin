@@ -35,8 +35,4 @@ watch(
   </div>
 </template>
 
-<style lang="sass">
-.ant-input-group-addon
-  right: -2px
-  border: 1px solid #d9d9d9 !important
-</style>
+<style lang="sass"></style>

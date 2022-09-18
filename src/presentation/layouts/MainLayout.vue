@@ -29,8 +29,8 @@ const changeCollapse = () => {
       <a-layout>
         <layout-side-bar :collapsed="collapseState" />
 
-        <a-layout>
-          <a-layout-content style="background-color: #fff">
+        <a-layout class="overflow-y-scroll">
+          <a-layout-content class="background-color-pure-white">
             <slot name="pageContent" />
           </a-layout-content>
         </a-layout>

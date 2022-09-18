@@ -16,6 +16,6 @@ export const badgePut = async (badgeItems: badgeItem[]) => {
 export const badgeApi = () => {
   return {
     get: badgeGet,
-    put: badgePut
+    put: badgePut,
   }
 }

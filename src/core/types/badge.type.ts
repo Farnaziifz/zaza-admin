@@ -1,4 +1,4 @@
-import {badgeType} from "../enums/badgeType.enum";
+import { badgeType } from '../enums/badgeType.enum'
 
 export type badge = {
   golden: number
@@ -7,6 +7,6 @@ export type badge = {
 }
 
 export type badgeItem = {
-  type: badgeType,
+  type: badgeType
   amount: number
 }

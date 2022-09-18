@@ -1,6 +1,6 @@
-import {error} from "./error.type";
+import { error } from './error.type'
 
 export type response<T> = {
-    data: T
-    errors: error
+  data: T
+  errors: error
 }

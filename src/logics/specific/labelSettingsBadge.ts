@@ -1,5 +1,8 @@
-import { labelsType } from '../../presentation/factory/specific/labelSettings/labelSettingsLabelsData.factory'
-import { badge } from '../../core/types/badge.type'
+import { badge, badgeItem } from '../../core/types/badge.type'
+import { badgeApi } from '../../resources/api/badge'
+import { badgeType } from '../../core/enums/badgeType.enum'
+
+const api = badgeApi()
 
 const destructLabelsDataValue = (labelsData: object): badge => {
   let golden: number | undefined = 0
@@ -8,15 +11,15 @@ const destructLabelsDataValue = (labelsData: object): badge => {
 
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
-  labelsData.value.forEach((el) => {
+  labelsData.forEach((el) => {
     switch (el.type) {
-      case labelsType.GOLDEN:
+      case badgeType.GOLD:
         golden = el.value
         break
-      case labelsType.SILVER:
+      case badgeType.SILVER:
         silver = el.value
         break
-      case labelsType.BRONZE:
+      case badgeType.BRONZE:
         bronze = el.value
         break
     }
@@ -39,8 +42,35 @@ const isLabelsDataFactoryValid = (labelsData: object) => {
   return true
 }
 
-// export const initHandler = () => {}
+export const mapServerDataToInitialData = (
+  initData: object,
+  serverData: object
+) => {
+  initData.forEach((label) => {
+    serverData.forEach((serverData) => {
+      if (label.type === serverData.type) label.value = serverData.amount
+    })
+  })
+}
+
+export const initHandler = async () => {
+  const res = await api.get()
+  const badge = res.data
+  const errors = res.errors
+
+  if (Object.is(errors, null)) return badge
+  else {
+    throw 'error'
+  }
+}
 
 export const validateAndChangeServerData = async (labelsData: object) => {
-  if (isLabelsDataFactoryValid(labelsData)) await 0
+  if (!isLabelsDataFactoryValid(labelsData)) throw 'data is invalid'
+
+  const badgeItems: badgeItem[] = []
+  console.log(labelsData)
+  labelsData.forEach((el: { type: badgeType; value: number }) => {
+    badgeItems.push({ type: el.type, amount: el.value })
+  })
+  await api.put(badgeItems)
 }

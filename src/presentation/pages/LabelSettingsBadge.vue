@@ -5,7 +5,13 @@ import { t } from 'vui18n'
 import { hintType } from '../../core/types/hints.type'
 import InputBadgeLabel from '../components/specific/LabelSettings/InputBadgeLabel.vue'
 import { labelsDataFactory } from '../factory/specific/labelSettings/labelSettingsLabelsData.factory'
-import { validateAndChangeServerData } from '../../logics/specific/labelSettingsBadge'
+import {
+  initHandler,
+  mapServerDataToInitialData,
+  validateAndChangeServerData,
+} from '../../logics/specific/labelSettingsBadge'
+import { onBeforeMount } from 'vue'
+import { convertFieldToNumber } from '../../logics/shared/filedManipulator'
 
 const hints: hintType[] = [
   {
@@ -15,8 +21,14 @@ const hints: hintType[] = [
 
 const labelsData = labelsDataFactory()
 
-const submitData = async () => {
-  await validateAndChangeServerData(labelsData)
+onBeforeMount(async () => {
+  const serverData = await initHandler()
+  mapServerDataToInitialData(labelsData.value, serverData)
+})
+
+const submitDataHandler = async () => {
+  convertFieldToNumber('value', labelsData.value)
+  await validateAndChangeServerData(labelsData.value)
 }
 </script>
 
@@ -66,7 +78,7 @@ const submitData = async () => {
           type="primary"
           style="padding: 0 56px"
           class="button-secondary"
-          @click="submitData"
+          @click="submitDataHandler"
         >
           ثبت تغییرات
         </a-button>

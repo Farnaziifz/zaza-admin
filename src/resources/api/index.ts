@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 export const api = axios.create({
-  baseURL: 'https://192.168.31.18:5010',
+  baseURL: 'https://192.168.31.17:5010',
   timeout: 5000,
   headers: {
     'X-Api-Version': '1.0',

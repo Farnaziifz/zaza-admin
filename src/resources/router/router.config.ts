@@ -1,6 +1,7 @@
 import { createWebHistory, RouterOptions } from 'vue-router'
 import Main from '../../presentation/pages/Main.vue'
 import { labelSettingsRouterConfig } from './labelSettingsRouter.config'
+import { customerRouterConfig } from './CustomersRouter.config'
 
 const config: RouterOptions = {
   routes: [
@@ -8,7 +9,7 @@ const config: RouterOptions = {
       path: '/',
       name: 'Main',
       component: Main,
-      children: [labelSettingsRouterConfig],
+      children: [labelSettingsRouterConfig, customerRouterConfig],
     },
   ],
   history: createWebHistory(),

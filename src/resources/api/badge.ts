@@ -10,7 +10,7 @@ const badgeGet = async (): Promise<response<badgeItem[]>> => {
 }
 
 export const badgePut = async (badgeItems: badgeItem[]) => {
-  const res = await api.put(pageUrl, { badges: badgeItems })
+  await api.put(pageUrl, { badges: badgeItems })
 }
 
 export const badgeApi = () => {

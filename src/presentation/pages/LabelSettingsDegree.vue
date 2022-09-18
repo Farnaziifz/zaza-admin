@@ -39,7 +39,7 @@ const changeType = () => {
 
     <template #content-body>
       <hint-collapse
-        :hints="[{ body: t('label-settings-degree-hint') }]"
+        :hints="[{ body: t('pages.LabelSettingsDegree.hint') }]"
         header="راهنما"
       />
 

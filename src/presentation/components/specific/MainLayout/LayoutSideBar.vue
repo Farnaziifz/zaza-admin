@@ -68,7 +68,7 @@ const changeRoute = (to: string) => {
         <a-menu-item key="1" @click="changeRoute('/label-settings/degree')"
           >درجه</a-menu-item
         >
-        <a-menu-item key="2" @click="changeRoute('/label-settings/label')"
+        <a-menu-item key="2" @click="changeRoute('/label-settings/badge')"
           >برچسب</a-menu-item
         >
       </a-sub-menu>

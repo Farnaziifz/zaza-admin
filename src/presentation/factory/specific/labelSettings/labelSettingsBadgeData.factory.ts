@@ -1,20 +1,13 @@
 import { Ref, ref } from 'vue'
 import { badgeType } from '../../../../core/enums/badgeType.enum'
+import { badgePresentationData } from '../../../../core/types/badge.type'
+import { t } from 'vui18n'
 
-type labelsDataType = {
-  value: undefined | number
-  title: string
-  type: badgeType
-  outlineColor: string
-  backgroundColor: string
-  textColor: string
-}
-
-export const labelsDataFactory = (): Ref<labelsDataType[]> =>
+export const badgeDataFactory = (): Ref<badgePresentationData[]> =>
   ref([
     {
       value: undefined,
-      title: 'طلایی',
+      title: t('types.badge.gold'),
       type: badgeType.GOLD,
       outlineColor: '#ffeb80',
       backgroundColor: '#FFF7CC',
@@ -22,7 +15,7 @@ export const labelsDataFactory = (): Ref<labelsDataType[]> =>
     },
     {
       value: undefined,
-      title: 'نقره ای',
+      title: t('types.badge.silver'),
       type: badgeType.SILVER,
       outlineColor: '#E0E0E0',
       backgroundColor: '#F2F2F2',
@@ -30,7 +23,7 @@ export const labelsDataFactory = (): Ref<labelsDataType[]> =>
     },
     {
       value: undefined,
-      title: 'برنزی',
+      title: t('types.badge.bronze'),
       type: badgeType.BRONZE,
       outlineColor: '#E6BF99',
       textColor: '#CD7F32',

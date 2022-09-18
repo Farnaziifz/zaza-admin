@@ -1,5 +1,11 @@
 {
-  "label-settings-degree-hint": "با انتخاب مشتریان هدف، شما می\u200Cتوانید مشخص کنیدکد تخفیف شامل کدام  یک از دسته بندی های مشتریان شما شود.",
+  "types": {
+    "badge": {
+      "gold": "طلایی",
+      "silver": "نقره ای",
+      "bronze": "برنزی"
+    }
+  },
   "components": {
     "organisms": {
       "HintCollapse": {
@@ -12,7 +18,7 @@
     "LabelSettingsDegree": {
       "hint": "با انتخاب مشتریان هدف، شما می\u200Cتوانید مشخص کنیدکد تخفیف شامل کدام  یک از دسته بندی های مشتریان شما شود."
     },
-    "LabelSettingsLabels": {
+    "LabelSettingsBadge": {
       "pageTitle": "برچسب",
       "inputUnit": "درجه",
       "bodyTitle": "اطلاعات برچسب",

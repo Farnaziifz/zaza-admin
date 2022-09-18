@@ -1,20 +1,21 @@
-import { badge, badgeItem } from '../../core/types/badge.type'
+import { badgeValues, badgeItem } from '../../core/types/badge.type'
 import { badgeApi } from '../../resources/api/badge'
 import { badgeType } from '../../core/enums/badgeType.enum'
+import { badgePresentationData } from '../../core/types/badge.type'
 
 const api = badgeApi()
 
-const destructLabelsDataValue = (labelsData: object): badge => {
-  let golden: number | undefined = 0
-  let silver: number | undefined = 0
-  let bronze: number | undefined = 0
+const destructBadgeDataValue = (badgeData: object): badgeValues => {
+  let gold= 0
+  let silver= 0
+  let bronze= 0
 
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
-  labelsData.forEach((el) => {
+  badgeData.forEach((el) => {
     switch (el.type) {
       case badgeType.GOLD:
-        golden = el.value
+        gold = el.value
         break
       case badgeType.SILVER:
         silver = el.value
@@ -26,29 +27,31 @@ const destructLabelsDataValue = (labelsData: object): badge => {
   })
 
   return {
-    golden,
+    gold,
     silver,
     bronze,
   }
 }
 
-const isLabelsDataFactoryValid = (labelsData: object) => {
-  const { golden, silver, bronze } = destructLabelsDataValue(labelsData)
+const isBadgeDataValid = (badgeData: object) => {
+  const { gold, silver, bronze } = destructBadgeDataValue(badgeData)
 
-  if (golden && (golden <= silver || golden <= bronze)) return false
+  if (gold && (gold <= silver || gold <= bronze)) return false
 
   if (silver && silver <= bronze) return false
 
   return true
 }
 
-export const mapServerDataToInitialData = (
-  initData: object,
-  serverData: object
+export const mapServerDataToInitialDataHandler = (
+  initData: object[],
+  serverData: object[]
 ) => {
-  initData.forEach((label) => {
+  initData.forEach((badge) => {
     serverData.forEach((serverData) => {
-      if (label.type === serverData.type) label.value = serverData.amount
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      if (badge.type === serverData.type) badge.value = serverData.amount
     })
   })
 }
@@ -64,12 +67,13 @@ export const initHandler = async () => {
   }
 }
 
-export const validateAndChangeServerData = async (labelsData: object) => {
-  if (!isLabelsDataFactoryValid(labelsData)) throw 'data is invalid'
+export const validateAndChangeServerDataHandler = async (
+  badgeData: badgePresentationData[]
+) => {
+  if (!isBadgeDataValid(badgeData)) throw 'data is invalid'
 
   const badgeItems: badgeItem[] = []
-  console.log(labelsData)
-  labelsData.forEach((el: { type: badgeType; value: number }) => {
+  badgeData.forEach((el) => {
     badgeItems.push({ type: el.type, amount: el.value })
   })
   await api.put(badgeItems)

@@ -68,6 +68,9 @@ const changeRoute = () => {
         <a-menu-item key="1" @click="changeRoute">درجه</a-menu-item>
         <a-menu-item key="2">برچسب</a-menu-item>
       </a-sub-menu>
+      <a-menu-item key="1">
+        <span>لیست مشتریان</span>
+      </a-menu-item>
     </a-menu>
   </a-layout-sider>
 </template>

@@ -32,8 +32,8 @@ const changeCollapse = () => {
   emits('update:collapsed', collapsed.value)
 }
 
-const changeRoute = () => {
-  router.push('/label-settings/degree')
+const changeRoute = (to: string) => {
+  router.push(to)
 }
 </script>
 
@@ -65,8 +65,12 @@ const changeRoute = () => {
           <span>برچسب پویایی</span>
         </template>
 
-        <a-menu-item key="1" @click="changeRoute">درجه</a-menu-item>
-        <a-menu-item key="2">برچسب</a-menu-item>
+        <a-menu-item key="1" @click="changeRoute('/label-settings/degree')"
+          >درجه</a-menu-item
+        >
+        <a-menu-item key="2" @click="changeRoute('/label-settings/badge')"
+          >برچسب</a-menu-item
+        >
       </a-sub-menu>
       <a-menu-item key="1">
         <span>لیست مشتریان</span>

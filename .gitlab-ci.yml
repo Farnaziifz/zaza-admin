@@ -16,3 +16,5 @@ include:
       - 'docker-compose/build.yml'
       - 'docker-compose/review.yml'
       - 'docker-compose/clean.yml'
+  - template: Security/SAST.gitlab-ci.yml
+

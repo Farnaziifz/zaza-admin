@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import ContentLayout from '/src/presentation/layouts/ContentLayout.vue'
 import EmptyLayout from '/src/presentation/layouts/EmptyLayout.vue'
+import Badge from '../components/shared/Organisms/Badge.vue'
 import { TableColumnType, TableProps } from 'ant-design-vue'
 import { customer, customerList } from '../../core/types/customer.type'
 import { error } from '../../core/types/error.type'
@@ -136,8 +137,14 @@ const changeCustomerStatus = async () => {
                 <a-tag color="default" v-if="record.degreeLabel === 'SILVER'">
                   نقره‌ای</a-tag
                 >
-                <a-tag color="#E6BF98" v-if="record.degreeLabel === 'BRONZE'">
+                <!-- <a-tag color="#E6BF98" >
                   برنزه‌ای</a-tag
+                > -->
+                <Badge
+                  v-if="record.degreeLabel === 'BRONZE'"
+                  color="#E6BF98"
+                  background="#F5E5D6"
+                  >برنزه‌ای</Badge
                 >
               </span>
             </template>

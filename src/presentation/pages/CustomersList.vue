@@ -81,7 +81,9 @@ const pagination = computed(() => ({
   total: data.value.totalCount,
   current: data.value.page,
   pageSize: 10,
+  showSizeChanger: true,
 }))
+
 const onChange: TableProps<customerList>['onChange'] = async (
   paginate,
   sorter
@@ -114,12 +116,12 @@ const changeCustomerStatus = async () => {
   <content-layout>
     <template #content-title>لیست مشتریان</template>
     <template #content-body>
-      <div class="table-container" v-if="data.items && data.items.length">
+      <div v-if="data.items && data.items.length" class="table-container">
         <a-table
           :columns="columns"
           :data-source="data.items"
-          @change="onChange"
           :pagination="pagination"
+          @change="onChange"
         >
           <template #bodyCell="{ column, record }">
             <template v-if="column.key === 'totalExpenses'">
@@ -133,21 +135,21 @@ const changeCustomerStatus = async () => {
             </template>
             <template v-if="column.key === 'clientTags'">
               <span>
-                <a-tag color="green" v-if="record.orderLabel === 'HAPPY'">
+                <a-tag v-if="record.orderLabel === 'HAPPY'" color="green">
                   راضی</a-tag
                 >
-                <a-tag color="red" v-if="record.orderLabel === 'UN_HAPPY'">
+                <a-tag v-if="record.orderLabel === 'UN_HAPPY'" color="red">
                   ناراضی</a-tag
                 >
-                <a-tag color="default" v-if="record.orderLabel === 'NEUTRAL'">
+                <a-tag v-if="record.orderLabel === 'NEUTRAL'" color="default">
                   خنثی</a-tag
                 >
               </span>
               <span>
-                <a-tag color="warning" v-if="record.degreeLabel === 'GOLD'">
+                <a-tag v-if="record.degreeLabel === 'GOLD'" color="warning">
                   طلایی</a-tag
                 >
-                <a-tag color="default" v-if="record.degreeLabel === 'SILVER'">
+                <a-tag v-if="record.degreeLabel === 'SILVER'" color="default">
                   نقره‌ای</a-tag
                 >
 
@@ -161,8 +163,8 @@ const changeCustomerStatus = async () => {
             </template>
             <template v-if="column.key === 'isActive'">
               <span>
-                <a-tag color="green" v-if="record.isActive"> فعال</a-tag>
-                <a-tag color="red" v-else> غیرفعال</a-tag>
+                <a-tag v-if="record.isActive" color="green"> فعال</a-tag>
+                <a-tag v-else color="red"> غیرفعال</a-tag>
               </span>
             </template>
             <template v-else-if="column.key === 'actions'">
@@ -184,22 +186,22 @@ const changeCustomerStatus = async () => {
           <p>
             آیا از تغییر وضعیت مشتری به
             <a-typography-text
-              type="success"
               v-if="!itemForChangeStatus.isActive"
+              type="success"
               >فعال</a-typography-text
             >
-            <a-typography-text type="danger" v-else>غیرفعال</a-typography-text>
+            <a-typography-text v-else type="danger">غیرفعال</a-typography-text>
             مطمئن هستید؟
           </p>
           <template #footer>
             <a-button key="back" @click="hideModal">بستن</a-button>
             <a-button
+              v-if="!itemForChangeStatus.isActive"
               type="primary"
               @click="changeCustomerStatus"
-              v-if="!itemForChangeStatus.isActive"
               >فعال</a-button
             >
-            <a-button type="primary" @click="changeCustomerStatus" v-else
+            <a-button v-else type="primary" @click="changeCustomerStatus"
               >غیرفعال</a-button
             >
           </template>

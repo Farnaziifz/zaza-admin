@@ -77,7 +77,6 @@ onBeforeMount(async () => {
   const pageSize = 10
   data.value = await initPageHandler(page, pageSize)
 })
-
 const pagination = computed(() => ({
   total: data.value.totalCount,
   current: data.value.page,
@@ -135,7 +134,7 @@ const changeCustomerStatus = async () => {
             <template v-if="column.key === 'clientTags'">
               <span>
                 <a-tag color="green" v-if="record.orderLabel === 'HAPPY'">
-                  خوشحال</a-tag
+                  راضی</a-tag
                 >
                 <a-tag color="red" v-if="record.orderLabel === 'UN_HAPPY'">
                   ناراضی</a-tag
@@ -151,27 +150,33 @@ const changeCustomerStatus = async () => {
                 <a-tag color="default" v-if="record.degreeLabel === 'SILVER'">
                   نقره‌ای</a-tag
                 >
-                <!-- <a-tag color="#E6BF98" >
-                  برنزه‌ای</a-tag
-                > -->
+
                 <BadgeComponent
                   v-if="record.degreeLabel === 'BRONZE'"
                   color="#E6BF98"
                   background="#F5E5D6"
-                  >برنزه‌ای</BadgeComponent
+                  >برنزی</BadgeComponent
                 >
               </span>
             </template>
             <template v-if="column.key === 'isActive'">
               <span>
                 <a-tag color="green" v-if="record.isActive"> فعال</a-tag>
-                <a-tag color="red" v-else> غیرقعال</a-tag>
+                <a-tag color="red" v-else> غیرفعال</a-tag>
               </span>
             </template>
             <template v-else-if="column.key === 'actions'">
-              <a @click="showModal(record.id, record.isActive)">تغییر وضعیت</a>
-              <a-divider type="vertical" />
-              <a>جزئیات</a>
+              <div class="customer-action-container">
+                <div class="customer-action-button">
+                  <a @click="showModal(record.id, record.isActive)"
+                    >تغییر وضعیت</a
+                  >
+                </div>
+                <!-- <a-divider type="vertical" /> -->
+                <div class="customer-action-button">
+                  <a>جزئیات</a>
+                </div>
+              </div>
             </template>
           </template>
         </a-table>
@@ -183,8 +188,8 @@ const changeCustomerStatus = async () => {
               v-if="!itemForChangeStatus.isActive"
               >فعال</a-typography-text
             >
-            <a-typography-text type="danger" v-else>غیرفعال</a-typography-text>
-            مطمئن هستید؟.
+            <a-typography-text type="danger" v-else>غیرفعال</a-typography-text> 
+            مطمئن هستید؟
           </p>
           <template #footer>
             <a-button key="back" @click="hideModal">بستن</a-button>
@@ -213,3 +218,24 @@ const changeCustomerStatus = async () => {
     </template>
   </content-layout>
 </template>
+
+<style lang="scss">
+.ant-table-column-sorters {
+  justify-content: center !important;
+  span {
+    margin: 0 !important;
+  }
+}
+.ant-table-cell {
+  text-align: center !important;
+}
+.customer-action-container {
+  display: flex;
+}
+.customer-action-button {
+  margin: 0 4px;
+  a {
+    color: #1894ff;
+  }
+}
+</style>

@@ -16,8 +16,12 @@ $pureWhite: #fff;
   }
 }
 
-.ant-switch-checked {
+.ant-switch.ant-switch-rtl {
   background-color: $secondary !important;
+
+}
+.ant-switch.ant-switch-rtl.ant-switch-checked {
+  background-color: #bdbdbd !important;
 }
 
 .ant-input-group-addon {

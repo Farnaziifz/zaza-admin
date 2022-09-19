@@ -164,7 +164,7 @@ const modalVisibility = ref(false)
             : t('pages.LabelSettingsDegree.modalActiveButtonContent')
         "
         cancel-text="بستن"
-        modal-class="test"
+        :ok-type="serverData.isActive ? 'danger' : 'success'"
         @ok="changeDegreeStatus"
         @cancel="closeSubmissionModal"
       />

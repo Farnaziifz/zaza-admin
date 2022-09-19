@@ -11,7 +11,7 @@ type BConfirmModalProps = {
   okText?: string
   cancelText?: string
   modalClass?: string
-  okType?: LegacyButtonType
+  okType?: LegacyButtonType | 'success' | 'danger'
 }
 
 const props = defineProps<BConfirmModalProps>()
@@ -25,11 +25,12 @@ watch(
       Modal.confirm({
         title: props.title,
         okText: props.okText,
-        okType: props.okType,
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        //@ts-ignore
         visible: props.value,
         content: props.content,
-        class: props.modalClass,
         cancelText: props.cancelText,
+        wrapClassName: props.okType === 'success' ? 'success' : 'danger',
         icon: createVNode(ExclamationCircleOutlined),
         onOk: async () => emits('ok'),
         onCancel: async () => emits('cancel'),
@@ -53,7 +54,13 @@ watch(
   <div></div>
 </template>
 <style lang="scss">
-.test > .ant-btn .ant-btn-primary {
-  background-color: #1894ff !important;
+.success .ant-btn.ant-btn-primary {
+  background-color: #52c41a !important;
+  border-color: #52c41a !important;
+}
+
+.danger .ant-btn.ant-btn-primary {
+  background-color: #f5222d !important;
+  border: #f5222d !important;
 }
 </style>

@@ -4,11 +4,11 @@ import { CascaderOptionType } from 'ant-design-vue/es/cascader'
 import ChevronUpIcon from './ChevronUpIcon.vue'
 
 type BSelectPropsType = {
-  placeHolder: string
+  placeHolder?: string
   options: CascaderOptionType
   suffixIconColor: string
   disabled?: boolean
-  value: string
+  value?: string
 }
 const props = defineProps<BSelectPropsType>()
 const emits = defineEmits(['update:value', 'change'])

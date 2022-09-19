@@ -1,19 +1,34 @@
-import { scoreApi } from '../../resources/api/score'
-import { score } from '../../core/types/score.type'
+import { degreeApi } from '../../resources/api/degree'
+import { degree } from '../../core/types/degree.type'
 
-const api = scoreApi()
+const api = degreeApi()
 
-export const initPageHandler = async (): Promise<score> => {
+export const initPageHandler = async (): Promise<degree> => {
   const res = await api.get()
-  const score = res.data
+  const degree = res.data
   const errors = res.errors
 
-  if (Object.is(errors, null)) return score
+  if (Object.is(errors, null)) return degree
   else {
-    return { amount: 0, isActive: false, type: null, unit: 0 }
+    throw 'error'
   }
 }
 
-export const changeServerDataHandler = async (data: score) => {
+export const changeServerDataHandler = async (data: degree) => {
   await api.put(data)
+}
+
+export const changeServerStatusHandler = async () => {
+  await api.statusPut()
+}
+
+export const updatePageHandler = async () => {
+  const res = await api.get()
+  const degree = res.data
+  const errors = res.errors
+
+  if (Object.is(errors, null)) return degree
+  else {
+    throw 'error'
+  }
 }

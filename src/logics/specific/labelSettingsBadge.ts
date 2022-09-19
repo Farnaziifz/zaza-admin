@@ -6,9 +6,9 @@ import { badgePresentationData } from '../../core/types/badge.type'
 const api = badgeApi()
 
 const destructBadgeDataValue = (badgeData: object): badgeValues => {
-  let gold= 0
-  let silver= 0
-  let bronze= 0
+  let gold = 0
+  let silver = 0
+  let bronze = 0
 
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore

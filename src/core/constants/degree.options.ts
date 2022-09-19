@@ -1,13 +1,13 @@
 import { CascaderOptionType } from 'ant-design-vue/es/cascader'
-import { scoreType } from '../enums/scoreType.enum'
+import { degreeType } from '../enums/degreeType.enum'
 
 export const degreeOptions: CascaderOptionType = [
   {
-    value: scoreType.PRICE,
+    value: degreeType.PER_PRICE,
     label: 'به ازای یک مبلغ مشخص',
   },
   {
-    value: scoreType.ORDER,
+    value: degreeType.PER_ORDER,
     label: 'به ازای تعداد مشخصی سفارش',
   },
 ]

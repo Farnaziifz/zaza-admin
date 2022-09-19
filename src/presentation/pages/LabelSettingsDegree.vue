@@ -2,22 +2,23 @@
 import { onBeforeMount, ref, Ref } from 'vue'
 import BSelect from '../components/shared/atoms/BSelect.vue'
 import { degreeOptions } from '../../core/constants/degree.options'
-import { scoreType } from '../../core/enums/scoreType.enum'
 import HintCollapse from '../components/shared/organisms/HintCollapse.vue'
 import InputWithHeadlineAndUnit from '../components/shared/molecules/InputWithHeadlineAndUnit.vue'
 import ContentLayout from '../layouts/ContentLayout.vue'
 import {
   changeServerDataHandler,
+  changeServerStatusHandler,
   initPageHandler,
 } from '../../logics/specific/labelSettingsDegree.handler'
-import { score } from '../../core/types/score.type'
 import { t } from 'vui18n'
+import { degree } from '../../core/types/degree.type'
+import { degreeType } from '../../core/enums/degreeType.enum'
 
-const serverData: Ref<score> = ref({
+const serverData: Ref<degree> = ref({
   amount: 0,
   isActive: false,
-  type: '',
-  unit: 0,
+  type: undefined,
+  value: 0,
 })
 
 onBeforeMount(async () => {
@@ -28,8 +29,12 @@ const changeServerData = async () => {
   await changeServerDataHandler(serverData.value)
 }
 
+const changeDegreeStatus = async () => {
+  await changeServerStatusHandler()
+}
+
 const changeType = () => {
-  serverData.value.amount = serverData.value.unit = 0
+  serverData.value.amount = serverData.value.value = 0
 }
 </script>
 
@@ -48,7 +53,7 @@ const changeType = () => {
           <h2>فعال سازی اطلاع رسانی برچسب</h2>
           <a-switch
             v-model:checked="serverData.isActive"
-            @click="changeServerData"
+            @click="changeDegreeStatus"
           />
         </div>
       </a-card>
@@ -69,11 +74,11 @@ const changeType = () => {
         </div>
 
         <div
-          v-if="serverData.type === scoreType.ORDER"
+          v-if="serverData.type === degreeType.PER_ORDER"
           class="flex flex-wrap items-center pt-4"
         >
           <input-with-headline-and-unit
-            v-model:value="serverData.unit"
+            v-model:value="serverData.value"
             class="ml-4 sm:mb-4"
             headline="تعداد سفارش"
             unit="تعداد"
@@ -92,11 +97,11 @@ const changeType = () => {
         </div>
 
         <div
-          v-else-if="serverData.type === scoreType.PRICE"
+          v-else-if="serverData.type === degreeType.PER_PRICE"
           class="flex flex-wrap items-center pt-4"
         >
           <input-with-headline-and-unit
-            v-model:value="serverData.unit"
+            v-model:value="serverData.value"
             class="ml-4 sm:mb-4"
             unit="تومان"
             placeholder="مبلغ را وارد کنید"

@@ -14,8 +14,8 @@ export const computedPropertiesFactory = (
 
       if (score.value.amount === 0) return true
 
-      if (value.value === scoreType.ORDER && !score.value.unit) return true
-      else if (value.value === scoreType.PRICE && !score.value.unit) return true
+      if (value.value === scoreType.ORDER && !score.value.value) return true
+      else if (value.value === scoreType.PRICE && !score.value.value) return true
 
       return false
     })

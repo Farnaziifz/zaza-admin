@@ -1,8 +1,27 @@
 .badge-container {
-  padding: 2px 4px;
-  min-width: 20px;
   border: 1px solid;
+  margin-right: 0;
+  margin-left: 8px;
+  direction: rtl;
+  text-align: right;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  color: rgba(0, 0, 0, 0.85);
+  font-variant: tabular-nums;
+  line-height: 1.5715;
+  list-style: none;
+  font-feature-settings: 'tnum';
+  display: inline-block;
+  height: auto;
+  margin-right: 8px;
+  padding: 0 7px;
+  line-height: 20px;
+  white-space: nowrap;
+  background: #fafafa;
+  border-radius: 2px;
   span {
-	  font-size: 12px;
+    font-size: 8px;
+    line-height: 20px;
   }
 }

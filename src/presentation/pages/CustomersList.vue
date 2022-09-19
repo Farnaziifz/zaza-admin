@@ -188,7 +188,7 @@ const changeCustomerStatus = async () => {
               v-if="!itemForChangeStatus.isActive"
               >فعال</a-typography-text
             >
-            <a-typography-text type="danger" v-else>غیرفعال</a-typography-text> 
+            <a-typography-text type="danger" v-else>غیرفعال</a-typography-text>
             مطمئن هستید؟
           </p>
           <template #footer>
@@ -231,11 +231,12 @@ const changeCustomerStatus = async () => {
 }
 .customer-action-container {
   display: flex;
-}
-.customer-action-button {
-  margin: 0 4px;
-  a {
-    color: #1894ff;
+  justify-content: center;
+  .customer-action-button {
+    margin: 0 4px;
+    a {
+      color: #1894ff;
+    }
   }
 }
 </style>

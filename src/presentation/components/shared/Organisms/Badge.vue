@@ -9,11 +9,13 @@ const props = defineProps<badgeProps>()
 <template>
   <span
     class="badge-container"
-    :style="{ borderColor: props.color, background: props.background }"
+    :style="{
+      borderColor: props.color,
+      background: props.background,
+      color: props.color,
+    }"
   >
-    <span :style="{ color: props.color }">
-      <slot></slot>
-    </span>
+    <slot></slot>
   </span>
 </template>
 

@@ -8,8 +8,11 @@ type response = {
   errors: error
 }
 
-const cusotmerListGet = async (): Promise<response> => {
-  const res = await api.get(pageUrl)
+const cusotmerListGet = async (
+  page?: number,
+  pageSize?: number
+): Promise<response> => {
+  const res = await api.get(`${pageUrl}?Page=${page}&PageSize=${pageSize}`)
   return res.data
 }
 

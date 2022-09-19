@@ -1,21 +1,24 @@
 import { customerApi } from '../../resources/api/customer'
-import { customerList, customer } from '../../core/types/customer.type'
-import { error } from '../../core/types/error.type'
+import { customerList } from '../../core/types/customer.type'
 
 const api = customerApi()
 
-export const initPageHandler = async (): Promise<customerList | error> => {
-  const res = await api.get()
+export const initPageHandler = async (
+  page?: number,
+  pageSize?: number
+): Promise<customerList> => {
+  const res = await api.get(page, pageSize)
   const customer = res.data
 
   const errors = res.errors
 
   if (Object.is(errors, null)) return customer
   else {
-    return errors
+    // TODO: error handling
+    throw 'errors'
   }
 }
 
-export const chnageCustomerStatus = async (data: customer) => {
+export const chnageCustomerStatus = async (data: string) => {
   await api.put(data)
 }

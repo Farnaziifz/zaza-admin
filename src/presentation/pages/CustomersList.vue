@@ -1,15 +1,14 @@
 <script setup lang="ts">
 import ContentLayout from '/src/presentation/layouts/ContentLayout.vue'
 import EmptyLayout from '/src/presentation/layouts/EmptyLayout.vue'
-import Badge from '../components/shared/Organisms/Badge.vue'
+import BadgeComponent from '/src/presentation/components/shared/Organisms/Badge.vue'
 import { TableColumnType, TableProps } from 'ant-design-vue'
 import { customer, customerList } from '../../core/types/customer.type'
-import { error } from '../../core/types/error.type'
 import {
   initPageHandler,
   chnageCustomerStatus,
 } from '../../logics/specific/customrtList.handler'
-import { onBeforeMount, Ref, ref, reactive } from 'vue'
+import { onBeforeMount, Ref, ref, reactive, computed } from 'vue'
 
 const columns: TableColumnType<customer>[] = [
   {
@@ -62,10 +61,9 @@ const columns: TableColumnType<customer>[] = [
     key: 'actions',
   },
 ]
-
 const itemForChangeStatus = reactive({ isActive: false, id: '' })
 
-const data: Ref<customerList | error> = ref({
+const data: Ref<customerList> = ref({
   items: [],
   hasNextPage: false,
   hasPreviousPage: false,
@@ -75,10 +73,22 @@ const data: Ref<customerList | error> = ref({
 })
 
 onBeforeMount(async () => {
-  data.value = await initPageHandler()
+  const page = 1
+  const pageSize = 10
+  data.value = await initPageHandler(page, pageSize)
 })
-const onChange: TableProps<customerList>['onChange'] = (pagination, sorter) => {
-  console.log('params', pagination, sorter)
+
+const pagination = computed(() => ({
+  total: data.value.totalCount,
+  current: data.value.page,
+  pageSize: 10,
+}))
+const onChange: TableProps<customerList>['onChange'] = async (
+  paginate,
+  sorter
+) => {
+  console.log('params', paginate, sorter)
+  data.value = await initPageHandler(paginate.current, paginate.pageSize)
 }
 const visible = ref<boolean>(false)
 
@@ -94,7 +104,10 @@ const hideModal = () => {
 const changeCustomerStatus = async () => {
   await chnageCustomerStatus(itemForChangeStatus.id)
   visible.value = false
-  data.value = await initPageHandler()
+  data.value = await initPageHandler(
+    pagination.value.current,
+    pagination.value.pageSize
+  )
 }
 </script>
 
@@ -107,6 +120,7 @@ const changeCustomerStatus = async () => {
           :columns="columns"
           :data-source="data.items"
           @change="onChange"
+          :pagination="pagination"
         >
           <template #bodyCell="{ column, record }">
             <template v-if="column.key === 'totalExpenses'">
@@ -140,11 +154,11 @@ const changeCustomerStatus = async () => {
                 <!-- <a-tag color="#E6BF98" >
                   برنزه‌ای</a-tag
                 > -->
-                <Badge
+                <BadgeComponent
                   v-if="record.degreeLabel === 'BRONZE'"
                   color="#E6BF98"
                   background="#F5E5D6"
-                  >برنزه‌ای</Badge
+                  >برنزه‌ای</BadgeComponent
                 >
               </span>
             </template>
@@ -176,16 +190,11 @@ const changeCustomerStatus = async () => {
             <a-button key="back" @click="hideModal">بستن</a-button>
             <a-button
               type="primary"
-              :loading="loading"
               @click="changeCustomerStatus"
               v-if="!itemForChangeStatus.isActive"
               >فعال</a-button
             >
-            <a-button
-              type="primary"
-              :loading="loading"
-              @click="changeCustomerStatus"
-              v-else
+            <a-button type="primary" @click="changeCustomerStatus" v-else
               >غیرفعال</a-button
             >
           </template>

@@ -20,6 +20,8 @@
     "axios": "^0.27.2",
     "eslint-config-prettier": "^8.5.0",
     "lodash": "^4.17.21",
+    "moment": "^2.29.4",
+    "persian-date": "^1.1.0",
     "pinia": "^2.0.21",
     "vite-plugin-eslint": "^1.8.1",
     "vue": "^3.2.37",

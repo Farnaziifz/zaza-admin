@@ -15,7 +15,7 @@
       "DOM"
     ],
     "skipLibCheck": true,
-    "path": {
+    "paths": {
       "@/*": [
         "./src/*"
       ]

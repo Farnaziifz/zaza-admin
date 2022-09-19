@@ -9,10 +9,12 @@ import {
   changeServerDataHandler,
   changeServerStatusHandler,
   initPageHandler,
+  updatePageHandler,
 } from '../../logics/specific/labelSettingsDegree.handler'
 import { t } from 'vui18n'
 import { degree } from '../../core/types/degree.type'
 import { degreeType } from '../../core/enums/degreeType.enum'
+import BConfirmModal from '../components/shared/atoms/BConfirmModal.vue'
 
 const serverData: Ref<degree> = ref({
   amount: 0,
@@ -21,21 +23,34 @@ const serverData: Ref<degree> = ref({
   value: 0,
 })
 
+const modalSubmissionButtonLoader = ref(false)
+
 onBeforeMount(async () => {
   serverData.value = await initPageHandler()
 })
 
-const changeServerData = async () => {
+const turnOnLoader = () => (modalSubmissionButtonLoader.value = true)
+const turnOffLoader = () => (modalSubmissionButtonLoader.value = false)
+const openSubmissionModal = () => (modalVisibility.value = true)
+const closeSubmissionModal = () => (modalVisibility.value = false)
+
+const updatePageData = async () =>
+  (serverData.value = await updatePageHandler())
+
+const changeServerData = async () =>
   await changeServerDataHandler(serverData.value)
-}
+
+const changeType = () => (serverData.value.amount = serverData.value.value = 0)
 
 const changeDegreeStatus = async () => {
+  turnOnLoader()
   await changeServerStatusHandler()
+  turnOffLoader()
+  closeSubmissionModal()
+  await updatePageData()
 }
 
-const changeType = () => {
-  serverData.value.amount = serverData.value.value = 0
-}
+const modalVisibility = ref(false)
 </script>
 
 <template>
@@ -52,8 +67,8 @@ const changeType = () => {
         <div class="flex justify-between">
           <h2>فعال سازی اطلاع رسانی برچسب</h2>
           <a-switch
-            v-model:checked="serverData.isActive"
-            @click="changeDegreeStatus"
+            :checked-value="serverData.isActive"
+            @click="openSubmissionModal"
           />
         </div>
       </a-card>
@@ -130,6 +145,29 @@ const changeType = () => {
           ثبت تغییرات
         </a-button>
       </div>
+
+      <b-confirm-modal
+        v-model:value="modalVisibility"
+        :title="
+          serverData.isActive
+            ? t('pages.LabelSettingsDegree.modalTitleForDeActivation')
+            : t('pages.LabelSettingsDegree.modalTitleForActivation')
+        "
+        :content="
+          serverData.isActive
+            ? t('pages.LabelSettingsDegree.modalContentForActivation')
+            : t('pages.LabelSettingsDegree.modalContentForDeActivation')
+        "
+        :ok-text="
+          serverData.isActive
+            ? t('pages.LabelSettingsDegree.modalDeActiveButtonContent')
+            : t('pages.LabelSettingsDegree.modalActiveButtonContent')
+        "
+        cancel-text="بستن"
+        modal-class="test"
+        @ok="changeDegreeStatus"
+        @cancel="closeSubmissionModal"
+      />
     </template>
   </content-layout>
 </template>

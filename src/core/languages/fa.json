@@ -16,7 +16,13 @@
   "pages": {
     "LabelSettings": {},
     "LabelSettingsDegree": {
-      "hint": "با انتخاب مشتریان هدف، شما می\u200Cتوانید مشخص کنیدکد تخفیف شامل کدام  یک از دسته بندی های مشتریان شما شود."
+      "hint": "با انتخاب مشتریان هدف، شما می\u200Cتوانید مشخص کنیدکد تخفیف شامل کدام  یک از دسته بندی های مشتریان شما شود.",
+      "modalTitleForActivation": "فعال\u200Cسازی اطلاع\u200Cرسانی برچسب",
+      "modalTitleForDeActivation": "غیرفعال\u200Cسازی اطلاع\u200Cرسانی برچسب",
+      "modalContentForActivation": "آیا از فعال\u200Cسازی اطلاع\u200Cرسانی برچسب مطمئن هستید؟",
+      "modalContentForDeActivation": "آیا از غیرفعال\u200Cسازی اطلاع\u200Cرسانی برچسب مطمئن هستید؟",
+      "modalActiveButtonContent": "فعال",
+      "modalDeActiveButtonContent": "غیرفعال"
     },
     "LabelSettingsBadge": {
       "pageTitle": "برچسب",

@@ -3,6 +3,7 @@ import { ref } from 'vue'
 import LayoutSideBar from '../components/specific/MainLayout/LayoutSideBar.vue'
 import LayoutHeader from '../components/specific/MainLayout/LayoutHeader.vue'
 import CollapsableIcon from '../components/specific/MainLayout/CollapsableIcon.vue'
+import fa_IR from "ant-design-vue/lib/locale/fa_IR";
 
 const collapseState = ref<boolean>(false)
 
@@ -12,7 +13,7 @@ const changeCollapse = () => {
 </script>
 
 <template>
-  <a-config-provider direction="rtl">
+  <a-config-provider direction="rtl" :locale="fa_IR">
     <a-layout style="height: 100vh; width: 100vw">
       <layout-header>
         <template #collapseIcon>

@@ -4,7 +4,8 @@ import { createApp } from 'vue'
 import store from './resources/store'
 import 'ant-design-vue/dist/antd.less'
 import router from './resources/router'
-
+import { toPersianCurrency } from './logics/shared/toPersianCurrency'
+import { toPersianDate } from './logics/shared/toPersianDate'
 // SETS UP VUE i18n
 import { initLanguage } from 'vui18n'
 import en from './core/languages/en.json'
@@ -26,4 +27,11 @@ initLanguage({
   ],
 })
 
-createApp(App).use(store).use(router).mount('#app')
+const app = createApp(App).use(store).use(router)
+
+app.config.globalProperties.$filters = {
+  toPersianCurrency,
+  toPersianDate,
+}
+
+app.mount('#app')

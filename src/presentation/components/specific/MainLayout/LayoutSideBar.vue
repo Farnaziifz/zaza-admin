@@ -72,6 +72,9 @@ const changeRoute = (to: string) => {
           >برچسب</a-menu-item
         >
       </a-sub-menu>
+      <a-menu-item key="3" @click="changeRoute('/customers/list')">
+        <span>لیست مشتریان</span>
+      </a-menu-item>
     </a-menu>
   </a-layout-sider>
 </template>

@@ -1,5 +1,5 @@
-import { copounsApi } from '../../resources/api/copouns'
-import { copounsList } from '../../core/types/copouns.type'
+import { copounsApi } from '../../resources/api/coupons'
+import { copounsList } from '../../core/types/coupons.type'
 
 const api = copounsApi()
 

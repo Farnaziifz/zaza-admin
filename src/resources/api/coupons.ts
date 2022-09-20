@@ -1,5 +1,5 @@
 import { api } from './index'
-import { copounsList } from '../../core/types/copouns.type'
+import { copounsList } from '../../core/types/coupons.type'
 import { error } from '../../core/types/error.type'
 
 const pageUrl = 'coupon'

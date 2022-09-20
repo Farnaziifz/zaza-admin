@@ -2,13 +2,14 @@
 import ContentLayout from '../layouts/ContentLayout.vue'
 import EmptyLayout from '/src/presentation/layouts/EmptyLayout.vue'
 import { TableColumnType, TableProps } from 'ant-design-vue'
-import { copouns, copounsList } from '../../core/types/copouns.type'
+import { copouns, copounsList } from '../../core/types/coupons.type'
 import { Ref, ref, onBeforeMount, computed, reactive } from 'vue'
 import {
   initPageHandler,
   changeCopounsStatus,
   deleteCopouns,
-} from '../../logics/specific/copouns.handler'
+} from '../../logics/specific/coupons.handler'
+import PlusIcon from '@/presentation/components/shared/atoms/PlusIcon.vue'
 const columns: TableColumnType<copouns>[] = [
   {
     title: 'عنوان کوپن',
@@ -55,7 +56,7 @@ const pagination = computed(() => ({
   total: data.value.totalCount,
   current: data.value.page,
   pageSize: 10,
-  showSizeChanger: true,
+  // showSizeChanger: true,
 }))
 
 const onChange: TableProps<copounsList>['onChange'] = async (
@@ -102,13 +103,19 @@ const changeCopounSatatus = async () => {
 <template>
   <content-layout>
     <template #content-title>کوپن‌ها</template>
+    <template #content-actions>
+      <a-button type="primary">
+        <template #icon><PlusIcon color="#fff" /></template>
+        <span>افزودن کوپن</span>
+      </a-button>
+    </template>
     <template #content-body>
       <div v-if="data.items && data.items.length">
         <a-table
           :columns="columns"
           :pagination="pagination"
-          @change="onChange"
           :data-source="data.items"
+          @change="onChange"
         >
           <template #bodyCell="{ column, record }">
             <template v-if="column.key === 'isActive'">
@@ -176,8 +183,6 @@ const changeCopounSatatus = async () => {
         <template #empty-text> کوپن یافت نشد. </template>
         <template #empty-action>
           <a-button type="primary" block>افزودن کوپن</a-button>
-          <a-card title="Card title" :bordered="false" style="width: 100%">
-          </a-card>
         </template>
       </EmptyLayout>
     </template>

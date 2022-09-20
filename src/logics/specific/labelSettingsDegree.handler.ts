@@ -1,5 +1,10 @@
-import { degreeApi } from '../../resources/api/degree'
-import { degree } from '../../core/types/degree.type'
+import { degreeApi } from '@/resources/api/degree'
+import { degree } from '@/core/types/degree.type'
+import {
+  showErrorMessage,
+  showLoadingMessage,
+  showSuccessMessage,
+} from '@/logics/shared/message.handler'
 
 const api = degreeApi()
 
@@ -15,11 +20,17 @@ export const initPageHandler = async (): Promise<degree> => {
 }
 
 export const changeServerDataHandler = async (data: degree) => {
-  await api.put(data)
+  showLoadingMessage()
+  const res = await api.put(data)
+  if (res.status === 204) showSuccessMessage()
+  else showErrorMessage()
 }
 
 export const changeServerStatusHandler = async () => {
-  await api.statusPut()
+  showLoadingMessage()
+  const res = await api.statusPut()
+  if (res.status === 204) showSuccessMessage()
+  else showErrorMessage()
 }
 
 export const updatePageHandler = async () => {

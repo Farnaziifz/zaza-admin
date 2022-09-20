@@ -1,5 +1,5 @@
-import { degreeApi } from '../../resources/api/degree'
-import { degree } from '../../core/types/degree.type'
+import { degreeApi } from '@/resources/api/degree'
+import { degree } from '@/core/types/degree.type'
 import { showMessageToUser } from '@/logics/shared/message.handler'
 
 const api = degreeApi()
@@ -27,15 +27,14 @@ export const changeServerDataHandler = async (data: degree) => {
       content: 'موفقیت آمیز',
       type: 'success',
       messageKey: 1,
-      duration: 5
+      duration: 5,
     })
   } else {
     showMessageToUser({
       content: 'ناموفق',
       type: 'error',
       messageKey: 1,
-      duration: 5
-
+      duration: 5,
     })
   }
 }

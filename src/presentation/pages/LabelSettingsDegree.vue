@@ -22,7 +22,6 @@ const serverData: Ref<degree> = ref({
   type: undefined,
   value: 0,
 })
-
 const modalSubmissionButtonLoader = ref(false)
 
 onBeforeMount(async () => {

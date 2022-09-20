@@ -10,7 +10,11 @@ const degreeGet = async (): Promise<response<degree>> => {
 }
 
 export const degreePut = async (degreeData: degree) => {
-  await api.put(pageUrl, degreeData)
+  try {
+    return await api.put(pageUrl, degreeData)
+  } catch (e) {
+    return { status: -1 }
+  }
 }
 
 export const degreeStatusPut = async () => {

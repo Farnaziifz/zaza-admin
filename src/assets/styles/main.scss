@@ -2,13 +2,19 @@ $primary: #ff003d;
 $secondary: #1894ff;
 $pureWhite: #fff;
 
+@import '@/assets/fonts/font';
+
+* {
+  font-family: YekanBakh;
+}
+
 .background-color-pure-white {
   background-color: $pureWhite;
 }
 
 .button-secondary {
-  background-color: $secondary !important;
-  border: 1px solid $secondary !important;
+  background-color: $secondary  !important;
+  border: 1px solid $secondary  !important;
 
   &:disabled {
     background-color: #f6f6f6 !important;
@@ -17,8 +23,9 @@ $pureWhite: #fff;
 }
 
 .ant-switch.ant-switch-rtl {
-  background-color: $secondary !important;
+  background-color: $secondary  !important;
 }
+
 .ant-switch.ant-switch-rtl.ant-switch-checked {
   background-color: #bdbdbd !important;
 }

@@ -29,7 +29,9 @@ watch(
       type="number"
     >
       <template #addonAfter>
-        {{ props.unit }}
+        <span class="px-3 py-2">
+          {{ props.unit }}
+        </span>
       </template>
     </a-input>
   </div>

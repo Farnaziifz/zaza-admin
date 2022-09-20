@@ -236,6 +236,7 @@ const changeCustomerStatus = async () => {
   justify-content: center;
   .customer-action-button {
     margin: 0 4px;
+    cursor: pointer;
     a {
       color: #1894ff;
     }

@@ -1,11 +1,12 @@
+import { CopounsTypesType, CopunsRewardsType } from '../enums/copounsType.enum'
+
 export type copouns = {
-  fullName: string
-  createdAt: number
-  numberOfOrder: number
-  totalExpenses: number
-  value: number
-  orderLabel: string
-  DegreeLabel: string
+  title: string
+  type: string | null | CopounsTypesType
+  reward: string | null | CopunsRewardsType
+  createdAt: string
+  value?: string
+  rewardValue?: string
   isActive: boolean
 }
 

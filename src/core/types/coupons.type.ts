@@ -1,4 +1,4 @@
-import { CopounsTypesType, CopunsRewardsType } from '../enums/copounsType.enum'
+import { CopounsTypesType, CopunsRewardsType } from '../enums/couponsType.enum'
 
 export type copouns = {
   title: string

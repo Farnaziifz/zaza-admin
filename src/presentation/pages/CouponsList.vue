@@ -124,6 +124,39 @@ const changeCopounSatatus = async () => {
                 <a-tag v-else color="red"> غیرفعال</a-tag>
               </span>
             </template>
+            <template v-if="column.key === 'type'">
+              <span v-if="record.type === 'BUY_ABOVE_SPECIFIC_PRICE'">
+                خرید بیش‌از
+                {{ $filters.toPersianCurrency(record.value.amount, 'تومان') }}
+              </span>
+              <span v-if="record.type === 'BUY_FROM_SPECIFIC_CATEGORY'">
+                خرید از دسته‌بندی {{ record.value.title }}
+              </span>
+              <span v-if="record.type === 'BUY_SPECIFIC_PRODUCT'">
+                خرید {{ record.value.title }}
+              </span>
+              <span v-if="record.type === 'FIRST_ORDER'"> اولین خرید</span>
+            </template>
+            <template v-if="column.key === 'reward'">
+              <span v-if="record.reward === 'CREDIT'">
+                اعتبار
+                {{
+                  $filters.toPersianCurrency(record.rewardValue.amount, 'تومان')
+                }}
+              </span>
+              <span v-if="record.reward === 'FREE_SHIPPING'">
+                ارسال رایگان
+              </span>
+              <span v-if="record.reward === 'PRODUCT'">
+                {{ record.rewardValue.title }}
+              </span>
+              <span v-if="record.reward === 'SCORE'">
+                {{ record.rewardValue.amount }} امتیاز
+              </span>
+              <span v-if="record.reward === 'DISCOUNT'">
+                {{ record.rewardValue.discountPercentage }} درصد تخفیف
+              </span>
+            </template>
             <template v-else-if="column.key === 'actions'">
               <div class="customer-action-container">
                 <div class="customer-action-button">

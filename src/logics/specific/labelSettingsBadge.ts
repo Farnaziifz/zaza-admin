@@ -1,7 +1,12 @@
-import { badgeValues, badgeItem } from '../../core/types/badge.type'
-import { badgeApi } from '../../resources/api/badge'
-import { badgeType } from '../../core/enums/badgeType.enum'
-import { badgePresentationData } from '../../core/types/badge.type'
+import { badgeValues, badgeItem } from '@/core/types/badge.type'
+import { badgeApi } from '@/resources/api/badge'
+import { badgeType } from '@/core/enums/badgeType.enum'
+import { badgePresentationData } from '@/core/types/badge.type'
+import {
+  showErrorMessage,
+  showLoadingMessage,
+  showSuccessMessage,
+} from '@/logics/shared/message.handler'
 
 const api = badgeApi()
 
@@ -63,18 +68,23 @@ export const initHandler = async () => {
 
   if (Object.is(errors, null)) return badge
   else {
-    throw 'error'
+    showErrorMessage()
   }
 }
 
 export const validateAndChangeServerDataHandler = async (
   badgeData: badgePresentationData[]
 ) => {
-  if (!isBadgeDataValid(badgeData)) throw 'data is invalid'
+  if (!isBadgeDataValid(badgeData)) showErrorMessage('دیتای ورودی صحیح نمیباشد')
 
   const badgeItems: badgeItem[] = []
   badgeData.forEach((el) => {
     badgeItems.push({ type: el.type, amount: el.value })
   })
-  await api.put(badgeItems)
+
+  showLoadingMessage()
+  const res = await api.put(badgeItems)
+
+  if (res.status === 204) showSuccessMessage()
+  else showErrorMessage()
 }

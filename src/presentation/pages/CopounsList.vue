@@ -7,6 +7,7 @@ import { Ref, ref, onBeforeMount, computed, reactive } from 'vue'
 import {
   initPageHandler,
   changeCopounsStatus,
+  deleteCopouns,
 } from '../../logics/specific/copouns.handler'
 const columns: TableColumnType<copouns>[] = [
   {
@@ -36,6 +37,7 @@ const columns: TableColumnType<copouns>[] = [
   },
 ]
 const itemForChangeStatus = reactive({ isActive: false, id: '' })
+const itemForDelete = reactive({ id: '', title: '' })
 const data: Ref<copounsList> = ref({
   items: [],
   hasNextPage: false,
@@ -64,6 +66,7 @@ const onChange: TableProps<copounsList>['onChange'] = async (
   data.value = await initPageHandler(paginate.current, paginate.pageSize)
 }
 const visible = ref<boolean>(false)
+const visibleDeleteModal = ref<boolean>(false)
 
 const showModal = (item: string, isActive: boolean) => {
   visible.value = true
@@ -72,6 +75,19 @@ const showModal = (item: string, isActive: boolean) => {
 }
 const hideModal = () => {
   visible.value = false
+}
+const showDeleteModal = (item: string, title: string) => {
+  visibleDeleteModal.value = true
+  itemForDelete.id = item
+  itemForDelete.title = title
+}
+const confirmModal = async () => {
+  await deleteCopouns(itemForDelete.id)
+  data.value = await initPageHandler(
+    pagination.value.current,
+    pagination.value.pageSize
+  )
+  visibleDeleteModal.value = false
 }
 const changeCopounSatatus = async () => {
   await changeCopounsStatus(itemForChangeStatus.id)
@@ -108,12 +124,15 @@ const changeCopounSatatus = async () => {
                     >تغییر وضعیت</a
                   >
                 </div>
-                <!-- <a-divider type="vertical" /> -->
                 <div class="customer-action-button">
                   <a>جزئیات</a>
                 </div>
                 <div class="customer-action-button">
-                  <a-typography-text type="danger">حذف</a-typography-text>
+                  <a-typography-text
+                    type="danger"
+                    @click="showDeleteModal(record.id, record.title)"
+                    >حذف</a-typography-text
+                  >
                 </div>
               </div>
             </template>
@@ -142,6 +161,15 @@ const changeCopounSatatus = async () => {
               >غیرفعال</a-button
             >
           </template>
+        </a-modal>
+        <a-modal
+          v-model:visible="visibleDeleteModal"
+          title="حذف کوپن"
+          ok-text="حذف"
+          cancel-text="بستن"
+          @ok="confirmModal"
+        >
+          <p>آیا از حذف کوپن "{{ itemForDelete.title }}" مطمئن هستید؟</p>
         </a-modal>
       </div>
       <EmptyLayout v-else>

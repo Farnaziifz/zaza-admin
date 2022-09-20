@@ -22,9 +22,16 @@ const changeCopounsStatus = async (data: string): Promise<response> => {
   return res.data
 }
 
+const deletCopouns = async (data: string): Promise<response> => {
+  const res = await api.delete(`${pageUrl}/${data}`)
+  console.log(res)
+  return res.data
+}
+
 export const copounsApi = () => {
   return {
     get: coupunsListGet,
     put: changeCopounsStatus,
+    delete: deletCopouns,
   }
 }

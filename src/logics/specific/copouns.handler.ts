@@ -22,3 +22,7 @@ export const initPageHandler = async (
 export const changeCopounsStatus = async (data: string) => {
   await api.put(data)
 }
+
+export const deleteCopouns = async (data: string) => {
+  await api.delete(data)
+}

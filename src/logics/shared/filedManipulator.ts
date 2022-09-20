@@ -7,6 +7,14 @@ export const convertFieldToNumber = <T extends object>(
   data.forEach((el) => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    el[fieldName] = _.toNumber(el[fieldName])
+    if (el[fieldName]) {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      el[fieldName] = _.toNumber(el[fieldName])
+    } else {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      el[fieldName] = null
+    }
   })
 }

@@ -1,6 +1,6 @@
 import { api } from './index'
-import { response } from '../../core/types/apiResponse.type'
-import { badgeItem } from '../../core/types/badge.type'
+import { response } from '@/core/types/apiResponse.type'
+import { badgeItem } from '@/core/types/badge.type'
 
 const pageUrl = 'badge'
 
@@ -10,7 +10,11 @@ const badgeGet = async (): Promise<response<badgeItem[]>> => {
 }
 
 export const badgePut = async (badgeItems: badgeItem[]) => {
-  await api.put(pageUrl, { badges: badgeItems })
+  try {
+    return await api.put(pageUrl, { badges: badgeItems })
+  } catch (e) {
+    return { status: -1 }
+  }
 }
 
 export const badgeApi = () => {

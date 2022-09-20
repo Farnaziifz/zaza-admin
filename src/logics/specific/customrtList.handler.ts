@@ -1,5 +1,6 @@
-import { customerApi } from '../../resources/api/customer'
-import { customerList } from '../../core/types/customer.type'
+import { customerApi } from '@/resources/api/customer'
+import { customerList } from '@/core/types/customer.type'
+import { showErrorMessage } from '@/logics/shared/message.handler'
 
 const api = customerApi()
 
@@ -14,8 +15,8 @@ export const initPageHandler = async (
 
   if (Object.is(errors, null)) return customer
   else {
-    // TODO: error handling
-    throw 'errors'
+    showErrorMessage()
+    throw 'error'
   }
 }
 

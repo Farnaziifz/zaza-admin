@@ -1,6 +1,6 @@
 import { api } from './index'
-import { response } from '../../core/types/apiResponse.type'
-import { degree } from '../../core/types/degree.type'
+import { response } from '@/core/types/apiResponse.type'
+import { degree } from '@/core/types/degree.type'
 
 const pageUrl = 'degree'
 
@@ -19,7 +19,11 @@ export const degreePut = async (degreeData: degree) => {
 
 export const degreeStatusPut = async () => {
   const status = '/status'
-  await api.put(pageUrl + status)
+  try {
+    return await api.put(pageUrl + status)
+  } catch (e) {
+    return { status: -1 }
+  }
 }
 
 export const degreeApi = () => {

@@ -1,7 +1,7 @@
 <script async setup lang="ts">
 import { onBeforeMount, ref, Ref } from 'vue'
 import BSelect from '../components/shared/atoms/BSelect.vue'
-import { degreeOptions } from '../../core/constants/degree.options'
+import { degreeOptions } from '@/core/constants/degree.options'
 import HintCollapse from '../components/shared/organisms/HintCollapse.vue'
 import InputWithHeadlineAndUnit from '../components/shared/molecules/InputWithHeadlineAndUnit.vue'
 import ContentLayout from '../layouts/ContentLayout.vue'
@@ -10,10 +10,10 @@ import {
   changeServerStatusHandler,
   initPageHandler,
   updatePageHandler,
-} from '../../logics/specific/labelSettingsDegree.handler'
+} from '@/logics/specific/labelSettingsDegree.handler'
 import { t } from 'vui18n'
-import { degree } from '../../core/types/degree.type'
-import { degreeType } from '../../core/enums/degreeType.enum'
+import { degree } from '@/core/types/degree.type'
+import { degreeType } from '@/core/enums/degreeType.enum'
 import BConfirmModal from '../components/shared/atoms/BConfirmModal.vue'
 
 const serverData: Ref<degree> = ref({
@@ -154,8 +154,8 @@ const modalVisibility = ref(false)
         "
         :content="
           serverData.isActive
-            ? t('pages.LabelSettingsDegree.modalContentForActivation')
-            : t('pages.LabelSettingsDegree.modalContentForDeActivation')
+            ? t('pages.LabelSettingsDegree.modalContentForDeActivation')
+            : t('pages.LabelSettingsDegree.modalContentForActivation')
         "
         :ok-text="
           serverData.isActive

@@ -1,49 +1,51 @@
 type filterModel = {
-    field: string
-    operand: '==' | '>=' | '<=' | '<' | '>'
-    value: string
+  field: string
+  operand: '==' | '>=' | '<=' | '<' | '>'
+  value: string
 }
 
 type searchModel = {
-    keyword: string
-    field: string
+  keyword: string
+  field: string
 }
 
 type sortModel = {
-    field: string
-    order: 'ASC' | 'DESC'
+  field: string
+  order: 'ASC' | 'DESC'
 }
 
 class FilterObject implements filterModel {
-    field: string;
-    operand: "==" | ">=" | "<=" | "<" | ">";
-    value: string;
+  field: string
+  operand: '==' | '>=' | '<=' | '<' | '>'
+  value: string
 
-    constructor(model: filterModel) {
-        this.value = model.value
-        this.field = model.field
-        this.operand = model.operand
-    }
+  constructor(model: filterModel) {
+    this.value = model.value
+    this.field = model.field
+    this.operand = model.operand
+  }
 }
 
 export const createFilterObject = (model: filterModel) => {
-    return new FilterObject(model)
+  return new FilterObject(model)
 }
 
-export const createQueryString = (model: filterModel | searchModel | sortModel): string => {
-    let queryString = '';
+export const createQueryString = (
+  model: filterModel | searchModel | sortModel
+): string => {
+  let queryString = ''
 
-    switch (model.constructor.name) {
-        case 'FilterObject':
-            queryString += ' '
-            break
-        case 'SortObject':
-            break
-        case 'SearchObject':
-            break
-    }
+  switch (model.constructor.name) {
+    case 'FilterObject':
+      queryString += ' '
+      break
+    case 'SortObject':
+      break
+    case 'SearchObject':
+      break
+  }
 
-    return queryString
+  return queryString
 }
 
 // export const createFilterModel = (model: filterModel, index = 0) => {

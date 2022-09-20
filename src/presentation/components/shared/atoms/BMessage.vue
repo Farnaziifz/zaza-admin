@@ -10,7 +10,7 @@ type messageProps = {
   style?: CSSProperties
   duration?: number
   content: string
-  show: boolean
+  show?: boolean
   icon?: VNode
 }
 

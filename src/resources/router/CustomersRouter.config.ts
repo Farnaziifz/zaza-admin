@@ -9,7 +9,7 @@ export const customerRouterConfig = {
   children: [
     {
       path: 'list',
-      name: 'list',
+      name: 'customer-list',
       component: CustomersList,
     },
   ],

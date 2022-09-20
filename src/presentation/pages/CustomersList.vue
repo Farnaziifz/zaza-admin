@@ -235,7 +235,8 @@ const changeCustomerStatus = async () => {
   display: flex;
   justify-content: center;
   .customer-action-button {
-    margin: 0 4px;
+    margin: 0 16px;
+    cursor: pointer;
     a {
       color: #1894ff;
     }

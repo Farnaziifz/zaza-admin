@@ -23,7 +23,7 @@ const badgeData = badgeDataFactory()
 
 onBeforeMount(async () => {
   const serverData = await initHandler()
-  mapServerDataToInitialDataHandler(badgeData.value, serverData)
+  if (serverData) mapServerDataToInitialDataHandler(badgeData.value, serverData)
 })
 
 const submitDataHandler = async () => {
@@ -62,6 +62,7 @@ const submitDataHandler = async () => {
 
             <template #addonBefore>
               <input-badge-label
+                v-if="badge.title"
                 class="px-3 flex items-center"
                 :background-color="badge.backgroundColor"
                 :outline-color="badge.outlineColor"

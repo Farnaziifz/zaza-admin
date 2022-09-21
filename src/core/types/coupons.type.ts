@@ -5,8 +5,16 @@ export type coupons = {
   type: string | CouponsTypesType
   reward: string | CouponsRewardsType
   createdAt: string
-  value?: string
-  rewardValue?: object
+  value?: {
+    title?: string
+    amount?: number
+  }
+  rewardValue?: {
+    amount?: number
+    title?: string
+    discountMaximumPrice?: number
+    discountPercentage?: number
+  }
   isActive: boolean
 }
 

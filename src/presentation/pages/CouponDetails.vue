@@ -8,22 +8,32 @@ import { coupons } from '../../core/types/coupons.type'
 import { Ref, ref, onBeforeMount } from 'vue'
 import { useRoute } from 'vue-router'
 
-const data: Ref<coupons> = ref({
+const serverData: Ref<coupons> = ref({
   title: '',
   type: '',
   reward: '',
   createdAt: '',
-  value: '',
-  rewardValue: {},
+  value: {
+    title: '',
+    amount: 0,
+  },
+  rewardValue: {
+    amount: 0,
+    title: '',
+    discountMaximumPrice: 0,
+    discountPercentage: 0,
+  },
   isActive: false,
 })
 const route = useRoute()
+const routeId = String(route.params.id)
+
 onBeforeMount(async () => {
-  data.value = await getCouponDetails(route.params.id)
+  serverData.value = await getCouponDetails(routeId)
 })
 const onChangeStatus = async () => {
-  await changeCouponsStatus(route.params.id)
-  data.value = await getCouponDetails(route.params.id)
+  await changeCouponsStatus(routeId)
+  serverData.value = await getCouponDetails(routeId)
 }
 </script>
 
@@ -32,8 +42,8 @@ const onChangeStatus = async () => {
     <template #layout-title>جزئیات کوپن</template>
     <template #layout-actions>
       <div class="actions-button">
-        <a-tag color="green" v-if="data.isActive">فعال</a-tag>
-        <a-tag color="red" v-else>غیرفعال</a-tag>
+        <a-tag v-if="serverData.isActive" color="green">فعال</a-tag>
+        <a-tag v-else color="red">غیرفعال</a-tag>
         <a-button type="primary" size="small" @click="onChangeStatus"
           >تغییر وضعیت</a-button
         >
@@ -49,46 +59,60 @@ const onChangeStatus = async () => {
           اطلاعات کوپن
         </a-typography-title>
         <div class="coupon-info-container mt-10">
-          <div class="info-container" v-if="data.title">
+          <div v-if="serverData.title" class="info-container">
             <div class="key">عنوان کوپن</div>
-            <div class="value">{{ data.title }}</div>
+            <div class="value">{{ serverData.title }}</div>
           </div>
-          <div class="info-container" v-if="data.type">
+          <div v-if="serverData.type" class="info-container">
             <div class="key">نوع کوپن</div>
             <div class="value">
-              <span v-if="data.type === 'BUY_ABOVE_SPECIFIC_PRICE'">
+              <span v-if="serverData.type === 'BUY_ABOVE_SPECIFIC_PRICE'">
                 خرید بیشتر از یک مبلغ مشخص
               </span>
-              <span v-if="data.type === 'BUY_FROM_SPECIFIC_CATEGORY'">
+              <span v-if="serverData.type === 'BUY_FROM_SPECIFIC_CATEGORY'">
                 خرید از دسته‌بندی
               </span>
-              <span v-if="data.type === 'BUY_SPECIFIC_PRODUCT'">
+              <span v-if="serverData.type === 'BUY_SPECIFIC_PRODUCT'">
                 خرید محصولات
               </span>
-              <span v-if="data.type === 'FIRST_ORDER'"> اولین خرید</span>
+              <span v-if="serverData.type === 'FIRST_ORDER'"> اولین خرید</span>
             </div>
           </div>
           <div
+            v-if="serverData.type === 'BUY_SPECIFIC_PRODUCT'"
             class="info-container"
-            v-if="data.type === 'BUY_SPECIFIC_PRODUCT'"
           >
             <div class="key">محصول</div>
-            <div class="value">{{ data.value.title }}</div>
+
+            <div
+              v-if="serverData.value && serverData.value.title"
+              class="value"
+            >
+              {{ serverData.value.title }}
+            </div>
           </div>
           <div
+            v-if="serverData.type === 'BUY_FROM_SPECIFIC_CATEGORY'"
             class="info-container"
-            v-if="data.type === 'BUY_FROM_SPECIFIC_CATEGORY'"
           >
             <div class="key">دسته‌بندی</div>
-            <div class="value">{{ data.value.title }}</div>
+            <div
+              v-if="serverData.value && serverData.value.title"
+              class="value"
+            >
+              {{ serverData.value.title }}
+            </div>
           </div>
           <div
+            v-if="serverData.type === 'BUY_ABOVE_SPECIFIC_PRICE'"
             class="info-container"
-            v-if="data.type === 'BUY_ABOVE_SPECIFIC_PRICE'"
           >
             <div class="key">مبلغ</div>
-            <div class="value">
-              {{ $filters.toPersianCurrency(data.value.amount, 'تومان') }}
+            <div
+              v-if="serverData.value && serverData.value.amount"
+              class="value"
+            >
+              {{ $filters.toPersianCurrency(serverData.value.amount, 'تومان') }}
             </div>
           </div>
         </div>
@@ -102,41 +126,57 @@ const onChangeStatus = async () => {
           اطلاعات پاداش
         </a-typography-title>
         <div class="reward-info-container mt-10">
-          <div class="reward-container" v-if="data.reward">
+          <div v-if="serverData.reward" class="reward-container">
             <div class="key">نوع پاداش</div>
             <div class="value">
-              <span v-if="data.reward === 'CREDIT'"> اعتبار </span>
-              <span v-if="data.reward === 'FREE_SHIPPING'"> ارسال رایگان </span>
-              <span v-if="data.reward === 'PRODUCT'"> جایزه محصول </span>
-              <span v-if="data.reward === 'SCORE'"> امتیاز </span>
-              <span v-if="data.reward === 'DISCOUNT'"> تخفیف </span>
+              <span v-if="serverData.reward === 'CREDIT'"> اعتبار </span>
+              <span v-if="serverData.reward === 'FREE_SHIPPING'">
+                ارسال رایگان
+              </span>
+              <span v-if="serverData.reward === 'PRODUCT'"> جایزه محصول </span>
+              <span v-if="serverData.reward === 'SCORE'"> امتیاز </span>
+              <span v-if="serverData.reward === 'DISCOUNT'"> تخفیف </span>
             </div>
           </div>
-          <div class="reward-container" v-if="data.rewardValue">
+          <div v-if="serverData.rewardValue" class="reward-container">
             <div class="key">پاداش</div>
-            <div class="value" v-if="data.rewardValue">
-              <span v-if="data.reward === 'SCORE'">
-                {{ data.rewardValue.amount }} امتیاز</span
+            <div v-if="serverData.rewardValue" class="value">
+              <span v-if="serverData.reward === 'SCORE'">
+                {{ serverData.rewardValue.amount }} امتیاز</span
               >
-              <span v-if="data.reward === 'CREDIT' && data.rewardValue.amount">
+              <span
+                v-if="
+                  serverData.reward === 'CREDIT' &&
+                  serverData.rewardValue.amount
+                "
+              >
                 {{
-                  $filters.toPersianCurrency(data.rewardValue.amount, 'تومان')
+                  $filters.toPersianCurrency(
+                    serverData.rewardValue.amount,
+                    'تومان'
+                  )
                 }}
               </span>
-              <span v-if="data.reward === 'DISCOUNT'">
-                {{ data.rewardValue.discountPercentage }} درصد</span
+              <span v-if="serverData.reward === 'DISCOUNT'">
+                {{ serverData.rewardValue.discountPercentage }} درصد</span
               >
-              <span v-if="data.reward === 'PRODUCT'">{{
-                data.rewardValue.title
+              <span v-if="serverData.reward === 'PRODUCT'">{{
+                serverData.rewardValue.title
               }}</span>
             </div>
           </div>
-          <div class="reward-container" v-if="data.reward === 'DISCOUNT'">
+          <div v-if="serverData.reward === 'DISCOUNT'" class="reward-container">
             <div class="key">سقف قیمتی</div>
-            <div class="value">
+            <div
+              v-if="
+                serverData.rewardValue &&
+                serverData.rewardValue.discountMaximumPrice
+              "
+              class="value"
+            >
               {{
                 $filters.toPersianCurrency(
-                  data.rewardValue.discountMaximumPrice,
+                  serverData.rewardValue.discountMaximumPrice,
                   'تومان'
                 )
               }}

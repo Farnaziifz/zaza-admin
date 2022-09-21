@@ -1,9 +1,9 @@
-import { CopounsTypesType, CopunsRewardsType } from '../enums/couponsType.enum'
+import { CouponsTypesType, CouponsRewardsType } from '../enums/couponsType.enum'
 
 export type coupons = {
   title: string
-  type: string | null | CopounsTypesType
-  reward: string | null | CopunsRewardsType
+  type: string | null | CouponsTypesType
+  reward: string | null | CouponsRewardsType
   createdAt: string
   value?: string
   rewardValue?: object

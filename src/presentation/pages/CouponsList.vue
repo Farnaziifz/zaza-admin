@@ -6,10 +6,11 @@ import { coupons, couponsList } from '../../core/types/coupons.type'
 import { Ref, ref, onBeforeMount, computed, reactive } from 'vue'
 import {
   initPageHandler,
-  changeCopounsStatus,
-  deleteCopouns,
+  changeCouponsStatus,
+  deleteCoupons,
 } from '../../logics/specific/coupons.handler'
 import PlusIcon from '@/presentation/components/shared/atoms/PlusIcon.vue'
+import router from '@/resources/router'
 const columns: TableColumnType<coupons>[] = [
   {
     title: 'عنوان کوپن',
@@ -83,20 +84,23 @@ const showDeleteModal = (item: string, title: string) => {
   itemForDelete.title = title
 }
 const confirmModal = async () => {
-  await deleteCopouns(itemForDelete.id)
+  await deleteCoupons(itemForDelete.id)
   data.value = await initPageHandler(
     pagination.value.current,
     pagination.value.pageSize
   )
   visibleDeleteModal.value = false
 }
-const changeCopounSatatus = async () => {
-  await changeCopounsStatus(itemForChangeStatus.id)
+const changeCouponSatatus = async () => {
+  await changeCouponsStatus(itemForChangeStatus.id)
   visible.value = false
   data.value = await initPageHandler(
     pagination.value.current,
     pagination.value.pageSize
   )
+}
+const goToCouponDetails = (item: string) => {
+  router.push({ name: 'coupon-detail', params: { id: item } })
 }
 </script>
 
@@ -164,7 +168,10 @@ const changeCopounSatatus = async () => {
                     >تغییر وضعیت</a
                   >
                 </div>
-                <div class="customer-action-button">
+                <div
+                  class="customer-action-button"
+                  @click="goToCouponDetails(record.id)"
+                >
                   <a>جزئیات</a>
                 </div>
                 <div class="customer-action-button">
@@ -194,10 +201,10 @@ const changeCopounSatatus = async () => {
             <a-button
               v-if="!itemForChangeStatus.isActive"
               type="primary"
-              @click="changeCopounSatatus"
+              @click="changeCouponSatatus"
               >فعال</a-button
             >
-            <a-button v-else type="primary" @click="changeCopounSatatus"
+            <a-button v-else type="primary" @click="changeCouponSatatus"
               >غیرفعال</a-button
             >
           </template>

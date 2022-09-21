@@ -1,8 +1,8 @@
-import Coupons from '/src/presentation/pages/Copouns.vue'
+import Coupons from '/src/presentation/pages/Coupons.vue'
 import CouponsList from '/src/presentation//pages/CouponsList.vue'
 import CouponDetail from '/src/presentation/pages/CouponDetails.vue'
 
-export const copounsRouterConfig = {
+export const couponsRouterConfig = {
   path: 'coupons',
   name: 'coupons',
   component: Coupons,

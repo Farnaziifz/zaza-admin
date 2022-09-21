@@ -1,11 +1,11 @@
-export enum CopounsTypesType {
+export enum CouponsTypesType {
   FIRST_ORDER = 'FIRST_ORDER',
   BUY_SPECIFIC_PRODUCT = 'BUY_SPECIFIC_PRODUCT',
   BUY_FROM_SPECIFIC_CATEGORY = 'BUY_FROM_SPECIFIC_CATEGORY',
   BUY_ABOVE_SPECIFIC_PRICE = 'BUY_ABOVE_SPECIFIC_PRICE',
 }
 
-export enum CopunsRewardsType {
+export enum CouponsRewardsType {
   FREE_SHIPPING = 'FREE_SHIPPING',
   PRODUCT = 'PRODUCT',
   DISCOUNT = 'DISCOUNT',

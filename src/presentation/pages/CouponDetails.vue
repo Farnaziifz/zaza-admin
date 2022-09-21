@@ -46,8 +46,7 @@ onBeforeMount(async () => {
             <div class="key">نوع کوپن</div>
             <div class="value">
               <span v-if="data.type === 'BUY_ABOVE_SPECIFIC_PRICE'">
-                خرید بیش‌از
-                {{ $filters.toPersianCurrency(data.value.amount, 'تومان') }}
+                خرید بیشتر از یک مبلغ مشخص
               </span>
               <span v-if="data.type === 'BUY_FROM_SPECIFIC_CATEGORY'">
                 خرید از دسته‌بندی
@@ -63,21 +62,23 @@ onBeforeMount(async () => {
             v-if="data.type === 'BUY_SPECIFIC_PRODUCT'"
           >
             <div class="key">محصول</div>
-            <div class="value">کروات طرح زارا</div>
+            <div class="value">{{ data.value.title }}</div>
           </div>
           <div
             class="info-container"
             v-if="data.type === 'BUY_FROM_SPECIFIC_CATEGORY'"
           >
             <div class="key">دسته‌بندی</div>
-            <div class="value">گوشی موبایل</div>
+            <div class="value">{{ data.value.title }}</div>
           </div>
           <div
             class="info-container"
             v-if="data.type === 'BUY_ABOVE_SPECIFIC_PRICE'"
           >
             <div class="key">مبلغ</div>
-            <div class="value">250,000 تومان</div>
+            <div class="value">
+              {{ $filters.toPersianCurrency(data.value.amount, 'تومان') }}
+            </div>
           </div>
         </div>
       </a-card>
@@ -88,17 +89,45 @@ onBeforeMount(async () => {
       >
         <a-typography-title :level="3"> اطلاعات پاداش </a-typography-title>
         <div class="reward-info-container mt-10">
-          <div class="reward-container">
+          <div class="reward-container" v-if="data.reward">
             <div class="key">نوع پاداش</div>
-            <div class="value">امتیاز</div>
+            <div class="value">
+              <span v-if="data.reward === 'CREDIT'"> اعتبار </span>
+              <span v-if="data.reward === 'FREE_SHIPPING'"> ارسال رایگان </span>
+              <span v-if="data.reward === 'PRODUCT'"> جایزه محصول </span>
+              <span v-if="data.reward === 'SCORE'"> امتیاز </span>
+              <span v-if="data.reward === 'DISCOUNT'"> تخفیف </span>
+            </div>
           </div>
-          <div class="reward-container">
+          <div class="reward-container" v-if="data.rewardValue">
             <div class="key">پاداش</div>
-            <div class="value">10 امتیاز</div>
+            <div class="value" v-if="data.rewardValue">
+              <span v-if="data.reward === 'SCORE'">
+                {{ data.rewardValue.amount }} امتیاز</span
+              >
+              <span v-if="data.reward === 'CREDIT' && data.rewardValue.amount">
+                {{
+                  $filters.toPersianCurrency(data.rewardValue.amount, 'تومان')
+                }}
+              </span>
+              <span v-if="data.reward === 'DISCOUNT'">
+                {{ data.rewardValue.discountPercentage }} درصد</span
+              >
+              <span v-if="data.reward === 'PRODUCT'">{{
+                data.rewardValue.title
+              }}</span>
+            </div>
           </div>
-          <div class="reward-container">
+          <div class="reward-container" v-if="data.reward === 'DISCOUNT'">
             <div class="key">سقف قیمتی</div>
-            <div class="value">100,000 تومان</div>
+            <div class="value">
+              {{
+                $filters.toPersianCurrency(
+                  data.rewardValue.discountMaximumPrice,
+                  'تومان'
+                )
+              }}
+            </div>
           </div>
         </div>
       </a-card>

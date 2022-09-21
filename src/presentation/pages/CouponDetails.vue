@@ -45,7 +45,7 @@ const onChangeStatus = async () => {
         :bordered="false"
         class="coupon-info-card"
       >
-        <a-typography-title :level="3" class="header-color">
+        <a-typography-title :level="4" class="header-color">
           اطلاعات کوپن
         </a-typography-title>
         <div class="coupon-info-container mt-10">
@@ -98,7 +98,7 @@ const onChangeStatus = async () => {
         :bordered="false"
         class="reward-info-card"
       >
-        <a-typography-title :level="3" class="header-color">
+        <a-typography-title :level="4" class="header-color">
           اطلاعات پاداش
         </a-typography-title>
         <div class="reward-info-container mt-10">

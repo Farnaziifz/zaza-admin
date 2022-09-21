@@ -1,5 +1,5 @@
 <script lang="ts" setup async>
-import IncentiveDetailLayout from '../layouts/IncentiveDetailLayout.vue'
+import IncentiveDetailLayout from '/src/presentation/layouts/IncentiveDetailLayout.vue'
 import {
   getCouponDetails,
   changeCouponsStatus,

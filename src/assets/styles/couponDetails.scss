@@ -1,0 +1,49 @@
+.coupon-info-container {
+  width: 100%;
+  display: flex;
+  .info-container {
+    margin-left: 78px;
+    .key {
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 24px;
+      text-align: right;
+      color: #6d6d6d;
+    }
+    .value {
+      font-weight: 500;
+      font-size: 18px;
+      line-height: 24px;
+      color: #000000;
+      margin-top: 4px;
+    }
+  }
+}
+.reward-info-card {
+  margin-top: 8px;
+  .reward-info-container {
+    display: flex;
+    width: 100%;
+
+    .reward-container {
+      margin-left: 78px;
+      .key {
+        font-weight: 400;
+        font-size: 16px;
+        line-height: 24px;
+        text-align: right;
+        color: #6d6d6d;
+      }
+      .value {
+        font-weight: 500;
+        font-size: 18px;
+        line-height: 24px;
+        color: #000000;
+        margin-top: 4px;
+      }
+    }
+  }
+}
+.header-color {
+  color: #1894ff !important;
+}

@@ -24,14 +24,19 @@ const changeCopounsStatus = async (data: string): Promise<response> => {
 
 const deletCopouns = async (data: string): Promise<response> => {
   const res = await api.delete(`${pageUrl}/${data}`)
-  console.log(res)
   return res.data
 }
 
+const getCouponDetails = async (data: string): Promise<response> => {
+  const res = await api.get(`${pageUrl}/${data}`)
+  console.log(res)
+  return res.data
+}
 export const copounsApi = () => {
   return {
     get: coupunsListGet,
     put: changeCopounsStatus,
     delete: deletCopouns,
+    getDetails: getCouponDetails,
   }
 }

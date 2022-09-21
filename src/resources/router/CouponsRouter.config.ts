@@ -14,7 +14,7 @@ export const copounsRouterConfig = {
       component: CouponsList,
     },
     {
-      path: 'detail/:id',
+      path: 'details/:id',
       name: 'coupon-detail',
       component: CouponDetail,
     },

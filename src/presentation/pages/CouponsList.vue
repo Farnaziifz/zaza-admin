@@ -2,7 +2,7 @@
 import ContentLayout from '../layouts/ContentLayout.vue'
 import EmptyLayout from '/src/presentation/layouts/EmptyLayout.vue'
 import { TableColumnType, TableProps } from 'ant-design-vue'
-import { copouns, copounsList } from '../../core/types/coupons.type'
+import { coupons, couponsList } from '../../core/types/coupons.type'
 import { Ref, ref, onBeforeMount, computed, reactive } from 'vue'
 import {
   initPageHandler,
@@ -10,7 +10,7 @@ import {
   deleteCopouns,
 } from '../../logics/specific/coupons.handler'
 import PlusIcon from '@/presentation/components/shared/atoms/PlusIcon.vue'
-const columns: TableColumnType<copouns>[] = [
+const columns: TableColumnType<coupons>[] = [
   {
     title: 'عنوان کوپن',
     key: 'title',
@@ -39,7 +39,7 @@ const columns: TableColumnType<copouns>[] = [
 ]
 const itemForChangeStatus = reactive({ isActive: false, id: '' })
 const itemForDelete = reactive({ id: '', title: '' })
-const data: Ref<copounsList> = ref({
+const data: Ref<couponsList> = ref({
   items: [],
   hasNextPage: false,
   hasPreviousPage: false,
@@ -59,7 +59,7 @@ const pagination = computed(() => ({
   // showSizeChanger: true,
 }))
 
-const onChange: TableProps<copounsList>['onChange'] = async (
+const onChange: TableProps<couponsList>['onChange'] = async (
   paginate,
   sorter
 ) => {

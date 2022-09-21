@@ -1,12 +1,12 @@
 import { copounsApi } from '../../resources/api/coupons'
-import { copounsList } from '../../core/types/coupons.type'
+import { couponsList } from '../../core/types/coupons.type'
 
 const api = copounsApi()
 
 export const initPageHandler = async (
   page?: number,
   pageSize?: number
-): Promise<copounsList> => {
+): Promise<couponsList> => {
   const res = await api.get(page, pageSize)
   const copouns = res.data
 
@@ -25,4 +25,17 @@ export const changeCopounsStatus = async (data: string) => {
 
 export const deleteCopouns = async (data: string) => {
   await api.delete(data)
+}
+
+export const getCouponDetails = async (data: string) => {
+  const res = await api.getDetails(data)
+  const copoun = res.data
+
+  const errors = res.errors
+
+  if (Object.is(errors, null)) return copoun
+  else {
+    // TODO: error handling
+    throw 'errors'
+  }
 }

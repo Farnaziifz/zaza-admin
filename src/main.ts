@@ -34,4 +34,14 @@ app.config.globalProperties.$filters = {
   toPersianDate,
 }
 
+// TODO => apply this code to seprate file
+declare module '@vue/runtime-core' {
+  interface ComponentCustomProperties {
+    $filters: {
+      toPersianCurrency: (number: number, symbol: string | null) => string
+      toPersianDate: (date: string) => string
+    }
+  }
+}
+
 app.mount('#app')

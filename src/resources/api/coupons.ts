@@ -1,5 +1,5 @@
 import { api } from './index'
-import { couponsList } from '../../core/types/coupons.type'
+import { coupons, couponsList } from '../../core/types/coupons.type'
 import { error } from '../../core/types/error.type'
 
 const pageUrl = 'coupon'
@@ -7,7 +7,10 @@ type response = {
   data: couponsList
   errors: error
 }
-
+type detaislRes = {
+  data: coupons
+  errors: error
+}
 const coupunsListGet = async (
   page?: number,
   pageSize?: number
@@ -27,7 +30,7 @@ const deletCoupons = async (data: string): Promise<response> => {
   return res.data
 }
 
-const getCouponDetails = async (data: string): Promise<response> => {
+const getCouponDetails = async (data: string): Promise<detaislRes> => {
   const res = await api.get(`${pageUrl}/${data}`)
   return res.data
 }

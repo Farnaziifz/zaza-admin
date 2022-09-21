@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import IncentiveDetailLayout from '../layouts/IncentiveDetailLayout.vue'
+import IncentiveDetailLayout from '/src/presentation/layouts/IncentiveDetailLayout.vue'
 </script>
 
 <template>

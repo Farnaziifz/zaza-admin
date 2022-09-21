@@ -53,7 +53,7 @@ const columns: TableColumnType<customer>[] = [
       { text: 'فعال', value: true },
       { text: 'غیر فعال', value: false },
     ],
-    onFilter: (value: boolean, record: customer) => (record.isActive = value),
+    // onFilter: (value: boolean, record: customer) => (record.isActive = value),
   },
   {
     title: 'عملیات',

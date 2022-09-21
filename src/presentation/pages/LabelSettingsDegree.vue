@@ -1,9 +1,9 @@
 <script async setup lang="ts">
 import { onBeforeMount, ref, Ref } from 'vue'
-import BSelect from '../components/shared/atoms/BSelect.vue'
+import BSelect from '/src/presentation/components/shared/atoms/BSelect.vue'
 import { degreeOptions } from '@/core/constants/degree.options'
-import HintCollapse from '../components/shared/organisms/HintCollapse.vue'
-import InputWithHeadlineAndUnit from '../components/shared/molecules/InputWithHeadlineAndUnit.vue'
+import HintCollapse from '/src/presentation/components/shared/Organisms/HintCollapse.vue'
+import InputWithHeadlineAndUnit from '/src/presentation/components/shared/molecules/InputWithHeadlineAndUnit.vue'
 import ContentLayout from '../layouts/ContentLayout.vue'
 import {
   changeServerDataHandler,
@@ -14,7 +14,7 @@ import {
 import { t } from 'vui18n'
 import { degree } from '@/core/types/degree.type'
 import { degreeType } from '@/core/enums/degreeType.enum'
-import BConfirmModal from '../components/shared/atoms/BConfirmModal.vue'
+import BConfirmModal from '/src/presentation/components/shared/atoms/BConfirmModal.vue'
 
 const serverData: Ref<degree> = ref({
   amount: 0,

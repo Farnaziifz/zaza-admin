@@ -9,7 +9,7 @@ import {
   changeCouponsStatus,
   deleteCoupons,
 } from '../../logics/specific/coupons.handler'
-import PlusIcon from '@/presentation/components/shared/atoms/PlusIcon.vue'
+import PlusIcon from '/src/presentation/components/shared/atoms/PlusIcon.vue'
 import router from '@/resources/router'
 const columns: TableColumnType<coupons>[] = [
   {

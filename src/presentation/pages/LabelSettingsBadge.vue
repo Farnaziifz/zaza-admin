@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import ContentLayout from '../layouts/ContentLayout.vue'
-import HintCollapse from '../components/shared/Organisms/HintCollapse.vue'
+import HintCollapse from '/src/presentation/components/shared/Organisms/HintCollapse.vue'
 import { t } from 'vui18n'
 import { hintType } from '../../core/types/hints.type'
-import InputBadgeLabel from '../components/specific/LabelSettings/InputBadgeLabel.vue'
+import InputBadgeLabel from '/src/presentation/components/specific/LabelSettings/InputBadgeLabel.vue'
 import { badgeDataFactory } from '../factory/specific/labelSettings/labelSettingsBadgeData.factory'
 import {
   initHandler,
@@ -23,7 +23,7 @@ const badgeData = badgeDataFactory()
 
 onBeforeMount(async () => {
   const serverData = await initHandler()
-  mapServerDataToInitialDataHandler(badgeData.value, serverData)
+  if (serverData) mapServerDataToInitialDataHandler(badgeData.value, serverData)
 })
 
 const submitDataHandler = async () => {
@@ -62,6 +62,7 @@ const submitDataHandler = async () => {
 
             <template #addonBefore>
               <input-badge-label
+                v-if="badge.title"
                 class="px-3 flex items-center"
                 :background-color="badge.backgroundColor"
                 :outline-color="badge.outlineColor"

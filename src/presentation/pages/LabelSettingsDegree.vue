@@ -2,7 +2,7 @@
 import { onBeforeMount, ref, Ref } from 'vue'
 import BSelect from '/src/presentation/components/shared/atoms/BSelect.vue'
 import { degreeOptions } from '@/core/constants/degree.options'
-import HintCollapse from '/src/presentation/components/shared/organisms/HintCollapse.vue'
+import HintCollapse from '/src/presentation/components/shared/Organisms/HintCollapse.vue'
 import InputWithHeadlineAndUnit from '/src/presentation/components/shared/molecules/InputWithHeadlineAndUnit.vue'
 import ContentLayout from '../layouts/ContentLayout.vue'
 import {

@@ -1,17 +1,17 @@
-import { CopounsTypesType, CopunsRewardsType } from '../enums/couponsType.enum'
+import { CouponsTypesType, CouponsRewardsType } from '../enums/couponsType.enum'
 
-export type copouns = {
+export type coupons = {
   title: string
-  type: string | null | CopounsTypesType
-  reward: string | null | CopunsRewardsType
+  type: string | null | CouponsTypesType
+  reward: string | null | CouponsRewardsType
   createdAt: string
   value?: string
-  rewardValue?: string
+  rewardValue?: object
   isActive: boolean
 }
 
-export type copounsList = {
-  items: copouns[]
+export type couponsList = {
+  items: coupons[]
   hasNextPage: boolean
   hasPreviousPage: boolean
   page: number

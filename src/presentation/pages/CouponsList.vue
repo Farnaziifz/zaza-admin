@@ -2,15 +2,16 @@
 import ContentLayout from '../layouts/ContentLayout.vue'
 import EmptyLayout from '/src/presentation/layouts/EmptyLayout.vue'
 import { TableColumnType, TableProps } from 'ant-design-vue'
-import { copouns, copounsList } from '../../core/types/coupons.type'
+import { coupons, couponsList } from '../../core/types/coupons.type'
 import { Ref, ref, onBeforeMount, computed, reactive } from 'vue'
 import {
   initPageHandler,
-  changeCopounsStatus,
-  deleteCopouns,
+  changeCouponsStatus,
+  deleteCoupons,
 } from '../../logics/specific/coupons.handler'
 import PlusIcon from '@/presentation/components/shared/atoms/PlusIcon.vue'
-const columns: TableColumnType<copouns>[] = [
+import router from '@/resources/router'
+const columns: TableColumnType<coupons>[] = [
   {
     title: 'عنوان کوپن',
     key: 'title',
@@ -39,7 +40,7 @@ const columns: TableColumnType<copouns>[] = [
 ]
 const itemForChangeStatus = reactive({ isActive: false, id: '' })
 const itemForDelete = reactive({ id: '', title: '' })
-const data: Ref<copounsList> = ref({
+const data: Ref<couponsList> = ref({
   items: [],
   hasNextPage: false,
   hasPreviousPage: false,
@@ -59,7 +60,7 @@ const pagination = computed(() => ({
   // showSizeChanger: true,
 }))
 
-const onChange: TableProps<copounsList>['onChange'] = async (
+const onChange: TableProps<couponsList>['onChange'] = async (
   paginate,
   sorter
 ) => {
@@ -83,20 +84,23 @@ const showDeleteModal = (item: string, title: string) => {
   itemForDelete.title = title
 }
 const confirmModal = async () => {
-  await deleteCopouns(itemForDelete.id)
+  await deleteCoupons(itemForDelete.id)
   data.value = await initPageHandler(
     pagination.value.current,
     pagination.value.pageSize
   )
   visibleDeleteModal.value = false
 }
-const changeCopounSatatus = async () => {
-  await changeCopounsStatus(itemForChangeStatus.id)
+const changeCouponSatatus = async () => {
+  await changeCouponsStatus(itemForChangeStatus.id)
   visible.value = false
   data.value = await initPageHandler(
     pagination.value.current,
     pagination.value.pageSize
   )
+}
+const goToCouponDetails = (item: string) => {
+  router.push({ name: 'coupon-detail', params: { id: item } })
 }
 </script>
 
@@ -164,7 +168,10 @@ const changeCopounSatatus = async () => {
                     >تغییر وضعیت</a
                   >
                 </div>
-                <div class="customer-action-button">
+                <div
+                  class="customer-action-button"
+                  @click="goToCouponDetails(record.id)"
+                >
                   <a>جزئیات</a>
                 </div>
                 <div class="customer-action-button">
@@ -194,10 +201,10 @@ const changeCopounSatatus = async () => {
             <a-button
               v-if="!itemForChangeStatus.isActive"
               type="primary"
-              @click="changeCopounSatatus"
+              @click="changeCouponSatatus"
               >فعال</a-button
             >
-            <a-button v-else type="primary" @click="changeCopounSatatus"
+            <a-button v-else type="primary" @click="changeCouponSatatus"
               >غیرفعال</a-button
             >
           </template>

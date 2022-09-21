@@ -15,6 +15,9 @@ const goBack = () => {
       </div>
       <div class="title-container">
         <h1><slot name="layout-title"></slot></h1>
+        <div class="actions-container">
+          <slot name="layout-actions"></slot>
+        </div>
       </div>
       <div class="content-container">
         <slot name="layout-content"></slot>
@@ -35,6 +38,9 @@ const goBack = () => {
   }
   .title-container {
     margin-top: 8px;
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
     h1 {
       font-weight: 700;
       font-size: 24px;
@@ -44,6 +50,8 @@ const goBack = () => {
   }
   .content-container {
     margin-top: 40px;
+  }
+  .actions-container {
   }
 }
 </style>

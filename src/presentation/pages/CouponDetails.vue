@@ -1,6 +1,9 @@
 <script lang="ts" setup async>
 import IncentiveDetailLayout from '../layouts/IncentiveDetailLayout.vue'
-import { getCouponDetails } from '../../logics/specific/coupons.handler'
+import {
+  getCouponDetails,
+  changeCouponsStatus,
+} from '../../logics/specific/coupons.handler'
 import { coupons } from '../../core/types/coupons.type'
 import { Ref, ref, onBeforeMount } from 'vue'
 import { useRoute } from 'vue-router'
@@ -18,6 +21,10 @@ const route = useRoute()
 onBeforeMount(async () => {
   data.value = await getCouponDetails(route.params.id)
 })
+const onChangeStatus = async () => {
+  await changeCouponsStatus(route.params.id)
+  data.value = await getCouponDetails(route.params.id)
+}
 </script>
 
 <template>
@@ -27,7 +34,9 @@ onBeforeMount(async () => {
       <div class="actions-button">
         <a-tag color="green" v-if="data.isActive">فعال</a-tag>
         <a-tag color="red" v-else>غیرفعال</a-tag>
-        <a-button type="primary" size="small">تغییر وضعیت</a-button>
+        <a-button type="primary" size="small" @click="onChangeStatus"
+          >تغییر وضعیت</a-button
+        >
       </div>
     </template>
     <template #layout-content>
@@ -36,7 +45,9 @@ onBeforeMount(async () => {
         :bordered="false"
         class="coupon-info-card"
       >
-        <a-typography-title :level="3"> اطلاعات کوپن </a-typography-title>
+        <a-typography-title :level="3" class="header-color">
+          اطلاعات کوپن
+        </a-typography-title>
         <div class="coupon-info-container mt-10">
           <div class="info-container" v-if="data.title">
             <div class="key">عنوان کوپن</div>
@@ -87,7 +98,9 @@ onBeforeMount(async () => {
         :bordered="false"
         class="reward-info-card"
       >
-        <a-typography-title :level="3"> اطلاعات پاداش </a-typography-title>
+        <a-typography-title :level="3" class="header-color">
+          اطلاعات پاداش
+        </a-typography-title>
         <div class="reward-info-container mt-10">
           <div class="reward-container" v-if="data.reward">
             <div class="key">نوع پاداش</div>
@@ -181,5 +194,8 @@ onBeforeMount(async () => {
       }
     }
   }
+}
+.header-color {
+  color: #1894ff !important;
 }
 </style>

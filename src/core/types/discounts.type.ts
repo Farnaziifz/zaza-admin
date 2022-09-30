@@ -3,17 +3,16 @@
 export type discounts = {
   title: string
   type: string
-  reward: string
-  createdAt: string
-  value?: {
-    title?: string
+  consumeType: string
+  stateType: string
+  amount: number
+  startAt: string
+  expireAt: string
+  customersCount: number
+  groupIds: []
+  promotionSteps?: {
+    order?: number
     amount?: number
-  }
-  rewardValue?: {
-    amount?: number
-    title?: string
-    discountMaximumPrice?: number
-    discountPercentage?: number
   }
   isActive: boolean
 }

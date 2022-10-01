@@ -139,7 +139,7 @@ const handleCancel = () => {
                   type="danger"
                   class="moreGroup"
                   v-if="record.groups.length > 2"
-                  @click="openGroupModal(record.id, record.groups)"
+                  @click="openGroupModal(record.groups)"
                   >دیگر...</a-typography-text
                 >
               </span>

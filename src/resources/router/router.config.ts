@@ -4,6 +4,7 @@ import { labelSettingsRouterConfig } from './labelSettingsRouter.config'
 import { customerRouterConfig } from './CustomersRouter.config'
 import { couponsRouterConfig } from './CouponsRouter.config'
 import { creditRouterConfig } from './CreditsRouter.config'
+import { discountRouterConfig } from './DiscoutRouter.config'
 const config: RouterOptions = {
   routes: [
     {
@@ -15,6 +16,7 @@ const config: RouterOptions = {
         customerRouterConfig,
         couponsRouterConfig,
         creditRouterConfig,
+        discountRouterConfig,
       ],
     },
   ],

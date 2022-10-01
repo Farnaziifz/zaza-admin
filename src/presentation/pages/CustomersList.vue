@@ -62,6 +62,9 @@ const columns: TableColumnType<customer>[] = [
   },
 ]
 const itemForChangeStatus = reactive({ isActive: false, id: '' })
+const modalSubmissionButtonLoader = ref(false)
+const turnOnLoader = () => (modalSubmissionButtonLoader.value = true)
+const turnOffLoader = () => (modalSubmissionButtonLoader.value = false)
 
 const data: Ref<customerList> = ref({
   items: [],
@@ -103,7 +106,9 @@ const hideModal = () => {
 }
 
 const changeCustomerStatus = async () => {
+  turnOnLoader()
   await chnageCustomerStatus(itemForChangeStatus.id)
+  turnOffLoader()
   visible.value = false
   data.value = await initPageHandler(
     pagination.value.current,
@@ -174,7 +179,6 @@ const changeCustomerStatus = async () => {
                     >تغییر وضعیت</a
                   >
                 </div>
-                <!-- <a-divider type="vertical" /> -->
                 <div class="customer-action-button">
                   <a>جزئیات</a>
                 </div>

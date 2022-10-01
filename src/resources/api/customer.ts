@@ -16,10 +16,10 @@ const cusotmerListGet = async (
   return res.data
 }
 
-const customerChangeSatatus = async (data: string): Promise<response> => {
+const customerChangeSatatus = async (data: string) => {
   const path = '/status'
   const res = await api.put(pageUrl + path + '/' + data)
-  return res.data
+  return res
 }
 
 export const customerApi = () => {

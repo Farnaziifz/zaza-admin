@@ -1,3 +1,5 @@
+// import { CouponsTypesType, CouponsRewardsType } from '../enums/couponsType.enum'
+
 export type discounts = {
   title: string
   type: string

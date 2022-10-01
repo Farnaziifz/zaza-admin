@@ -192,9 +192,9 @@ const goToCouponDetails = (item: string) => {
             </template>
           </template>
         </a-table>
-        <a-modal v-model:visible="visible" title="تغییر وضعیت مشتری">
+        <a-modal v-model:visible="visible" title="تغییر وضعیت کوپن">
           <p>
-            آیا از تغییر وضعیت مشتری به
+            آیا از تغییر وضعیت کوپن به
             <a-typography-text
               v-if="!itemForChangeStatus.isActive"
               type="success"

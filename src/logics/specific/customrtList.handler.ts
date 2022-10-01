@@ -1,6 +1,10 @@
 import { customerApi } from '@/resources/api/customer'
 import { customerList } from '@/core/types/customer.type'
-import { showErrorMessage } from '@/logics/shared/message.handler'
+import {
+  showErrorMessage,
+  showLoadingMessage,
+  showSuccessMessage,
+} from '@/logics/shared/message.handler'
 
 const api = customerApi()
 
@@ -21,5 +25,8 @@ export const initPageHandler = async (
 }
 
 export const chnageCustomerStatus = async (data: string) => {
-  await api.put(data)
+  showLoadingMessage()
+  const res = await api.put(data)
+  if (res.status === 204) showSuccessMessage()
+  else showErrorMessage()
 }

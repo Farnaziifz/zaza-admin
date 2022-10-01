@@ -7,6 +7,8 @@ export type credits = {
   startAt: string
   expireAt: string
   groups: group[]
+  fullName: string
+  mobileNumber: number
 }
 
 export type creditsList = {

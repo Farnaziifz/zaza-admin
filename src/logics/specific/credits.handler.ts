@@ -20,9 +20,9 @@ export const initPageHandler = async (
 }
 
 export const getCustomerGroup = async (
-  data: string,
-  page?: number,
-  pageSize?: number
+  data: { groupId: string }[],
+  page = 1,
+  pageSize = 10
 ): Promise<creditCustomerGroup> => {
   const res = await api.getGroup(data, page, pageSize)
   const customerGroupList = res.data
@@ -34,20 +34,3 @@ export const getCustomerGroup = async (
     throw 'errors'
   }
 }
-
-// export const changeCouponsStatus = async (data: string) => {
-//   await api.put(data)
-// }
-
-// export const getCouponDetails = async (data: string) => {
-//   const res = await api.getDetails(data)
-//   const coupon = res.data
-
-//   const errors = res.errors
-
-//   if (Object.is(errors, null)) return coupon
-//   else {
-//     // TODO: error handling
-//     throw 'errors'
-//   }
-// }

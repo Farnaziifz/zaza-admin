@@ -65,7 +65,7 @@ const customerData: Ref<creditCustomerGroup> = ref({
   totalPages: 0,
 })
 const visibleGroupModal = ref<boolean>(false)
-const activeItemInModal = reactive({ id: '' })
+let activeItemInModal: { groupId: string }[] = reactive([])
 
 onBeforeMount(async () => {
   const page = 1
@@ -81,9 +81,8 @@ const onChange: TableProps<creditsList>['onChange'] = async (
 }
 const onChangeCustomerGroup: TableProps<creditCustomerGroup>['onChange'] =
   async (paginate) => {
-    console.log(paginate)
     customerData.value = await getCustomerGroup(
-      activeItemInModal.id,
+      activeItemInModal,
       paginate.current,
       paginate.pageSize
     )
@@ -100,11 +99,11 @@ const customerpagination = computed(() => ({
   pageSize: 8,
   // showSizeChanger: true,
 }))
-const openGroupModal = async (item: string) => {
+const openGroupModal = async (item: { groupId: string }[]) => {
   const page = 1
   const pageSize = 10
   customerData.value = await getCustomerGroup(item, page, pageSize)
-  activeItemInModal.id = item
+  activeItemInModal = item
   visibleGroupModal.value = true
 }
 const handleCancel = () => {
@@ -140,7 +139,7 @@ const handleCancel = () => {
                   type="danger"
                   class="moreGroup"
                   v-if="record.groups.length > 2"
-                  @click="openGroupModal(record.id)"
+                  @click="openGroupModal(record.id, record.groups)"
                   >دیگر...</a-typography-text
                 >
               </span>

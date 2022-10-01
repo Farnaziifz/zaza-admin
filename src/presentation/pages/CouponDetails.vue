@@ -9,6 +9,7 @@ import { Ref, ref, onBeforeMount, reactive } from 'vue'
 import { useRoute } from 'vue-router'
 
 const serverData: Ref<coupons> = ref({
+  id: '',
   title: '',
   type: '',
   reward: '',

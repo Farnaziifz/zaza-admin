@@ -86,6 +86,12 @@ const changeRoute = (to: string) => {
         <a-menu-item key="4" @click="changeRoute('/coupons/list')"
           >کوپن‌ها</a-menu-item
         >
+        <a-menu-item key="5" @click="changeRoute('/credits/list')"
+          >هدیه اعتباری</a-menu-item
+        >
+        <a-menu-item key="6" @click="changeRoute('/discount/list')"
+          >کد تخفیف</a-menu-item
+        >
       </a-sub-menu>
     </a-menu>
   </a-layout-sider>

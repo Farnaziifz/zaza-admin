@@ -179,7 +179,6 @@ const changeCustomerStatus = async () => {
                     >تغییر وضعیت</a
                   >
                 </div>
-                <!-- <a-divider type="vertical" /> -->
                 <div class="customer-action-button">
                   <a>جزئیات</a>
                 </div>

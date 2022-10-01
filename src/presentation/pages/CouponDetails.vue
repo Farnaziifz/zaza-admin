@@ -36,7 +36,7 @@ onBeforeMount(async () => {
 const showModal = (item: string, isActive: boolean) => {
   visible.value = true
   itemForChangeStatus.isActive = isActive
-  itemForChangeStatus.id = String(item)
+  itemForChangeStatus.id = item
 }
 const onChangeStatus = async () => {
   await changeCouponsStatus(routeId)

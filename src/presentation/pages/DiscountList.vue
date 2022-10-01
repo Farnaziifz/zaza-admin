@@ -177,10 +177,7 @@ const hideModal = () => {
                   >تغییر وضعیت</a
                 >
               </div>
-              <div
-                class="customer-action-button"
-                @click="goToCouponDetails(record.id)"
-              >
+              <div class="customer-action-button">
                 <a>جزئیات</a>
               </div>
               <div class="customer-action-button">

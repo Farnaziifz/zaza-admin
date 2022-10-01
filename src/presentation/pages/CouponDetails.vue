@@ -5,7 +5,7 @@ import {
   changeCouponsStatus,
 } from '../../logics/specific/coupons.handler'
 import { coupons } from '../../core/types/coupons.type'
-import { Ref, ref, onBeforeMount } from 'vue'
+import { Ref, ref, onBeforeMount, reactive } from 'vue'
 import { useRoute } from 'vue-router'
 
 const serverData: Ref<coupons> = ref({
@@ -27,13 +27,24 @@ const serverData: Ref<coupons> = ref({
 })
 const route = useRoute()
 const routeId = String(route.params.id)
-
+const visible = ref<boolean>(false)
+const itemForChangeStatus = reactive({ isActive: false, id: '' })
 onBeforeMount(async () => {
   serverData.value = await getCouponDetails(routeId)
 })
+
+const showModal = (item: string, isActive: boolean) => {
+  visible.value = true
+  itemForChangeStatus.isActive = isActive
+  itemForChangeStatus.id = String(item)
+}
 const onChangeStatus = async () => {
   await changeCouponsStatus(routeId)
   serverData.value = await getCouponDetails(routeId)
+  hideModal()
+}
+const hideModal = () => {
+  visible.value = false
 }
 </script>
 
@@ -44,7 +55,10 @@ const onChangeStatus = async () => {
       <div class="actions-button">
         <a-tag v-if="serverData.isActive" color="green">فعال</a-tag>
         <a-tag v-else color="red">غیرفعال</a-tag>
-        <a-button type="primary" size="small" @click="onChangeStatus"
+        <a-button
+          type="primary"
+          size="small"
+          @click="showModal(serverData.id, serverData.isActive)"
           >تغییر وضعیت</a-button
         >
       </div>
@@ -186,6 +200,26 @@ const onChangeStatus = async () => {
       </a-card>
     </template>
   </IncentiveDetailLayout>
+  <a-modal v-model:visible="visible" title="تغییر وضعیت کوپن">
+    <p>
+      آیا از تغییر وضعیت کوپن به
+      <a-typography-text v-if="!itemForChangeStatus.isActive" type="success"
+        >فعال</a-typography-text
+      >
+      <a-typography-text v-else type="danger">غیرفعال</a-typography-text>
+      مطمئن هستید؟
+    </p>
+    <template #footer>
+      <a-button key="back" @click="hideModal">بستن</a-button>
+      <a-button
+        v-if="!itemForChangeStatus.isActive"
+        type="primary"
+        @click="onChangeStatus"
+        >فعال</a-button
+      >
+      <a-button v-else type="primary" @click="onChangeStatus">غیرفعال</a-button>
+    </template>
+  </a-modal>
 </template>
 
 <style lang="scss" scoped>

@@ -8,7 +8,7 @@ import { discountRouterConfig } from './DiscoutRouter.config'
 const config: RouterOptions = {
   routes: [
     {
-      path: '/boomjar',
+      path: '/',
       name: 'Main',
       component: Main,
       children: [
@@ -20,7 +20,7 @@ const config: RouterOptions = {
       ],
     },
   ],
-  history: createWebHistory(),
+  history: createWebHistory(import.meta.env.BASE_URL),
 }
 
 export default config

@@ -160,21 +160,14 @@ const handleCancel = () => {
             </template>
             <template v-else-if="column.key === 'actions'">
               <div class="customer-action-container">
-                <div
-                  class="customer-action-button"
-                  @click="goToCouponDetails(record.id)"
-                >
+                <div class="customer-action-button">
                   <a>جزئیات</a>
                 </div>
               </div>
             </template>
           </template>
         </a-table>
-        <a-modal
-          v-model:visible="visibleGroupModal"
-          title="مشتریان هدف"
-          @ok="handleOk"
-        >
+        <a-modal v-model:visible="visibleGroupModal" title="مشتریان هدف">
           <template #footer>
             <a-button key="back" @click="handleCancel">بستن</a-button>
           </template>

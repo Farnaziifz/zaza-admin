@@ -143,17 +143,23 @@ const hideModal = () => {
               <a-tag v-if="record.consumeType === 'SEVERAL_TIMES'" color="blue">
                 چندبار مصرف</a-tag
               >
-              <a-tag v-if="record.type === 'ONCE'">یکبار مصرف</a-tag>
+              <a-tag v-if="record.consumeType === 'ONCE'" color="blue"
+                >یکبار مصرف</a-tag
+              >
             </span>
             <span v-if="record.stateType">
               <a-tag v-if="record.stateType === 'CONSTANT'" color="blue">
                 ثابت</a-tag
               >
-              <a-tag v-if="record.type === 'VARIABLE'">متغیر</a-tag>
+              <a-tag v-if="record.stateType === 'VARIABLE'" color="blue"
+                >متغیر</a-tag
+              >
             </span>
             <span v-if="record.type">
               <a-tag v-if="record.type === 'CASH'" color="blue">تومانی</a-tag>
-              <a-tag v-if="record.type === 'PERCENTAGE'">درصدی</a-tag>
+              <a-tag v-if="record.type === 'PERCENTAGE'" color="blue"
+                >درصدی</a-tag
+              >
             </span>
           </template>
           <template v-else-if="column.key === 'customersCount'">

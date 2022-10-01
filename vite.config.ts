@@ -6,6 +6,7 @@ import { AntDesignVueResolver } from 'unplugin-vue-components/resolvers';
 import * as path from 'path';
 // https://vitejs.dev/config/
 export default defineConfig({
+  base: "/boomjar",
   plugins: [
     vue(),
     eslintPlugin(),

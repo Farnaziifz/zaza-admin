@@ -1,10 +1,15 @@
 import { api } from './index'
-import { discountsList } from '../../core/types/discounts.type'
+import { discountsList, discounts } from '../../core/types/discounts.type'
 import { error } from '../../core/types/error.type'
 
 const pageUrl = 'promotion'
 type response = {
   data: discountsList
+  errors: error
+}
+
+type detaislRes = {
+  data: discounts
   errors: error
 }
 
@@ -26,10 +31,34 @@ const deleteDiscount = async (data: string): Promise<response> => {
   const res = await api.delete(`${pageUrl}/${data}`)
   return res.data
 }
+
+const getDiscountDetails = async (data: string): Promise<detaislRes> => {
+  const res = await api.get(`${pageUrl}/${data}`)
+  return res.data
+}
+
+const getDiscountGroup = async (
+  id: { groupId: string }[],
+  page: number,
+  pageSize: number
+): Promise<response> => {
+  let gpID = ''
+  for (let i = 0; i < id.length; i++) {
+    gpID += `GroupIds=${id[i].groupId}`
+    if (i < id.length - 1) gpID += '&'
+  }
+  const res = await api.get(
+    `group/title?${gpID}&Page=${page}&PageSize=${pageSize}`
+  )
+
+  return res.data
+}
 export const discountApi = () => {
   return {
     get: discountListGet,
     put: chnageDiscountStatus,
     delete: deleteDiscount,
+    getDetails: getDiscountDetails,
+    getGroup: getDiscountGroup
   }
 }

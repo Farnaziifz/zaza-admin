@@ -1,7 +1,7 @@
 <script lang="ts" async setup>
 import IncentiveDetailLayout from '/src/presentation/layouts/IncentiveDetailLayout.vue'
 import { onBeforeMount, Ref, ref, reactive } from 'vue'
-import { discounts, group } from '../../core/types/discounts.type'
+import { discounts, discountGroup } from '../../core/types/discounts.type'
 import {
   getDiscountDetails,
   chnageDiscountStatus,
@@ -18,20 +18,19 @@ const serverData: Ref<discounts> = ref({
   amount: 0,
   startAt: '',
   expireAt: '',
-  customersCount: 0,
-  groupIds: [],
-  promotionAssignedGroups: [],
-  promotionSteps: {
-    order: 0,
-    amount: 0,
-  },
   isActive: false,
+  customersCount: 0,
+  promotionAssignedGroups: [],
+  promotionSteps: []
 })
 
-const discountGroupData: Ref<group> = ref({
-  groupId: '',
-  customersCount: 0,
-  title: '',
+const discountGroupData: Ref<discountGroup> = ref({
+  items: [],
+  hasNextPage: false,
+  hasPreviousPage: false,
+  page: 0,
+  totalCount: 0,
+  totalPages: 0,
 })
 const route = useRoute()
 const routeId = String(route.params.id)
@@ -42,11 +41,13 @@ onBeforeMount(async () => {
   const page = 1
   const pageSize = 10
   serverData.value = await getDiscountDetails(routeId)
-  discountGroupData.value = await getDiscoutGroup(
-    serverData.value.promotionAssignedGroups,
-    page,
-    pageSize
-  )
+  serverData.value.promotionAssignedGroups
+    ? (discountGroupData.value = await getDiscoutGroup(
+        serverData.value.promotionAssignedGroups,
+        page,
+        pageSize
+      ))
+    : false
 })
 const hideModal = () => {
   visible.value = false
@@ -80,7 +81,7 @@ const onChangeStatus = async () => {
     </template>
     <template #layout-content>
       <a-card
-        :bodyStyle="{ boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)' }"
+        :bodyStyle="{ 'box-shadow': '0px 0px 10px rgba(0, 0, 0, 0.1)' }"
         :bordered="false"
         class="discount-info-card"
       >
@@ -111,7 +112,7 @@ const onChangeStatus = async () => {
         </div>
       </a-card>
       <a-card
-        :bodyStyle="{ boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)' }"
+        :bodyStyle="{ 'box-shadow': '0px 0px 10px rgba(0, 0, 0, 0.1)' }"
         :bordered="false"
         class="discount-info-card"
       >
@@ -122,20 +123,20 @@ const onChangeStatus = async () => {
           <div v-if="serverData.consumeType" class="info-container">
             <div class="key">دفعات مصرف</div>
             <div
-              class="value"
               v-if="serverData.consumeType === 'SEVERAL_TIMES'"
+              class="value"
             >
               چندبار مصرف
             </div>
-            <div class="value" v-else>یکبار مصرف</div>
+            <div v-else class="value">یکبار مصرف</div>
           </div>
 
           <div v-if="serverData.stateType" class="info-container">
             <div class="key">مراتب تخفیف</div>
-            <div class="value" v-if="serverData.stateType === 'CONSTANT'">
+            <div v-if="serverData.stateType === 'CONSTANT'" class="value">
               ثابت
             </div>
-            <div class="value" v-else>پلکانی</div>
+            <div v-else class="value">پلکانی</div>
           </div>
           <div v-if="serverData.type" class="info-container">
             <div class="key">نوع تخفیف</div>
@@ -144,32 +145,82 @@ const onChangeStatus = async () => {
           </div>
           <div v-if="serverData.amount" class="info-container">
             <div class="key">مبلغ تخفیف</div>
-            <div class="value">
+            <div class="value" v-if="serverData.type === 'CASH'">
               {{ $filters.toPersianCurrency(serverData.amount, 'تومان') }}
             </div>
+            <div class="value" v-else>{{ serverData.amount }} درصد</div>
           </div>
-          <div v-if="serverData.consumeLimitation" class="info-container">
+          <div
+            v-if="serverData.maximumAmount && serverData.type === 'PERCENTAGE'"
+            class="info-container"
+          >
+            <div class="key">سقف تخفیف</div>
+            <div class="value">
+              {{
+                $filters.toPersianCurrency(serverData.maximumAmount, 'تومان')
+              }}
+            </div>
+          </div>
+          <div
+            v-if="
+              serverData.consumeLimitation &&
+              serverData.consumeType === 'SEVERAL_TIMES'
+            "
+            class="info-container"
+          >
             <div class="key">محدودیت مصرف به ازای هر مشتری</div>
             <div class="value">{{ serverData.consumeLimitation }} بار</div>
+          </div>
+          <div
+            v-if="
+              serverData.stateType === 'VARIABLE' && serverData.promotionSteps
+            "
+            class="info-container variable-container"
+          >
+            <div
+              v-for="item in serverData.promotionSteps"
+              :key="item.order"
+              class="varibale-item"
+            >
+              <div class="key" v-if="item.order">مرتبه {{ item.order }}</div>
+              <div class="value" v-if="item.amount">
+                {{ $filters.toPersianCurrency(item.amount, 'تومان') }}
+              </div>
+            </div>
           </div>
         </div>
       </a-card>
       <a-card
-        :bodyStyle="{ boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)' }"
+        :bodyStyle="{ 'box-shadow': '0px 0px 10px rgba(0, 0, 0, 0.1)' }"
         :bordered="false"
         class="discount-info-card"
       >
         <a-typography-title :level="4" class="header-color">
           مشتریان هدف
         </a-typography-title>
-        <div class="discount-info-container mt-10">
-          <div v-if="serverData.title" class="info-container">
-            <div class="key">دسته‌بندی</div>
-            <div class="value">{{ serverData.title }}</div>
+        <div
+          class="mt-10 group-container"
+          v-if="discountGroupData.items && discountGroupData.items.length"
+        >
+          <div class="category-container">
+            <div class="key">نام دسته‌بندی</div>
+            <div
+              class="value"
+              v-for="item in discountGroupData.items"
+              :key="item.groupId"
+            >
+              <span v-if="item.title">{{ item.title }}</span>
+            </div>
           </div>
-          <div v-if="serverData.code" class="info-container">
+          <div class="customer-count-container">
             <div class="key">تعداد مشتریان</div>
-            <div class="value">{{ serverData.code }}</div>
+            <div
+              class="value"
+              v-for="item in discountGroupData.items"
+              :key="item.groupId"
+            >
+              <span v-if="item.title"> {{ item.customersCount }}</span>
+            </div>
           </div>
         </div>
       </a-card>

@@ -41,7 +41,7 @@ const getDiscountGroup = async (
   id: { groupId: string }[],
   page: number,
   pageSize: number
-): Promise<response> => {
+) => {
   let gpID = ''
   for (let i = 0; i < id.length; i++) {
     gpID += `GroupIds=${id[i].groupId}`
@@ -59,6 +59,6 @@ export const discountApi = () => {
     put: chnageDiscountStatus,
     delete: deleteDiscount,
     getDetails: getDiscountDetails,
-    getGroup: getDiscountGroup
+    getGroup: getDiscountGroup,
   }
 }

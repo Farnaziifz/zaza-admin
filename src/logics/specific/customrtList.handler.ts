@@ -30,3 +30,15 @@ export const chnageCustomerStatus = async (data: string) => {
   if (res.status === 204) showSuccessMessage()
   else showErrorMessage()
 }
+
+export const getCustomerProfile = async (data: string) => {
+  const res = await api.customerProfileGet(data)
+  const customer = res.data
+  const errors = res.errors
+
+  if (Object.is(errors, null)) return customer
+  else {
+    showErrorMessage()
+    throw 'error'
+  }
+}

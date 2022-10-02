@@ -13,6 +13,7 @@ const props = defineProps({
     :bodyStyle="{ 'box-shadow': '0px 4px 10px rgba(0, 0, 0, 0.1)' }"
     :bordered="false"
     class="info-info-card"
+    v-if="props.profileData"
   >
     <a-typography-title :level="4">اطلاعات مشتری</a-typography-title>
     <div class="row-container">
@@ -109,7 +110,6 @@ const props = defineProps({
       </div>
     </div>
   </a-card>
- 
 </template>
 
 <style lang="scss" scoped>

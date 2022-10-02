@@ -10,6 +10,7 @@ import { useRoute } from 'vue-router'
 import CustomerProfile from '/src/presentation/components/specific/Customer/CustomerProfile.vue'
 
 const profileData: Ref<customer> = ref({
+  id: '',
   fullName: '',
   createdAt: 0,
   numberOfOrder: 0,

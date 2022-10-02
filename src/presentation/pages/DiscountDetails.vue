@@ -21,7 +21,7 @@ const serverData: Ref<discounts> = ref({
   isActive: false,
   customersCount: 0,
   promotionAssignedGroups: [],
-  promotionSteps: []
+  promotionSteps: [],
 })
 
 const discountGroupData: Ref<discountGroup> = ref({

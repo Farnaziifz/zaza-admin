@@ -9,6 +9,8 @@ import {
   chnageDiscountStatus,
   deleteDiscount,
 } from '../../logics/specific/discount.handler'
+import router from '@/resources/router'
+
 const columns: TableColumnType<discounts>[] = [
   {
     title: 'عنوان تخفیف',
@@ -110,6 +112,9 @@ const confirmModal = async () => {
 const hideModal = () => {
   visibleStatusModal.value = false
 }
+const gotoDetails = (item: string) => {
+  router.push({ name: 'discount-details', params: { id: item } })
+}
 </script>
 <template>
   <content-layout>
@@ -178,7 +183,7 @@ const hideModal = () => {
                 >
               </div>
               <div class="customer-action-button">
-                <a>جزئیات</a>
+                <a @click="gotoDetails(record.id)">جزئیات</a>
               </div>
               <div class="customer-action-button">
                 <a-typography-text

@@ -23,6 +23,8 @@ const steps = t('pages.CategoryAdd.steps')
         </b-steps>
       </div>
 
+      <hr class="mt-4 mb-10" />
+
       <router-view />
     </template>
   </content-layout>

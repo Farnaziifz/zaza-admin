@@ -4,6 +4,26 @@
       "gold": "طلایی",
       "silver": "نقره ای",
       "bronze": "برنزی"
+    },
+    "groupQuery": {
+      "BUSINESS_CLASSIFICATION": "طبقه\u200Cبندی تجاری",
+      "ORDER_RANGE": "بازه دلخواه تعداد سفارش",
+      "PURCHASED_PRODUCT_RANGE": "بازه دلخواه تعداد محصول خریداری شده",
+      "PAID_MONEY_RANGE": "بازه دلخواه پول پرداختی",
+      "PRODUCTS_IN_BASKET_AVERAGE": "بازه دلخواه میانگین تعداد محصولات خریداری شده در هر سفارش",
+      "PAYMENT_AVERAGE": "بازه دلخواه میانگین پول پرداختی در هر سفارش",
+      "HAS_FEEDBACK": "وضعیت ثبت نظر",
+      "NUMBER_OF_FAILED_PAYMENT": "بازه دلخواه تعداد پرداخت ناموفق\u200Cها",
+      "BADGE_LABEL": "برچسب فعالیت",
+      "SATISFACTION_LABEL": "برچسب رضایتمندی"
+    },
+    "businessClassification": {
+      "CHURN": "از دست رفته",
+      "LAZY": "خواب آلود",
+      "NORMAL": "امیدوار کننده",
+      "HERO": "وفادار",
+      "LOYAL": "معمولی",
+      "ATTENTION_NEED": "عادی"
     }
   },
   "components": {
@@ -47,6 +67,24 @@
           "title": "مشاهده لیست و ساخت دسته\u200Cبندی",
           "description": "مشاهده لیست ساخته شده و تایید آن"
         }
+      }
+    },
+    "CategoryAddFirstStep": {
+      "CategoryNameInputHeadline": "عنوان دسته بندی",
+      "CategoryNameInputPlaceholder": "عنوان دسته بندی را وارد کنید",
+      "CategoryFilterTitle": "فیلترها",
+      "CategoryAddFilterButtonText": "افزودن فیلتر",
+      "CategoryAddDatePickerHeadline": "بازه زمانی دلخواه",
+      "CategoryAddDatePickerPlaceHolder": "بازه زمانی دلخواه را انتخاب کنید",
+      "modal": {
+        "categoryFilterModalTitle": "افزودن فیلتر",
+        "categoryFilterModalSelectHeadline": "فیلتر",
+        "categoryFilterModalSelectPlaceHolder": "فیلتر مورد نظر را انتخاب کنید",
+        "BUSINESS_CLASSIFICATION": {
+          "selectPlaceHolder": "طبقه\u200Cبندی تجاری را انتخاب کنید",
+          "selectHeadline": "طبقه بندی"
+        },
+        "": {}
       }
     }
   }

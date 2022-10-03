@@ -83,20 +83,32 @@ const props = defineProps({
       </div>
     </div>
     <div class="row-container">
-      <div class="item">
+      <div class="item" v-if="props.profileData.dateOfFirstOrder">
         <div class="key">تاریخ اولین ثبت سفارش</div>
         <div class="value">
           {{ $filters.toPersianDate(props.profileData.dateOfFirstOrder) }}
         </div>
       </div>
-      <div class="item">
+      <div
+        class="item"
+        v-if="
+          props.profileData.dateOfFirstOrder &&
+          props.profileData.dateOfLastOrder
+        "
+      >
         <div class="key">تاریخ آخرین سفارش</div>
         <div class="value">
           {{ $filters.toPersianDate(props.profileData.dateOfLastOrder) }}
         </div>
       </div>
     </div>
-    <div class="row-container">
+    <div
+      class="row-container"
+      v-if="
+        props.profileData.customerAddresses &&
+        props.profileData.customerAddresses.length
+      "
+    >
       <div class="item">
         <div class="key">آدرس‌ها</div>
         <ul class="address-container">

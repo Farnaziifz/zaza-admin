@@ -42,3 +42,29 @@ export const getCustomerProfile = async (data: string) => {
     throw 'error'
   }
 }
+
+export const getCustomerWallet = async (data: string) => {
+  const res = await api.customerWalletGet(data)
+  const walletBalance = res.data
+  const errors = res.errors
+  if (Object.is(errors, null)) return walletBalance
+  else {
+    showErrorMessage()
+    throw 'error'
+  }
+}
+
+export const getCustomerWalletTransaction = async (
+  data: string,
+  page?: number,
+  pageSize?: number
+) => {
+  const res = await api.customerTransactionWalletGet(data, page, pageSize)
+  const walletTransaction = res.data
+  const errors = res.errors
+  if (Object.is(errors, null)) return walletTransaction
+  else {
+    showErrorMessage()
+    throw 'error'
+  }
+}

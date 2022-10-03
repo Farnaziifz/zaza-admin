@@ -1,13 +1,22 @@
 <script lang="ts" async setup>
 import IncentiveDetailLayout from '/src/presentation/layouts/IncentiveDetailLayout.vue'
-import { onBeforeMount, Ref, ref, reactive } from 'vue'
-import { customer } from '../../core/types/customer.type'
+import { onBeforeMount, Ref, ref, reactive, computed } from 'vue'
+import {
+  customer,
+  walletBalance,
+  transactionHistoryList,
+} from '../../core/types/customer.type'
 import {
   getCustomerProfile,
   chnageCustomerStatus,
+  getCustomerWallet,
+  getCustomerWalletTransaction,
 } from '../../logics/specific/customrtList.handler'
 import { useRoute } from 'vue-router'
+import { TableProps } from 'ant-design-vue'
+
 import CustomerProfile from '/src/presentation/components/specific/Customer/CustomerProfile.vue'
+import CustomerWallet from '/src/presentation/components/specific/Customer/CustomerWallet.vue'
 
 const profileData: Ref<customer> = ref({
   id: '',
@@ -19,6 +28,18 @@ const profileData: Ref<customer> = ref({
   orderLabel: '',
   DegreeLabel: '',
   isActive: false,
+})
+
+const walletBalanceData: Ref<walletBalance> = ref({
+  amount: 0,
+})
+const transactionWalletData: Ref<transactionHistoryList> = ref({
+  items: [],
+  hasNextPage: false,
+  hasPreviousPage: false,
+  page: 0,
+  totalCount: 0,
+  totalPages: 0,
 })
 const visible = ref<boolean>(false)
 const itemForChangeStatus = reactive({ isActive: false, id: '' })
@@ -34,7 +55,41 @@ onBeforeMount(async () => {
 })
 const onChangeTab = (tab: string) => {
   console.log(tab)
+  switch (tab) {
+    case '2':
+      getWalletBalanceData()
+      getWalletTransaction()
+  }
 }
+const getWalletBalanceData = async () => {
+  walletBalanceData.value = await getCustomerWallet(routeId)
+}
+const getWalletTransaction = async () => {
+  const page = 1
+  const pageSize = 5
+  transactionWalletData.value = await getCustomerWalletTransaction(
+    routeId,
+    page,
+    pageSize
+  )
+}
+const pagination = computed(() => ({
+  total: transactionWalletData.value.totalCount,
+  current: transactionWalletData.value.page,
+  pageSize: 10,
+  // showSizeChanger: true,
+}))
+
+const changetransactionPaginate: TableProps<transactionHistoryList>['onChange'] =
+  async (paginate) => {
+    console.log('ssss', paginate)
+    transactionWalletData.value = await getCustomerWalletTransaction(
+      routeId,
+      paginate.current,
+      paginate.pageSize
+    )
+  }
+
 const hideModal = () => {
   visible.value = false
 }
@@ -72,7 +127,13 @@ const changeCustomerStatus = async () => {
         <a-tab-pane key="1" tab="اطلاعات مشتری">
           <CustomerProfile :profileData="profileData"
         /></a-tab-pane>
-        <a-tab-pane key="2" tab="کیف پول">کیف پول</a-tab-pane>
+        <a-tab-pane key="2" tab="کیف پول"
+          ><CustomerWallet
+            :walletBalance="walletBalanceData"
+            :pagination="pagination"
+            :transactionData="transactionWalletData"
+            @onChange="changetransactionPaginate"
+        /></a-tab-pane>
         <a-tab-pane key="3" tab="سفارش‌ها">سفارش‌ها</a-tab-pane>
         <a-tab-pane key="4" tab="پرداخت‌ها">پرداخت‌ها</a-tab-pane>
         <a-tab-pane key="5" tab="مشوق‌ها">مشوق‌ها</a-tab-pane>

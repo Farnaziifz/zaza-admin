@@ -22,9 +22,14 @@ const customerChangeSatatus = async (data: string) => {
   return res
 }
 
+const customerProfileGet = async (id: string) => {
+  const res = await api.get(`${pageUrl}/profile/${id}`)
+  return res.data
+}
 export const customerApi = () => {
   return {
     get: cusotmerListGet,
     put: customerChangeSatatus,
+    customerProfileGet: customerProfileGet,
   }
 }

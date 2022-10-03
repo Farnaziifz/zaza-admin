@@ -1,6 +1,7 @@
 import { OrderLabelType, DegreeLabelType } from '../enums/customerType.enum'
 
 export type customer = {
+  id: string
   fullName: string
   createdAt: number
   numberOfOrder: number

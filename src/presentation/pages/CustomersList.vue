@@ -9,6 +9,7 @@ import {
   chnageCustomerStatus,
 } from '../../logics/specific/customrtList.handler'
 import { onBeforeMount, Ref, ref, reactive, computed } from 'vue'
+import router from '@/resources/router'
 
 const columns: TableColumnType<customer>[] = [
   {
@@ -86,7 +87,6 @@ const pagination = computed(() => ({
   pageSize: 10,
   showSizeChanger: true,
 }))
-
 const onChange: TableProps<customerList>['onChange'] = async (
   paginate,
   sorter
@@ -95,7 +95,6 @@ const onChange: TableProps<customerList>['onChange'] = async (
   data.value = await initPageHandler(paginate.current, paginate.pageSize)
 }
 const visible = ref<boolean>(false)
-
 const showModal = (item: string, isActive: boolean) => {
   visible.value = true
   itemForChangeStatus.isActive = isActive
@@ -104,7 +103,6 @@ const showModal = (item: string, isActive: boolean) => {
 const hideModal = () => {
   visible.value = false
 }
-
 const changeCustomerStatus = async () => {
   turnOnLoader()
   await chnageCustomerStatus(itemForChangeStatus.id)
@@ -114,6 +112,9 @@ const changeCustomerStatus = async () => {
     pagination.value.current,
     pagination.value.pageSize
   )
+}
+const goToDetails = (item: string) => {
+  router.push({ name: 'customer-details', params: { id: item } })
 }
 </script>
 
@@ -180,7 +181,7 @@ const changeCustomerStatus = async () => {
                   >
                 </div>
                 <div class="customer-action-button">
-                  <a>جزئیات</a>
+                  <a @click="goToDetails(record.id)">جزئیات</a>
                 </div>
               </div>
             </template>

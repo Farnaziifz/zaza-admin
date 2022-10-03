@@ -1,7 +1,5 @@
 <script lang="ts" setup>
 import BadgeComponent from '/src/presentation/components/shared/Organisms/Badge.vue'
-
-// import { onBeforeMount } from 'vue'
 const props = defineProps({
   profileData: {
     type: Object,

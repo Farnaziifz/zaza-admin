@@ -9,3 +9,10 @@ export enum DegreeLabelType {
   SILVER = 'SILVER',
   BRONZE = 'BRONZE',
 }
+
+export enum transactionType {
+  ADMIN = 'ADMIN',
+  CUSTOMER = 'CUSTOMER',
+  CASHBACK = 'CASHBACK',
+  COUPON = 'COUPON',
+}

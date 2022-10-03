@@ -26,10 +26,26 @@ const customerProfileGet = async (id: string) => {
   const res = await api.get(`${pageUrl}/profile/${id}`)
   return res.data
 }
+const customerWalletGet = async (id: string) => {
+  const res = await api.get(`${pageUrl}/${id}/wallet-balance`)
+  return res.data
+}
+const customerWalletTransaction = async (
+  id: string,
+  page?: number,
+  pageSize?: number
+) => {
+  const res = await api.get(
+    `${pageUrl}/${id}/transaction-history?Page=${page}&PageSize=${pageSize}`
+  )
+  return res.data
+}
 export const customerApi = () => {
   return {
     get: cusotmerListGet,
     put: customerChangeSatatus,
     customerProfileGet: customerProfileGet,
+    customerWalletGet: customerWalletGet,
+    customerTransactionWalletGet: customerWalletTransaction,
   }
 }

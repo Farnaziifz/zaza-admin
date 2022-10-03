@@ -1,4 +1,8 @@
-import { OrderLabelType, DegreeLabelType } from '../enums/customerType.enum'
+import {
+  OrderLabelType,
+  DegreeLabelType,
+  transactionType,
+} from '../enums/customerType.enum'
 
 export type customer = {
   id: string
@@ -14,6 +18,24 @@ export type customer = {
 
 export type customerList = {
   items: customer[]
+  hasNextPage: boolean
+  hasPreviousPage: boolean
+  page: number
+  totalCount: number
+  totalPages: number
+}
+
+export type walletBalance = {
+  amount: number
+}
+
+export type transactionHistory = {
+  type: string | null | transactionType
+  amount: number
+}
+
+export type transactionHistoryList = {
+  items: transactionHistory[]
   hasNextPage: boolean
   hasPreviousPage: boolean
   page: number

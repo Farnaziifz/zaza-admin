@@ -52,9 +52,11 @@ const onChange: TableProps<transactionHistoryList>['onChange'] = (paginate) => {
     :bodyStyle="{ 'box-shadow': '0px 0px 10px rgba(0, 0, 0, 0.1)' }"
     :bordered="false"
     class="info-card"
+    v-if="props.transactionData"
   >
     <a-table
       :columns="columns"
+      v-if="props.transactionData.items && props.transactionData.items.length"
       :data-source="props.transactionData.items"
       :pagination="props.pagination"
       @change="onChange"

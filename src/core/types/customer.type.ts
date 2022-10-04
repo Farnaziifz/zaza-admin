@@ -74,3 +74,19 @@ export type customerPaymentList = {
   totalCount: number
   totalPages: number
 }
+
+export type customerComment = {
+  trackingCode: string
+  rate: number
+  comment: string
+  createdAt: string
+}
+
+export type customerCommentList = {
+  items: customerComment[]
+  hasNextPage: boolean
+  hasPreviousPage: boolean
+  page: number
+  totalCount: number
+  totalPages: number
+}

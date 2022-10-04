@@ -10,7 +10,7 @@ const props = defineProps<CustomerMembershipGroupPropsType>()
     :bodyStyle="{ 'box-shadow': '0px 4px 10px rgba(0, 0, 0, 0.1)' }"
     :bordered="false"
     class="info-card"
-    v-if="!props.groupData && !props.groupData.length"
+    v-if="props.groupData && props.groupData.length"
   >
     <a-typography-title :level="4">دسته بندی های عضو</a-typography-title>
     <div class="key">نام دسته بندی‌ها</div>

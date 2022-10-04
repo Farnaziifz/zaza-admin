@@ -83,3 +83,18 @@ export const getCustomerOrder = async (
     throw 'error'
   }
 }
+
+export const getCustomerPayment = async (
+  data: string,
+  page?: number,
+  pageSize?: number
+) => {
+  const res = await api.customerPaymentGet(data, page, pageSize)
+  const customerPayment = res.data
+  const errors = res.errors
+  if (Object.is(errors, null)) return customerPayment
+  else {
+    showErrorMessage()
+    throw 'error'
+  }
+}

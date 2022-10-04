@@ -57,3 +57,20 @@ export type customerOrderList = {
   totalCount: number
   totalPages: number
 }
+
+export type customerPayment = {
+  createdAt: string
+  type: string
+  amount: number
+  isPaid: boolean
+  trackingCode: string
+}
+
+export type customerPaymentList = {
+  items: customerPayment[]
+  hasNextPage: boolean
+  hasPreviousPage: boolean
+  page: number
+  totalCount: number
+  totalPages: number
+}

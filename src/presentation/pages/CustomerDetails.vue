@@ -8,7 +8,9 @@ import {
   customerOrderList,
   customerPaymentList,
   customerCommentList,
+  customerGroupList,
 } from '../../core/types/customer.type'
+
 import {
   getCustomerProfile,
   chnageCustomerStatus,
@@ -17,7 +19,9 @@ import {
   getCustomerOrder,
   getCustomerPayment,
   getCustomerComment,
+  getCustomerGroup,
 } from '../../logics/specific/customrtList.handler'
+
 import { useRoute } from 'vue-router'
 import { TableProps } from 'ant-design-vue'
 
@@ -26,6 +30,7 @@ import CustomerWallet from '/src/presentation/components/specific/Customer/Custo
 import CustomerOrder from '/src/presentation/components/specific/Customer/CustomerOrder.vue'
 import CustomerPayment from '/src/presentation/components/specific/Customer/CustomerPayment.vue'
 import CustomerComment from '/src/presentation/components/specific/Customer/CustomerComment.vue'
+import CustomerMemebershipGroup from '/src/presentation/components/specific/Customer/CustomerMembershipGroup.vue'
 
 const profileData: Ref<customer> = ref({
   id: '',
@@ -38,7 +43,6 @@ const profileData: Ref<customer> = ref({
   DegreeLabel: '',
   isActive: false,
 })
-
 const walletBalanceData: Ref<walletBalance> = ref({
   amount: 0,
 })
@@ -66,7 +70,6 @@ const customerPaymentData: Ref<customerPaymentList> = ref({
   totalCount: 0,
   totalPages: 0,
 })
-
 const customerCommentData: Ref<customerCommentList> = ref({
   items: [],
   hasNextPage: false,
@@ -75,6 +78,7 @@ const customerCommentData: Ref<customerCommentList> = ref({
   totalCount: 0,
   totalPages: 0,
 })
+const customerGroupData: Ref<customerGroupList> = ref([])
 
 const visible = ref<boolean>(false)
 const itemForChangeStatus = reactive({ isActive: false, id: '' })
@@ -89,7 +93,6 @@ onBeforeMount(async () => {
   profileData.value = await getCustomerProfile(routeId)
 })
 const onChangeTab = (tab: string) => {
-  console.log(tab)
   switch (tab) {
     case '2':
       getWalletBalanceData()
@@ -106,6 +109,12 @@ const onChangeTab = (tab: string) => {
       break
     case '6':
       getCustomerCommentData()
+      break
+    case '7':
+      console.log('7')
+      break
+    case '8':
+      getCustomerGroupData()
   }
 }
 const getWalletBalanceData = async () => {
@@ -135,6 +144,10 @@ const getCustomerCommentData = async () => {
   const page = 1
   const pageSize = 5
   customerCommentData.value = await getCustomerComment(routeId, page, pageSize)
+}
+
+const getCustomerGroupData = async () => {
+  customerGroupData.value = await getCustomerGroup(routeId)
 }
 const pagination = computed(() => ({
   total: transactionWalletData.value.totalCount,
@@ -189,7 +202,6 @@ const changePaymentPaginate: TableProps<customerPaymentList>['onChange'] =
   }
 const changeCommentPaginate: TableProps<customerCommentList>['onChange'] =
   async (paginate) => {
-    console.log('salam')
     customerCommentData.value = await getCustomerComment(
       routeId,
       paginate.current,
@@ -262,9 +274,9 @@ const changeCustomerStatus = async () => {
           />
         </a-tab-pane>
         <a-tab-pane key="7" tab="سفارش‌ها">سفارش‌ها</a-tab-pane>
-        <a-tab-pane key="8" tab="دسته‌بندی های عضو"
-          >دسته‌بندی های عضو</a-tab-pane
-        >
+        <a-tab-pane key="8" tab="دسته‌بندی های عضو">
+          <CustomerMemebershipGroup :groupData="customerGroupData" />
+        </a-tab-pane>
       </a-tabs>
     </template>
   </IncentiveDetailLayout>

@@ -113,3 +113,14 @@ export const getCustomerComment = async (
     throw 'error'
   }
 }
+
+export const getCustomerGroup = async (data: string) => {
+  const res = await api.customerGroupListGet(data)
+  const customerGroup = res.data
+  const errors = res.errors
+  if (Object.is(errors, null)) return customerGroup
+  else {
+    showErrorMessage()
+    throw 'error'
+  }
+}

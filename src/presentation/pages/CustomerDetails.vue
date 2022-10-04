@@ -5,18 +5,21 @@ import {
   customer,
   walletBalance,
   transactionHistoryList,
+  customerOrderList,
 } from '../../core/types/customer.type'
 import {
   getCustomerProfile,
   chnageCustomerStatus,
   getCustomerWallet,
   getCustomerWalletTransaction,
+  getCustomerOrder,
 } from '../../logics/specific/customrtList.handler'
 import { useRoute } from 'vue-router'
 import { TableProps } from 'ant-design-vue'
 
 import CustomerProfile from '/src/presentation/components/specific/Customer/CustomerProfile.vue'
 import CustomerWallet from '/src/presentation/components/specific/Customer/CustomerWallet.vue'
+import CustomerOrder from '/src/presentation/components/specific/Customer/CustomerOrder.vue'
 
 const profileData: Ref<customer> = ref({
   id: '',
@@ -34,6 +37,14 @@ const walletBalanceData: Ref<walletBalance> = ref({
   amount: 0,
 })
 const transactionWalletData: Ref<transactionHistoryList> = ref({
+  items: [],
+  hasNextPage: false,
+  hasPreviousPage: false,
+  page: 0,
+  totalCount: 0,
+  totalPages: 0,
+})
+const customerOrderData: Ref<customerOrderList> = ref({
   items: [],
   hasNextPage: false,
   hasPreviousPage: false,
@@ -59,6 +70,9 @@ const onChangeTab = (tab: string) => {
     case '2':
       getWalletBalanceData()
       getWalletTransaction()
+      break
+    case '3':
+      getCustomerOrderData()
   }
 }
 const getWalletBalanceData = async () => {
@@ -73,6 +87,11 @@ const getWalletTransaction = async () => {
     pageSize
   )
 }
+const getCustomerOrderData = async () => {
+  const page = 1
+  const pageSize = 5
+  customerOrderData.value = await getCustomerOrder(routeId, page, pageSize)
+}
 const pagination = computed(() => ({
   total: transactionWalletData.value.totalCount,
   current: transactionWalletData.value.page,
@@ -80,16 +99,30 @@ const pagination = computed(() => ({
   // showSizeChanger: true,
 }))
 
+const orderPagination = computed(() => ({
+  total: customerOrderData.value.totalCount,
+  current: customerOrderData.value.page,
+  pageSize: 10,
+  // showSizeChanger: true,
+}))
+
 const changetransactionPaginate: TableProps<transactionHistoryList>['onChange'] =
   async (paginate) => {
-    console.log('ssss', paginate)
     transactionWalletData.value = await getCustomerWalletTransaction(
       routeId,
       paginate.current,
       paginate.pageSize
     )
   }
-
+const changeOrderPaginate: TableProps<customerOrderList>['onChange'] = async (
+  paginate
+) => {
+  customerOrderData.value = await getCustomerOrder(
+    routeId,
+    paginate.current,
+    paginate.pageSize
+  )
+}
 const hideModal = () => {
   visible.value = false
 }
@@ -134,7 +167,12 @@ const changeCustomerStatus = async () => {
             :transactionData="transactionWalletData"
             @onChange="changetransactionPaginate"
         /></a-tab-pane>
-        <a-tab-pane key="3" tab="سفارش‌ها">سفارش‌ها</a-tab-pane>
+        <a-tab-pane key="3" tab="سفارش‌ها"
+          ><CustomerOrder
+            :orderData="customerOrderData"
+            :pagination="orderPagination"
+            @onChange="changeOrderPaginate"
+        /></a-tab-pane>
         <a-tab-pane key="4" tab="پرداخت‌ها">پرداخت‌ها</a-tab-pane>
         <a-tab-pane key="5" tab="مشوق‌ها">مشوق‌ها</a-tab-pane>
         <a-tab-pane key="6" tab="نظرات">نظرات</a-tab-pane>

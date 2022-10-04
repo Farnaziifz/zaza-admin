@@ -57,6 +57,12 @@ const onChange: TableProps<customerPaymentList>['onChange'] = (paginate) => {
       @change="onChange"
     >
       <template #bodyCell="{ column, record }">
+        <template v-if="column.key === 'trackingCode'">
+          <span v-if="record.type === 'WALLET'"> شارژ کیف پول</span>
+          <span v-if="record.type === 'ORDER'"
+            >سفارش {{ record.trackingCode }}</span
+          >
+        </template>
         <template v-if="column.key === 'amount'">
           {{ $filters.toPersianCurrency(record.amount, 'تومان') }}
         </template>

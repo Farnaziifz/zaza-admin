@@ -68,3 +68,18 @@ export const getCustomerWalletTransaction = async (
     throw 'error'
   }
 }
+
+export const getCustomerOrder = async (
+  data: string,
+  page?: number,
+  pageSize?: number
+) => {
+  const res = await api.customerOrderGet(data, page, pageSize)
+  const customerOrder = res.data
+  const errors = res.errors
+  if (Object.is(errors, null)) return customerOrder
+  else {
+    showErrorMessage()
+    throw 'error'
+  }
+}

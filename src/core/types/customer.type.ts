@@ -42,3 +42,18 @@ export type transactionHistoryList = {
   totalCount: number
   totalPages: number
 }
+
+export type customerOrder = {
+  trackingCode: string
+  createdAt: string
+  finalPrice: number
+}
+
+export type customerOrderList = {
+  items: customerOrder[]
+  hasNextPage: boolean
+  hasPreviousPage: boolean
+  page: number
+  totalCount: number
+  totalPages: number
+}

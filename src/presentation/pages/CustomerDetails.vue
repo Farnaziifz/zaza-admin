@@ -7,6 +7,7 @@ import {
   transactionHistoryList,
   customerOrderList,
   customerPaymentList,
+  customerCommentList,
 } from '../../core/types/customer.type'
 import {
   getCustomerProfile,
@@ -15,6 +16,7 @@ import {
   getCustomerWalletTransaction,
   getCustomerOrder,
   getCustomerPayment,
+  getCustomerComment,
 } from '../../logics/specific/customrtList.handler'
 import { useRoute } from 'vue-router'
 import { TableProps } from 'ant-design-vue'
@@ -23,6 +25,7 @@ import CustomerProfile from '/src/presentation/components/specific/Customer/Cust
 import CustomerWallet from '/src/presentation/components/specific/Customer/CustomerWallet.vue'
 import CustomerOrder from '/src/presentation/components/specific/Customer/CustomerOrder.vue'
 import CustomerPayment from '/src/presentation/components/specific/Customer/CustomerPayment.vue'
+import CustomerComment from '/src/presentation/components/specific/Customer/CustomerComment.vue'
 
 const profileData: Ref<customer> = ref({
   id: '',
@@ -63,6 +66,16 @@ const customerPaymentData: Ref<customerPaymentList> = ref({
   totalCount: 0,
   totalPages: 0,
 })
+
+const customerCommentData: Ref<customerCommentList> = ref({
+  items: [],
+  hasNextPage: false,
+  hasPreviousPage: false,
+  page: 0,
+  totalCount: 0,
+  totalPages: 0,
+})
+
 const visible = ref<boolean>(false)
 const itemForChangeStatus = reactive({ isActive: false, id: '' })
 const modalSubmissionButtonLoader = ref(false)
@@ -87,6 +100,12 @@ const onChangeTab = (tab: string) => {
       break
     case '4':
       getCustomerPaymentData()
+      break
+    case '5':
+      console.log('sala,')
+      break
+    case '6':
+      getCustomerCommentData()
   }
 }
 const getWalletBalanceData = async () => {
@@ -112,6 +131,11 @@ const getCustomerPaymentData = async () => {
   const pageSize = 5
   customerPaymentData.value = await getCustomerPayment(routeId, page, pageSize)
 }
+const getCustomerCommentData = async () => {
+  const page = 1
+  const pageSize = 5
+  customerCommentData.value = await getCustomerComment(routeId, page, pageSize)
+}
 const pagination = computed(() => ({
   total: transactionWalletData.value.totalCount,
   current: transactionWalletData.value.page,
@@ -128,6 +152,13 @@ const orderPagination = computed(() => ({
 const paymentPagination = computed(() => ({
   total: customerPaymentData.value.totalCount,
   current: customerPaymentData.value.page,
+  pageSize: 5,
+  // showSizeChanger: true,
+}))
+
+const commentPagination = computed(() => ({
+  total: customerCommentData.value.totalCount,
+  current: customerCommentData.value.page,
   pageSize: 5,
   // showSizeChanger: true,
 }))
@@ -151,6 +182,15 @@ const changeOrderPaginate: TableProps<customerOrderList>['onChange'] = async (
 const changePaymentPaginate: TableProps<customerPaymentList>['onChange'] =
   async (paginate) => {
     customerPaymentData.value = await getCustomerPayment(
+      routeId,
+      paginate.current,
+      paginate.pageSize
+    )
+  }
+const changeCommentPaginate: TableProps<customerCommentList>['onChange'] =
+  async (paginate) => {
+    console.log('salam')
+    customerCommentData.value = await getCustomerComment(
       routeId,
       paginate.current,
       paginate.pageSize
@@ -214,7 +254,13 @@ const changeCustomerStatus = async () => {
           />
         </a-tab-pane>
         <a-tab-pane key="5" tab="مشوق‌ها">مشوق‌ها</a-tab-pane>
-        <a-tab-pane key="6" tab="نظرات">نظرات</a-tab-pane>
+        <a-tab-pane key="6" tab="نظرات">
+          <CustomerComment
+            :commentData="customerCommentData"
+            :pagination="commentPagination"
+            @onChange="changeCommentPaginate"
+          />
+        </a-tab-pane>
         <a-tab-pane key="7" tab="سفارش‌ها">سفارش‌ها</a-tab-pane>
         <a-tab-pane key="8" tab="دسته‌بندی های عضو"
           >دسته‌بندی های عضو</a-tab-pane

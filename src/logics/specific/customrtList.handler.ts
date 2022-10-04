@@ -98,3 +98,18 @@ export const getCustomerPayment = async (
     throw 'error'
   }
 }
+
+export const getCustomerComment = async (
+  data: string,
+  page?: number,
+  pageSize?: number
+) => {
+  const res = await api.customerCommentGet(data, page, pageSize)
+  const customerComment = res.data
+  const errors = res.errors
+  if (Object.is(errors, null)) return customerComment
+  else {
+    showErrorMessage()
+    throw 'error'
+  }
+}

@@ -62,6 +62,17 @@ const customerPaymentList = async (
   return res.data
 }
 
+const customerCommentList = async (
+  id: string,
+  page?: number,
+  pageSize?: number
+) => {
+  const res = await api.get(
+    `${pageUrl}/${id}/feedback?Page=${page}&PageSize=${pageSize}`
+  )
+  return res.data
+}
+
 export const customerApi = () => {
   return {
     get: cusotmerListGet,
@@ -71,5 +82,6 @@ export const customerApi = () => {
     customerTransactionWalletGet: customerWalletTransaction,
     customerOrderGet: customerOrderGet,
     customerPaymentGet: customerPaymentList,
+    customerCommentGet: customerCommentList,
   }
 }

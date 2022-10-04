@@ -51,6 +51,14 @@ const onChange: TableProps<customerOrderList>['onChange'] = (paginate) => {
       :pagination="props.pagination"
       @change="onChange"
     >
+      <template #bodyCell="{ column, record }">
+        <template v-if="column.key === 'finalPrice'">
+          {{ $filters.toPersianCurrency(record.finalPrice, 'تومان') }}
+        </template>
+        <template v-if="column.key === 'createdAt'">
+          {{ $filters.toPersianDate(record.createdAt) }}
+        </template>
+      </template>
     </a-table>
   </a-card>
 </template>

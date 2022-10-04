@@ -73,6 +73,10 @@ const customerCommentList = async (
   return res.data
 }
 
+const cutomerGroupListGet = async (id: string) => {
+  const res = await api.get(`${pageUrl}/${id}/group`)
+  return res.data
+}
 export const customerApi = () => {
   return {
     get: cusotmerListGet,
@@ -83,5 +87,6 @@ export const customerApi = () => {
     customerOrderGet: customerOrderGet,
     customerPaymentGet: customerPaymentList,
     customerCommentGet: customerCommentList,
+    customerGroupListGet: cutomerGroupListGet,
   }
 }

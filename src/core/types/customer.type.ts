@@ -90,3 +90,9 @@ export type customerCommentList = {
   totalCount: number
   totalPages: number
 }
+
+export type customerGroup = {
+  title: string
+}
+
+export type customerGroupList = customerGroup[]

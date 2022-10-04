@@ -84,7 +84,13 @@
           "selectPlaceHolder": "طبقه\u200Cبندی تجاری را انتخاب کنید",
           "selectHeadline": "طبقه بندی"
         },
-        "": {}
+        "ORDER_RANGE": {
+          "title": "بازه دلخواه تعداد دفعات ثبت سفارش",
+          "inputPlaceholder": "تعداد را وارد کنید",
+          "inputToPrefixText": "تا",
+          "inputFromPrefixText": "از",
+          "inputPostfixText": "تعداد"
+        }
       }
     }
   }

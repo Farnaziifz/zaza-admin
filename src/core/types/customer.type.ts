@@ -96,3 +96,8 @@ export type customerGroup = {
 }
 
 export type customerGroupList = customerGroup[]
+
+
+export type customerScore = {
+  
+}

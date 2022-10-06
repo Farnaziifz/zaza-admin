@@ -112,9 +112,6 @@ const onChangeTab = (tab: string) => {
       getCustomerCommentData()
       break
     case '7':
-      console.log('7')
-      break
-    case '8':
       getCustomerGroupData()
   }
 }
@@ -274,8 +271,7 @@ const changeCustomerStatus = async () => {
             @onChange="changeCommentPaginate"
           />
         </a-tab-pane>
-        <a-tab-pane key="7" tab="سفارش‌ها">سفارش‌ها</a-tab-pane>
-        <a-tab-pane key="8" tab="دسته‌بندی های عضو">
+        <a-tab-pane key="7" tab="دسته‌بندی های عضو">
           <CustomerMemebershipGroup :groupData="customerGroupData" />
         </a-tab-pane>
       </a-tabs>

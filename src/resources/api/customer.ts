@@ -77,6 +77,15 @@ const cutomerGroupListGet = async (id: string) => {
   const res = await api.get(`${pageUrl}/${id}/group`)
   return res.data
 }
+const customerCommentDetails = async (cId: string, fId: string) => {
+  const res = await api.get(`${pageUrl}/${cId}/feedback/${fId}`)
+  return res.data
+}
+
+const customerCommentOrderDetails = async (cId: string, oId: string) => {
+  const res = await api.get(`${pageUrl}/${cId}/order/${oId}`)
+  return res.data
+}
 export const customerApi = () => {
   return {
     get: cusotmerListGet,
@@ -88,5 +97,7 @@ export const customerApi = () => {
     customerPaymentGet: customerPaymentList,
     customerCommentGet: customerCommentList,
     customerGroupListGet: cutomerGroupListGet,
+    customerCommentDetailsGet: customerCommentDetails,
+    customerCommentOrderDetailsGet: customerCommentOrderDetails,
   }
 }

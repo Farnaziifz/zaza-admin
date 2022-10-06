@@ -124,3 +124,28 @@ export const getCustomerGroup = async (data: string) => {
     throw 'error'
   }
 }
+
+export const getCustomerCommentDetails = async (cId: string, fId: string) => {
+  const res = await api.customerCommentDetailsGet(cId, fId)
+  const commentDetails = res.data
+  const errors = res.errors
+  if (Object.is(errors, null)) return commentDetails
+  else {
+    showErrorMessage()
+    throw 'error'
+  }
+}
+
+export const getCustomerCommentOrderDetails = async (
+  cId: string,
+  oId: string
+) => {
+  const res = await api.customerCommentOrderDetailsGet(cId, oId)
+  const commentOrderDetails = res.data
+  const errors = res.errors
+  if (Object.is(errors, null)) return commentOrderDetails
+  else {
+    showErrorMessage()
+    throw 'error'
+  }
+}

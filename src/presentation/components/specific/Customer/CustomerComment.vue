@@ -4,6 +4,9 @@ import {
   customerCommentList,
 } from '../../../../core/types/customer.type'
 import { TableColumnType, TableProps } from 'ant-design-vue'
+import { useRoute } from 'vue-router'
+
+import router from '@/resources/router'
 
 const emitOnChange = defineEmits(['onChange'])
 const columns: TableColumnType<customerComment>[] = [
@@ -41,8 +44,23 @@ const props = defineProps({
     type: Object,
   },
 })
+const route = useRoute()
+const routeId = String(route.params.id)
+
 const onChange: TableProps<customerCommentList>['onChange'] = (paginate) => {
   emitOnChange('onChange', paginate)
+}
+const gotoDetails = (fId: string, oId: string, orderName: string) => {
+  router.push({
+    name: 'comment-details',
+    // params: { cId: routeId, fId: fId, oId: oId, orderName: orderName },
+    params: {
+      orderName,
+      cId: routeId,
+      fId,
+      oId,
+    },
+  })
 }
 </script>
 
@@ -70,8 +88,12 @@ const onChange: TableProps<customerCommentList>['onChange'] = (paginate) => {
         <template v-else-if="column.key === 'actions'">
           <div class="customer-action-container">
             <div class="customer-action-button">
-              <a>جزئیات</a>
-              <!-- @click="gotoDetails(record.id)" -->
+              <a
+                @click="
+                  gotoDetails(record.id, record.orderId, record.trackingCode)
+                "
+                >جزئیات</a
+              >
             </div>
           </div>
         </template>

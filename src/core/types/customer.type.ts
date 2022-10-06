@@ -96,3 +96,21 @@ export type customerGroup = {
 }
 
 export type customerGroupList = customerGroup[]
+
+export type customerCommentDetails = {
+  id: string
+  parentId?: string
+  rate: number
+  comment: string
+  productTitle: string
+  createdAt: string
+}
+
+export type customerCommentDetailsList = customerCommentDetails[]
+
+export type customerOrderDetails = {
+  createdAt: string
+  finalPrice: number
+  trackingCode: string
+  products: { id: string; count: number; price: number; title: string }[]
+}

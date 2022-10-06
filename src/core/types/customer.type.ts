@@ -112,5 +112,5 @@ export type customerOrderDetails = {
   createdAt: string
   finalPrice: number
   trackingCode: string
-  products: []
+  products: { id: string; count: number; price: number; title: string }[]
 }

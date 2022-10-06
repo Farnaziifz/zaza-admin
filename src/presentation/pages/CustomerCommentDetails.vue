@@ -33,20 +33,54 @@ onBeforeMount(async () => {
 <template>
   <IncentiveDetailLayout>
     <template #layout-title>سفارش {{ orderName }}</template>
-    <template #layout-content v-if="commentData && commentData.length">
-      <div class="comment-container" v-for="item in commentData" :key="item.id">
+    <template #layout-content>
+      <div v-if="commentData && commentData.length === 1">
+        <div
+          class="comment-container"
+          v-for="item in commentData"
+          :key="item.id"
+        >
+          <div class="title-container">
+            <h3>امتیاز و متن نظر</h3>
+            <p class="date">{{ $filters.toPersianDate(item.createdAt) }}</p>
+          </div>
+          <div class="rate">
+            <p class="key">امتیاز</p>
+            <p class="value">{{ item.rate }} امتیاز</p>
+          </div>
+          <div class="comment">
+            <div class="key">متن نظر</div>
+            <div class="value">
+              {{ item.comment }}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div v-else>
         <div class="title-container">
-          <h3 v-if="commentData[0]">امتیاز و متن نظر</h3>
-          <p class="date">{{ $filters.toPersianDate(item.createdAt) }}</p>
+          <h3>امتیاز و متن نظر</h3>
         </div>
-        <div class="rate">
-          <p class="key">امتیاز</p>
-          <p class="value">{{ item.rate }} امتیاز</p>
-        </div>
-        <div class="comment">
-          <div class="key">متن نظر</div>
-          <div class="value">
-            {{ item.comment }}
+        <div
+          class="multi-comment-container"
+          v-for="(item, index) in commentData"
+          :key="item.id"
+        >
+          <div class="product-rate-title">
+            <div class="product">
+              <div class="product-name">
+                <div class="key">محصول {{ index + 1 }}</div>
+                <div class="value">{{ item.productTitle }}</div>
+              </div>
+              <div class="product-rate">
+                <div class="key">امتیاز</div>
+                <div class="value">{{ item.rate }}</div>
+              </div>
+            </div>
+            <div class="date">{{ $filters.toPersianDate(item.createdAt) }}</div>
+          </div>
+          <div class="product-comment">
+            <div class="key">متن نظر</div>
+            <p class="value">{{ item.comment }}</p>
           </div>
         </div>
       </div>
@@ -75,13 +109,19 @@ onBeforeMount(async () => {
           <h3>محصولات خریداری شده</h3>
         </div>
         <ul>
-          <li class="product-item">
+          <li
+            class="product-item"
+            v-for="item in commnetOrderData.products"
+            :key="item.id"
+          >
             <div class="title">
-              چلو جوجه ران ( سماق 1عدد، قاشق چنگال 1 عدد )
+              {{ item.title }}
             </div>
             <div class="info">
-              <div class="count">2 عدد</div>
-              <div class="price">250,000 تومان</div>
+              <div class="count">{{ item.count }} عدد</div>
+              <div class="price">
+                {{ $filters.toPersianCurrency(item.price, 'تومان') }}
+              </div>
             </div>
           </li>
         </ul>
@@ -153,6 +193,7 @@ onBeforeMount(async () => {
   color: #000000;
   position: relative;
   margin-right: 16px;
+  margin-bottom: 16px;
   &::before {
     content: '';
     position: absolute;
@@ -174,5 +215,21 @@ onBeforeMount(async () => {
 
 .comment-container {
   margin-bottom: 32px;
+}
+.multi-comment-container {
+  margin-bottom: 56px;
+  .product-rate-title {
+    display: flex;
+    justify-content: space-between;
+  }
+  .product {
+    display: flex;
+    .product-name {
+      margin-left: 56px;
+    }
+  }
+  .product-comment {
+    margin-top: 16px;
+  }
 }
 </style>

@@ -31,6 +31,7 @@ import CustomerOrder from '/src/presentation/components/specific/Customer/Custom
 import CustomerPayment from '/src/presentation/components/specific/Customer/CustomerPayment.vue'
 import CustomerComment from '/src/presentation/components/specific/Customer/CustomerComment.vue'
 import CustomerMemebershipGroup from '/src/presentation/components/specific/Customer/CustomerMembershipGroup.vue'
+import CustomerInsentive from '../../presentation/components/specific/Customer/CustomerIncentive.vue'
 
 const profileData: Ref<customer> = ref({
   id: '',
@@ -265,7 +266,7 @@ const changeCustomerStatus = async () => {
             @onChange="changePaymentPaginate"
           />
         </a-tab-pane>
-        <a-tab-pane key="5" tab="مشوق‌ها">مشوق‌ها</a-tab-pane>
+        <a-tab-pane key="5" tab="مشوق‌ها"> <CustomerInsentive /> </a-tab-pane>
         <a-tab-pane key="6" tab="نظرات">
           <CustomerComment
             :commentData="customerCommentData"

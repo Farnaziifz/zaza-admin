@@ -64,7 +64,10 @@ const onChange: TableProps<customerScoreList>['onChange'] = (paginate) => {
           </div>
         </template>
         <template v-if="column.key === 'amount'">
-          {{ $filters.toPersianCurrency(record.unit, 'تومان') }}
+          <span v-if="record.type === 'PRICE'">
+            {{ $filters.toPersianCurrency(record.unit, 'تومان') }}
+          </span>
+          <span v-else> {{ record.unit }} سفارش </span>
         </template>
         <template v-if="column.key === 'createdAt'">
           {{ $filters.toPersianDate(record.createdAt) }}

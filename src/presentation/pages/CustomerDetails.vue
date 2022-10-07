@@ -31,7 +31,7 @@ import CustomerOrder from '/src/presentation/components/specific/Customer/Custom
 import CustomerPayment from '/src/presentation/components/specific/Customer/CustomerPayment.vue'
 import CustomerComment from '/src/presentation/components/specific/Customer/CustomerComment.vue'
 import CustomerMemebershipGroup from '/src/presentation/components/specific/Customer/CustomerMembershipGroup.vue'
-import CustomerInsentive from '../../presentation/components/specific/Customer/CustomerIncentive.vue'
+import CustomerInsentive from '/src/presentation/components/specific/Customer/CustomerIncentive.vue'
 
 const profileData: Ref<customer> = ref({
   id: '',

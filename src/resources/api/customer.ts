@@ -86,6 +86,17 @@ const customerCommentOrderDetails = async (cId: string, oId: string) => {
   const res = await api.get(`${pageUrl}/${cId}/order/${oId}`)
   return res.data
 }
+
+const cusromerScoreList = async (
+  id: string,
+  page?: number,
+  pageSize?: number
+) => {
+  const res = await api.get(
+    `${pageUrl}/${id}/score?Page=${page}&PageSize=${pageSize}`
+  )
+  return res.data
+}
 export const customerApi = () => {
   return {
     get: cusotmerListGet,
@@ -99,5 +110,6 @@ export const customerApi = () => {
     customerGroupListGet: cutomerGroupListGet,
     customerCommentDetailsGet: customerCommentDetails,
     customerCommentOrderDetailsGet: customerCommentOrderDetails,
+    customerScoreListGet: cusromerScoreList,
   }
 }

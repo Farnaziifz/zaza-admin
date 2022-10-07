@@ -149,3 +149,18 @@ export const getCustomerCommentOrderDetails = async (
     throw 'error'
   }
 }
+
+export const getCustomerScoreList = async (
+  id: string,
+  page?: number,
+  pageSize?: number
+) => {
+  const res = await api.customerScoreListGet(id, page, pageSize)
+  const customerScore = res.data
+  const errors = res.errors
+  if (Object.is(errors, null)) return customerScore
+  else {
+    showErrorMessage()
+    throw 'error'
+  }
+}

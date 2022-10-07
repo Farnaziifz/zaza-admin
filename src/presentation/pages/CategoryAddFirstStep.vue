@@ -61,8 +61,11 @@ const queryList: Ref<query[]> = ref([])
 
 watch(queryList, () => console.log(queryList.value), { deep: true })
 
-const convertDate = (date: string): Date =>
-  new pd(date.split('/').map((x: string) => _.toNumber(x))).toDate()
+const convertDate = (date: string): Date | undefined => {
+  if (date)
+    return new pd(date.split('/').map((x: string) => _.toNumber(x))).toDate()
+  else return undefined
+}
 
 const nextStep = async () => {
   await postGroupPreview({

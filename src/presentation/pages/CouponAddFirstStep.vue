@@ -37,6 +37,7 @@ const productListData: Ref<productsList> = ref({
   totalCount: 0,
   totalPages: 0,
 })
+const selectedProduct: any[] = []
 const couponTypeOptions: any[] = []
 for (const type in CouponsTypesType)
   couponTypeOptions.push({
@@ -68,15 +69,12 @@ const productPagination = computed(() => ({
   pageSize: 10,
 }))
 const rowSelection = ref({
-  onChange: (
-    selectedRowKeys: (string | number)[],
-    selectedRows: productsList[]
-  ) => {
-    console.log(
-      `selectedRowKeys: ${selectedRowKeys}`,
-      'selectedRows: ',
-      selectedRows
-    )
+  onChange: (selectedRows: productsList[]) => {
+    selectedRows.forEach((item) => {
+      console.log('item', item)
+      selectedProduct.push(item)
+      console.log('selecrpro', selectedProduct)
+    })
   },
   onSelect: (
     record: productsList,

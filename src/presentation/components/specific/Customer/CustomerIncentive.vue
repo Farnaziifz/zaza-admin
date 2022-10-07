@@ -1,11 +1,12 @@
 <script lang="ts" setup>
-import CustomerScor from '/src/presentation/components/specific/Customer/CustomerIncentive/score.vue'
 import { getCustomerScoreList } from '../../../../logics/specific/customrtList.handler'
 import { customerScoreList } from '../../../../core/types/customer.type'
 import { onBeforeMount, ref, Ref, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { TableProps } from 'ant-design-vue'
 
+import CustomerScor from '/src/presentation/components/specific/Customer/CustomerIncentive/score.vue'
+import CustomerDiscount from '/src/presentation/components/specific/Customer/CustomerIncentive/discount.vue'
 const radioValue = ref<string>('score')
 const route = useRoute()
 const routeId = String(route.params.id)
@@ -66,7 +67,7 @@ const changeScorePaginate: TableProps<customerScoreList>['onChange'] = async (
           @onChange="changeScorePaginate"
         />
       </div>
-      <div v-if="radioValue === 'b'">bbb</div>
+      <div v-if="radioValue === 'discount'"><CustomerDiscount /></div>
     </div>
   </a-card>
 </template>

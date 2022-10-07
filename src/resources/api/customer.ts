@@ -97,6 +97,16 @@ const cusromerScoreList = async (
   )
   return res.data
 }
+const customerIncentiveDiscount = async (
+  id: string,
+  page?: number,
+  pageSize?: number
+) => {
+  const res = await api.get(
+    `${pageUrl}/${id}/promotion?Page=${page}&PageSize=${pageSize}`
+  )
+  return res.data
+}
 export const customerApi = () => {
   return {
     get: cusotmerListGet,
@@ -111,5 +121,6 @@ export const customerApi = () => {
     customerCommentDetailsGet: customerCommentDetails,
     customerCommentOrderDetailsGet: customerCommentOrderDetails,
     customerScoreListGet: cusromerScoreList,
+    customerIncentiveDiscountListGet: customerIncentiveDiscount,
   }
 }

@@ -164,3 +164,18 @@ export const getCustomerScoreList = async (
     throw 'error'
   }
 }
+
+export const getCustomerIncentiveDiscount = async (
+  id: string,
+  page?: number,
+  pageSize?: number
+) => {
+  const res = await api.customerIncentiveDiscountListGet(id, page, pageSize)
+   const customerIncentiveDiscount = res.data
+   const errors = res.errors
+   if (Object.is(errors, null)) return customerIncentiveDiscount
+   else {
+     showErrorMessage()
+     throw 'error'
+   }
+}

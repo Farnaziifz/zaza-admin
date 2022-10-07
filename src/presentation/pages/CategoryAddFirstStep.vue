@@ -16,7 +16,14 @@ import FilterPaidMoneyRange from '@/presentation/components/specific/CategoryAdd
 import FilterPaymnetAverage from '@/presentation/components/specific/CategoryAddFirstStep/FilterPaymnetAverage.vue'
 import FilterHasFeedback from '@/presentation/components/specific/CategoryAddFirstStep/FilterHasFeedback.vue'
 import FilterProductsInBasketAverage from '@/presentation/components/specific/CategoryAddFirstStep/FilterProductsInBasketAverage.vue'
+import { postGroupPreview } from '@/logics/specific/categoryAddFirstStep.handler'
+import pd from 'persian-date'
+import _ from 'lodash'
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+// import moment from "moment";
 
+const titleValue = ref('')
 const showModal = ref(false)
 const selectValue = ref('')
 const pickedDate = ref([])
@@ -53,6 +60,18 @@ const queryValue: Ref<query | undefined> = ref(undefined)
 const queryList: Ref<query[]> = ref([])
 
 watch(queryList, () => console.log(queryList.value), { deep: true })
+
+const convertDate = (date: string): Date =>
+  new pd(date.split('/').map((x: string) => _.toNumber(x))).toDate()
+
+const nextStep = async () => {
+  await postGroupPreview({
+    from: convertDate(pickedDate.value[0]),
+    to: convertDate(pickedDate.value[1]),
+    title: titleValue.value,
+    queries: queryList.value,
+  })
+}
 </script>
 
 <template>
@@ -60,7 +79,7 @@ watch(queryList, () => console.log(queryList.value), { deep: true })
   <a-card style="margin: 8px 0; background-color: #f6f6f6">
     <div class="flex flex-row flex-wrap items-center">
       <input-with-headline
-        value=""
+        v-model:value="titleValue"
         type="text"
         :placeholder="
           t('pages.CategoryAddFirstStep.CategoryNameInputPlaceholder')
@@ -97,6 +116,14 @@ watch(queryList, () => console.log(queryList.value), { deep: true })
       </a-button>
     </div>
   </a-card>
+
+  <hr class="my-8" />
+
+  <div class="text-left">
+    <a-button type="primary" class="button-secondary" @click="nextStep">
+      مرحله بعد
+    </a-button>
+  </div>
 
   <a-modal
     v-model:visible="showModal"

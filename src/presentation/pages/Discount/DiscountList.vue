@@ -1,92 +1,33 @@
 <script lang="ts" setup async>
 import ContentLayout from '@/presentation/layouts/ContentLayout.vue'
-import { TableColumnType, TableProps } from 'ant-design-vue'
 import PlusIcon from '/src/presentation/components/shared/atoms/PlusIcon.vue'
+import { TableProps } from 'ant-design-vue'
 import {
-  discounts,
   discountsList,
   discountCustomerGroup,
 } from '@/core/types/discounts.type'
-import { Ref, ref, onBeforeMount, computed, reactive } from 'vue'
+import { ref, onBeforeMount, computed, reactive } from 'vue'
 import {
   initPageHandler,
   chnageDiscountStatus,
   deleteDiscount,
   getDiscoutGroup,
-} from '../../logics/specific/discount.handler'
+} from '../../../logics/specific/discount.handler'
 import router from '@/resources/router'
+import {
+  columns,
+  customerGroupColumns,
+  data,
+  customerData,
+} from '../../../core/constants/discount.options'
 
-const columns: TableColumnType<discounts>[] = [
-  {
-    title: 'عنوان تخفیف',
-    key: 'title',
-    dataIndex: 'title',
-  },
-  {
-    title: 'تنظیمات تخفیف',
-    key: 'setting',
-    dataIndex: 'setting',
-  },
-  {
-    title: 'مقدار تخفیف',
-    dataIndex: 'amount',
-    key: 'amount',
-  },
-  {
-    title: 'مشتریان هدف',
-    dataIndex: 'customersCount',
-    key: 'customersCount',
-  },
-  {
-    title: 'وضعیت تخفیف',
-    dataIndex: 'isActive',
-    key: 'isActive',
-  },
-  {
-    title: 'زمان شروع و پایان',
-    dataIndex: 'startAt',
-    key: 'startAt',
-  },
-  {
-    title: 'عملیات',
-    dataIndex: 'actions',
-    key: 'actions',
-  },
-]
-const customerGroupColumns: TableColumnType<discountCustomerGroup>[] = [
-  {
-    title: 'نام مشتری',
-    key: 'fullName',
-    dataIndex: 'fullName',
-  },
-  {
-    title: 'شماره همراه',
-    key: 'mobileNumber',
-    dataIndex: 'mobileNumber',
-  },
-]
-const data: Ref<discountsList> = ref({
-  items: [],
-  hasNextPage: false,
-  hasPreviousPage: false,
-  page: 0,
-  totalCount: 0,
-  totalPages: 0,
-})
 const pagination = computed(() => ({
   total: data.value.totalCount,
   current: data.value.page,
   pageSize: 10,
-  showSizeChanger: true,
+  // showSizeChanger: true,
 }))
-const customerData: Ref<discountCustomerGroup> = ref({
-  items: [],
-  hasNextPage: false,
-  hasPreviousPage: false,
-  page: 0,
-  totalCount: 0,
-  totalPages: 0,
-})
+
 const itemForChangeStatus = reactive({ isActive: false, id: '' })
 const itemForDelete = reactive({ id: '', title: '' })
 const modalSubmissionButtonLoader = ref(false)

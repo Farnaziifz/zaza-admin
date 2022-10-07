@@ -1,37 +1,17 @@
 <script lang="ts" async setup>
 import IncentiveDetailLayout from '/src/presentation/layouts/IncentiveDetailLayout.vue'
-import { onBeforeMount, Ref, ref, reactive } from 'vue'
-import { discounts, discountGroup } from '../../core/types/discounts.type'
+import { onBeforeMount, ref, reactive } from 'vue'
 import {
   getDiscountDetails,
   chnageDiscountStatus,
   getDiscoutGroupDetails,
-} from '../../logics/specific/discount.handler'
+} from '../../../logics/specific/discount.handler'
 import { useRoute } from 'vue-router'
+import {
+  serverData,
+  discountGroupData,
+} from '../../../core/constants/discount.options'
 
-const serverData: Ref<discounts> = ref({
-  id: '',
-  title: '',
-  type: '',
-  consumeType: '',
-  stateType: '',
-  amount: 0,
-  startAt: '',
-  expireAt: '',
-  isActive: false,
-  customersCount: 0,
-  promotionAssignedGroups: [],
-  promotionSteps: [],
-})
-
-const discountGroupData: Ref<discountGroup> = ref({
-  items: [],
-  hasNextPage: false,
-  hasPreviousPage: false,
-  page: 0,
-  totalCount: 0,
-  totalPages: 0,
-})
 const route = useRoute()
 const routeId = String(route.params.id)
 const visible = ref<boolean>(false)
@@ -81,7 +61,7 @@ const onChangeStatus = async () => {
     </template>
     <template #layout-content>
       <a-card
-        :bodyStyle="{ 'box-shadow': '0px 0px 10px rgba(0, 0, 0, 0.1)' }"
+        :body-style="{ 'box-shadow': '0px 0px 10px rgba(0, 0, 0, 0.1)' }"
         :bordered="false"
         class="discount-info-card"
       >
@@ -112,7 +92,7 @@ const onChangeStatus = async () => {
         </div>
       </a-card>
       <a-card
-        :bodyStyle="{ 'box-shadow': '0px 0px 10px rgba(0, 0, 0, 0.1)' }"
+        :body-style="{ 'box-shadow': '0px 0px 10px rgba(0, 0, 0, 0.1)' }"
         :bordered="false"
         class="discount-info-card"
       >
@@ -145,10 +125,10 @@ const onChangeStatus = async () => {
           </div>
           <div v-if="serverData.amount" class="info-container">
             <div class="key">مبلغ تخفیف</div>
-            <div class="value" v-if="serverData.type === 'CASH'">
+            <div v-if="serverData.type === 'CASH'" class="value">
               {{ $filters.toPersianCurrency(serverData.amount, 'تومان') }}
             </div>
-            <div class="value" v-else>{{ serverData.amount }} درصد</div>
+            <div v-else class="value">{{ serverData.amount }} درصد</div>
           </div>
           <div
             v-if="serverData.maximumAmount && serverData.type === 'PERCENTAGE'"
@@ -182,8 +162,8 @@ const onChangeStatus = async () => {
               :key="item.order"
               class="varibale-item"
             >
-              <div class="key" v-if="item.order">مرتبه {{ item.order }}</div>
-              <div class="value" v-if="item.amount">
+              <div v-if="item.order" class="key">مرتبه {{ item.order }}</div>
+              <div v-if="item.amount" class="value">
                 {{ $filters.toPersianCurrency(item.amount, 'تومان') }}
               </div>
             </div>
@@ -191,7 +171,7 @@ const onChangeStatus = async () => {
         </div>
       </a-card>
       <a-card
-        :bodyStyle="{ 'box-shadow': '0px 0px 10px rgba(0, 0, 0, 0.1)' }"
+        :body-style="{ 'box-shadow': '0px 0px 10px rgba(0, 0, 0, 0.1)' }"
         :bordered="false"
         class="discount-info-card"
       >
@@ -199,15 +179,15 @@ const onChangeStatus = async () => {
           مشتریان هدف
         </a-typography-title>
         <div
-          class="mt-10 group-container"
           v-if="discountGroupData.items && discountGroupData.items.length"
+          class="mt-10 group-container"
         >
           <div class="category-container">
             <div class="key">نام دسته‌بندی</div>
             <div
-              class="value"
               v-for="item in discountGroupData.items"
               :key="item.groupId"
+              class="value"
             >
               <span v-if="item.title">{{ item.title }}</span>
             </div>
@@ -215,9 +195,9 @@ const onChangeStatus = async () => {
           <div class="customer-count-container">
             <div class="key">تعداد مشتریان</div>
             <div
-              class="value"
               v-for="item in discountGroupData.items"
               :key="item.groupId"
+              class="value"
             >
               <span v-if="item.title"> {{ item.customersCount }}</span>
             </div>
@@ -225,7 +205,7 @@ const onChangeStatus = async () => {
         </div>
       </a-card>
       <a-card
-        :bodyStyle="{ boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)' }"
+        :body-style="{ 'box-shadow': '0px 0px 10px rgba(0, 0, 0, 0.1)' }"
         :bordered="false"
         class="discount-info-card"
       >
@@ -241,9 +221,9 @@ const onChangeStatus = async () => {
           >
             <div class="key">روش‌های انتخاب شده</div>
             <div
-              class="value"
               v-for="item in serverData.notificationType"
               :key="item"
+              class="value"
             >
               <span v-if="item === 'SMS'">پیامک</span>
             </div>
@@ -275,5 +255,5 @@ const onChangeStatus = async () => {
 </template>
 
 <style lang="scss" scoped>
-@import '../../assets/styles/discount.scss';
+@import '../../../assets/styles/discount.scss';
 </style>

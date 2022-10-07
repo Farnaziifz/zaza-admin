@@ -97,7 +97,36 @@ export type customerGroup = {
 
 export type customerGroupList = customerGroup[]
 
+export type customerCommentDetails = {
+  id: string
+  parentId?: string
+  rate: number
+  comment: string
+  productTitle: string
+  createdAt: string
+}
+
+export type customerCommentDetailsList = customerCommentDetails[]
+
+export type customerOrderDetails = {
+  createdAt: string
+  finalPrice: number
+  trackingCode: string
+  products: { id: string; count: number; price: number; title: string }[]
+}
 
 export type customerScore = {
-  
+  type: string
+  unit: number
+  amount: number
+  createdAt: string
+}
+
+export type customerScoreList = {
+  items: customerScore[]
+  hasNextPage: boolean
+  hasPreviousPage: boolean
+  page: number
+  totalCount: number
+  totalPages: number
 }

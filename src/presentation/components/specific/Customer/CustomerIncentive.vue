@@ -1,10 +1,12 @@
 <script lang="ts" setup>
-import CustomerScor from '/src/presentation/components/specific/Customer/CustomerIncentive/score.vue'
 import { getCustomerScoreList } from '../../../../logics/specific/customrtList.handler'
 import { customerScoreList } from '../../../../core/types/customer.type'
 import { onBeforeMount, ref, Ref, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { TableProps } from 'ant-design-vue'
+
+import CustomerScor from '/src/presentation/components/specific/Customer/CustomerIncentive/score.vue'
+import CustomerPayment from '/src/presentation/components/specific/Customer/CustomerIncentive/payment.vue'
 
 const radioValue = ref<string>('score')
 const route = useRoute()
@@ -53,7 +55,7 @@ const changeScorePaginate: TableProps<customerScoreList>['onChange'] = async (
     <a-radio-group v-model:value="radioValue" button-style="solid">
       <a-radio-button value="score">امتیازهای دریافتی</a-radio-button>
       <a-radio-button value="price">جایزه</a-radio-button>
-      <a-radio-button value="cash">هدیه اعتباری</a-radio-button>
+      <a-radio-button value="payment">هدیه اعتباری</a-radio-button>
       <a-radio-button value="discount">کد تخفیف</a-radio-button>
       <a-radio-button value="cashback">کش‌بک</a-radio-button>
       <a-radio-button value="coupon">کوپن</a-radio-button>
@@ -66,7 +68,7 @@ const changeScorePaginate: TableProps<customerScoreList>['onChange'] = async (
           @onChange="changeScorePaginate"
         />
       </div>
-      <div v-if="radioValue === 'b'">bbb</div>
+      <div v-if="radioValue === 'payment'"><CustomerPayment /></div>
     </div>
   </a-card>
 </template>

@@ -5,7 +5,7 @@ import { discounts, discountGroup } from '../../core/types/discounts.type'
 import {
   getDiscountDetails,
   chnageDiscountStatus,
-  getDiscoutGroup,
+  getDiscoutGroupDetails,
 } from '../../logics/specific/discount.handler'
 import { useRoute } from 'vue-router'
 
@@ -42,7 +42,7 @@ onBeforeMount(async () => {
   const pageSize = 10
   serverData.value = await getDiscountDetails(routeId)
   serverData.value.promotionAssignedGroups
-    ? (discountGroupData.value = await getDiscoutGroup(
+    ? (discountGroupData.value = await getDiscoutGroupDetails(
         serverData.value.promotionAssignedGroups,
         page,
         pageSize

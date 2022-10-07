@@ -31,6 +31,7 @@ import CustomerOrder from '/src/presentation/components/specific/Customer/Custom
 import CustomerPayment from '/src/presentation/components/specific/Customer/CustomerPayment.vue'
 import CustomerComment from '/src/presentation/components/specific/Customer/CustomerComment.vue'
 import CustomerMemebershipGroup from '/src/presentation/components/specific/Customer/CustomerMembershipGroup.vue'
+import CustomerInsentive from '/src/presentation/components/specific/Customer/CustomerIncentive.vue'
 
 const profileData: Ref<customer> = ref({
   id: '',
@@ -111,9 +112,6 @@ const onChangeTab = (tab: string) => {
       getCustomerCommentData()
       break
     case '7':
-      console.log('7')
-      break
-    case '8':
       getCustomerGroupData()
   }
 }
@@ -265,7 +263,7 @@ const changeCustomerStatus = async () => {
             @onChange="changePaymentPaginate"
           />
         </a-tab-pane>
-        <a-tab-pane key="5" tab="مشوق‌ها">مشوق‌ها</a-tab-pane>
+        <a-tab-pane key="5" tab="مشوق‌ها"> <CustomerInsentive /> </a-tab-pane>
         <a-tab-pane key="6" tab="نظرات">
           <CustomerComment
             :commentData="customerCommentData"
@@ -273,8 +271,7 @@ const changeCustomerStatus = async () => {
             @onChange="changeCommentPaginate"
           />
         </a-tab-pane>
-        <a-tab-pane key="7" tab="سفارش‌ها">سفارش‌ها</a-tab-pane>
-        <a-tab-pane key="8" tab="دسته‌بندی های عضو">
+        <a-tab-pane key="7" tab="دسته‌بندی های عضو">
           <CustomerMemebershipGroup :groupData="customerGroupData" />
         </a-tab-pane>
       </a-tabs>

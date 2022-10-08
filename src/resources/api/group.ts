@@ -17,7 +17,21 @@ const groupPost = async (groupData: group): Promise<response<group>> => {
   }
 }
 
-const groupPreviewPost = async (groupData: group): Promise<response<group>> => {
+const groupPreviewPost = async (
+  groupData: group
+): Promise<
+  response<{
+    data?: {
+      hasNextPage: boolean
+      hasPreviousPage: boolean
+      items: any[]
+      page: number
+      totalCount: number
+      totalPages: number
+    }
+    error?: { message: string }
+  }>
+> => {
   const preview = '/customer'
   try {
     return {
@@ -25,7 +39,7 @@ const groupPreviewPost = async (groupData: group): Promise<response<group>> => {
     }
   } catch (e) {
     return {
-      error: e as AxiosError<group>,
+      error: e as AxiosError<{ data: undefined; error?: AxiosError }>,
     }
   }
 }

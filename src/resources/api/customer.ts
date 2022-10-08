@@ -7,6 +7,11 @@ type response = {
   data: customerList
   errors: error
 }
+const getCustomerProfileById = async (id: string) => {
+  const profile = '/profile'
+  const res = await api.get(pageUrl + profile + `/${id}`)
+  return res
+}
 
 const cusotmerListGet = async (
   page?: number,
@@ -26,5 +31,6 @@ export const customerApi = () => {
   return {
     get: cusotmerListGet,
     put: customerChangeSatatus,
+    getCustomerProfileById
   }
 }

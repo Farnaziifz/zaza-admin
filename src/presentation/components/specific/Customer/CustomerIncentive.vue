@@ -137,7 +137,7 @@ const changeDiscountPaginate: TableProps<customerScoreList>['onChange'] =
     >
       <a-radio-button value="score">امتیازهای دریافتی</a-radio-button>
       <a-radio-button value="price">جایزه</a-radio-button>
-      <a-radio-button value="cash">هدیه اعتباری</a-radio-button>
+      <a-radio-button value="payment">هدیه اعتباری</a-radio-button>
       <a-radio-button value="discount">کد تخفیف</a-radio-button>
       <a-radio-button value="cashback">کش‌بک</a-radio-button>
       <a-radio-button value="coupon">کوپن</a-radio-button>
@@ -164,6 +164,7 @@ const changeDiscountPaginate: TableProps<customerScoreList>['onChange'] =
           @on-change="changeDiscountPaginate"
         />
       </div>
+      <div v-if="radioValue === 'payment'"><CustomerPayment /></div>
     </div>
   </a-card>
 </template>

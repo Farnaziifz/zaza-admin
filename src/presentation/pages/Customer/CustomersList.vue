@@ -2,75 +2,20 @@
 import ContentLayout from '/src/presentation/layouts/ContentLayout.vue'
 import EmptyLayout from '/src/presentation/layouts/EmptyLayout.vue'
 import BadgeComponent from '/src/presentation/components/shared/Organisms/Badge.vue'
-import { TableColumnType, TableProps } from 'ant-design-vue'
-import { customer, customerList } from '../../core/types/customer.type'
+import { TableProps } from 'ant-design-vue'
+import { customerList } from '../../../core/types/customer.type'
 import {
   initPageHandler,
   chnageCustomerStatus,
-} from '../../logics/specific/customrtList.handler'
-import { onBeforeMount, Ref, ref, reactive, computed } from 'vue'
+} from '../../../logics/specific/customrtList.handler'
+import { onBeforeMount, ref, reactive, computed } from 'vue'
+import router from '@/resources/router'
+import { columns, data } from '../../../core/constants/customer.options'
 
-const columns: TableColumnType<customer>[] = [
-  {
-    title: 'مشتری',
-    key: 'fullName',
-    dataIndex: 'fullName',
-  },
-  {
-    title: 'تاریخ عضویت',
-    key: 'createdAt',
-    dataIndex: 'createdAt',
-    sorter: (a: customer, b: customer) => a.createdAt - b.createdAt,
-  },
-  {
-    title: 'میانگین پرداختی',
-    dataIndex: 'totalExpenses',
-    key: 'totalExpenses',
-    sorter: (a: customer, b: customer) => a.totalExpenses - b.totalExpenses,
-  },
-  {
-    title: 'تعداد سفارش',
-    dataIndex: 'numberOfOrder',
-    key: 'numberOfOrder',
-    sorter: (a: customer, b: customer) => a.numberOfOrder - b.numberOfOrder,
-  },
-  {
-    title: 'ارزش مشتری',
-    dataIndex: 'value',
-    key: 'value',
-    sorter: (a: customer, b: customer) => a.value - b.value,
-  },
-  {
-    title: 'برچسب مشتری',
-    dataIndex: 'clientTags',
-    key: 'clientTags',
-  },
-  {
-    title: 'وضعیت',
-    dataIndex: 'isActive',
-    key: 'isActive',
-    filters: [
-      { text: 'فعال', value: true },
-      { text: 'غیر فعال', value: false },
-    ],
-    // onFilter: (value: boolean, record: customer) => (record.isActive = value),
-  },
-  {
-    title: 'عملیات',
-    dataIndex: 'actions',
-    key: 'actions',
-  },
-]
 const itemForChangeStatus = reactive({ isActive: false, id: '' })
-
-const data: Ref<customerList> = ref({
-  items: [],
-  hasNextPage: false,
-  hasPreviousPage: false,
-  page: 0,
-  totalCount: 0,
-  totalPages: 0,
-})
+const modalSubmissionButtonLoader = ref(false)
+const turnOnLoader = () => (modalSubmissionButtonLoader.value = true)
+const turnOffLoader = () => (modalSubmissionButtonLoader.value = false)
 
 onBeforeMount(async () => {
   const page = 1
@@ -83,7 +28,6 @@ const pagination = computed(() => ({
   pageSize: 10,
   showSizeChanger: true,
 }))
-
 const onChange: TableProps<customerList>['onChange'] = async (
   paginate,
   sorter
@@ -92,7 +36,6 @@ const onChange: TableProps<customerList>['onChange'] = async (
   data.value = await initPageHandler(paginate.current, paginate.pageSize)
 }
 const visible = ref<boolean>(false)
-
 const showModal = (item: string, isActive: boolean) => {
   visible.value = true
   itemForChangeStatus.isActive = isActive
@@ -101,14 +44,18 @@ const showModal = (item: string, isActive: boolean) => {
 const hideModal = () => {
   visible.value = false
 }
-
 const changeCustomerStatus = async () => {
+  turnOnLoader()
   await chnageCustomerStatus(itemForChangeStatus.id)
+  turnOffLoader()
   visible.value = false
   data.value = await initPageHandler(
     pagination.value.current,
     pagination.value.pageSize
   )
+}
+const goToDetails = (item: string) => {
+  router.push({ name: 'customer-details', params: { id: item } })
 }
 </script>
 
@@ -174,9 +121,8 @@ const changeCustomerStatus = async () => {
                     >تغییر وضعیت</a
                   >
                 </div>
-                <!-- <a-divider type="vertical" /> -->
                 <div class="customer-action-button">
-                  <a>جزئیات</a>
+                  <a @click="goToDetails(record.id)">جزئیات</a>
                 </div>
               </div>
             </template>

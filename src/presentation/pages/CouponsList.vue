@@ -40,6 +40,11 @@ const columns: TableColumnType<coupons>[] = [
 ]
 const itemForChangeStatus = reactive({ isActive: false, id: '' })
 const itemForDelete = reactive({ id: '', title: '' })
+const visible = ref<boolean>(false)
+const visibleDeleteModal = ref<boolean>(false)
+const modalSubmissionButtonLoader = ref(false)
+const turnOnLoader = () => (modalSubmissionButtonLoader.value = true)
+const turnOffLoader = () => (modalSubmissionButtonLoader.value = false)
 const data: Ref<couponsList> = ref({
   items: [],
   hasNextPage: false,
@@ -67,8 +72,6 @@ const onChange: TableProps<couponsList>['onChange'] = async (
   console.log('params', paginate, sorter)
   data.value = await initPageHandler(paginate.current, paginate.pageSize)
 }
-const visible = ref<boolean>(false)
-const visibleDeleteModal = ref<boolean>(false)
 
 const showModal = (item: string, isActive: boolean) => {
   visible.value = true
@@ -84,7 +87,9 @@ const showDeleteModal = (item: string, title: string) => {
   itemForDelete.title = title
 }
 const confirmModal = async () => {
+  turnOnLoader()
   await deleteCoupons(itemForDelete.id)
+  turnOffLoader()
   data.value = await initPageHandler(
     pagination.value.current,
     pagination.value.pageSize
@@ -92,8 +97,10 @@ const confirmModal = async () => {
   visibleDeleteModal.value = false
 }
 const changeCouponSatatus = async () => {
-  await changeCouponsStatus(itemForChangeStatus.id)
   visible.value = false
+  turnOnLoader()
+  await changeCouponsStatus(itemForChangeStatus.id)
+  turnOffLoader()
   data.value = await initPageHandler(
     pagination.value.current,
     pagination.value.pageSize
@@ -185,9 +192,9 @@ const goToCouponDetails = (item: string) => {
             </template>
           </template>
         </a-table>
-        <a-modal v-model:visible="visible" title="تغییر وضعیت مشتری">
+        <a-modal v-model:visible="visible" title="تغییر وضعیت کوپن">
           <p>
-            آیا از تغییر وضعیت مشتری به
+            آیا از تغییر وضعیت کوپن به
             <a-typography-text
               v-if="!itemForChangeStatus.isActive"
               type="success"

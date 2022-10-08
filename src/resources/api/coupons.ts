@@ -19,15 +19,15 @@ const coupunsListGet = async (
   return res.data
 }
 
-const changeCouponsStatus = async (data: string): Promise<response> => {
+const changeCouponsStatus = async (data: string) => {
   const path = '/status'
   const res = await api.put(pageUrl + path + '/' + data)
-  return res.data
+  return res
 }
 
-const deletCoupons = async (data: string): Promise<response> => {
+const deletCoupons = async (data: string) => {
   const res = await api.delete(`${pageUrl}/${data}`)
-  return res.data
+  return res
 }
 
 const getCouponDetails = async (data: string): Promise<detaislRes> => {

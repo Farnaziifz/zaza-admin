@@ -6,6 +6,7 @@ import { couponsRouterConfig } from './CouponsRouter.config'
 import { creditRouterConfig } from './CreditsRouter.config'
 import { categoryRouterConfig } from './categoryRouter.config'
 
+import { discountRouterConfig } from './DiscoutRouter.config'
 const config: RouterOptions = {
   routes: [
     {
@@ -18,10 +19,11 @@ const config: RouterOptions = {
         customerRouterConfig,
         couponsRouterConfig,
         creditRouterConfig,
+        discountRouterConfig,
       ],
     },
   ],
-  history: createWebHistory(),
+  history: createWebHistory(import.meta.env.BASE_URL),
 }
 
 export default config

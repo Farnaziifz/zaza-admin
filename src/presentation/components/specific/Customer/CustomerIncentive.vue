@@ -1,11 +1,18 @@
 <script lang="ts" setup>
 import CustomerScor from '/src/presentation/components/specific/Customer/CustomerIncentive/score.vue'
-import { getCustomerScoreList } from '../../../../logics/specific/customrtList.handler'
-import { customerScoreList } from '../../../../core/types/customer.type'
+import CustomerCashBack from '/src/presentation/components/specific/Customer/CustomerIncentive/cachBack.vue'
+import {
+  getCustomerScoreList,
+  getCustomerCashBack,
+} from '../../../../logics/specific/customrtList.handler'
+import {
+  customerScoreList,
+  customerCasheBackList,
+} from '../../../../core/types/customer.type'
 import { onBeforeMount, ref, Ref, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { TableProps } from 'ant-design-vue'
-
+//
 const radioValue = ref<string>('score')
 const route = useRoute()
 const routeId = String(route.params.id)
@@ -19,15 +26,41 @@ const scoreData: Ref<customerScoreList> = ref({
   totalPages: 0,
 })
 
+const cachBackData: Ref<customerCasheBackList> = ref({
+  items: [],
+  hasNextPage: false,
+  hasPreviousPage: false,
+  page: 0,
+  totalCount: 0,
+  totalPages: 0,
+})
+const onChangeTab = () => {
+  switch (radioValue.value) {
+    case 'cashback':
+      getCustomerCachbackData()
+  }
+}
 onBeforeMount(async () => {
   const page = 1
   const pageSize = 6
   scoreData.value = await getCustomerScoreList(routeId, page, pageSize)
 })
 
+const getCustomerCachbackData = async () => {
+  const page = 1
+  const pageSize = 10
+  cachBackData.value = await getCustomerCashBack(routeId, page, pageSize)
+}
+
 const scorePagination = computed(() => ({
   total: scoreData.value.totalCount,
   current: scoreData.value.page,
+  pageSize: 6,
+  // showSizeChanger: true,
+}))
+const cachebackPagination = computed(() => ({
+  total: cachBackData.value.totalCount,
+  current: cachBackData.value.page,
   pageSize: 6,
   // showSizeChanger: true,
 }))
@@ -41,6 +74,15 @@ const changeScorePaginate: TableProps<customerScoreList>['onChange'] = async (
     paginate.pageSize
   )
 }
+
+const changeCashBackPaginate: TableProps<customerCasheBackList>['onChange'] =
+  async (paginate) => {
+    cachBackData.value = await getCustomerCashBack(
+      routeId,
+      paginate.current,
+      paginate.pageSize
+    )
+  }
 </script>
 
 <template>
@@ -50,7 +92,11 @@ const changeScorePaginate: TableProps<customerScoreList>['onChange'] = async (
     class="info-card"
   >
     <a-typography-title :level="4"> مشوق ها</a-typography-title>
-    <a-radio-group v-model:value="radioValue" button-style="solid">
+    <a-radio-group
+      v-model:value="radioValue"
+      button-style="solid"
+      @change="onChangeTab"
+    >
       <a-radio-button value="score">امتیازهای دریافتی</a-radio-button>
       <a-radio-button value="price">جایزه</a-radio-button>
       <a-radio-button value="cash">هدیه اعتباری</a-radio-button>
@@ -63,10 +109,17 @@ const changeScorePaginate: TableProps<customerScoreList>['onChange'] = async (
         <CustomerScor
           :pagination="scorePagination"
           :scoreData="scoreData"
-          @onChange="changeScorePaginate"
+          @on-change="changeScorePaginate"
         />
       </div>
       <div v-if="radioValue === 'b'">bbb</div>
+      <div v-if="radioValue === 'cashback'">
+        <CustomerCashBack
+          :cachback-data="cachBackData"
+          :pagination="cachebackPagination"
+          @on-change="changeCashBackPaginate"
+        />
+      </div>
     </div>
   </a-card>
 </template>

@@ -130,3 +130,21 @@ export type customerScoreList = {
   totalCount: number
   totalPages: number
 }
+
+export type customerCasheBack = {
+  orderFinalPrice: number
+  type: string
+  amount: number
+  maximumPrice: number
+  startAt: string
+  expireAt: string
+}
+
+export type customerCasheBackList = {
+  items: customerCasheBack[]
+  hasNextPage: boolean
+  hasPreviousPage: boolean
+  page: number
+  totalCount: number
+  totalPages: number
+}

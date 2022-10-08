@@ -9,15 +9,7 @@ type response<T> = {
   error?: AxiosError<T>
 }
 
-const groupPost = async (groupData: group): Promise<response<group>> => {
-  try {
-    return await api.post(pageUrl, groupData)
-  } catch (e) {
-    return e as response<group>
-  }
-}
-
-const groupPreviewPost = async (
+const groupPost = async (
   groupData: group
 ): Promise<
   response<{
@@ -32,10 +24,36 @@ const groupPreviewPost = async (
     error?: { message: string }
   }>
 > => {
+  try {
+    return await api.post(pageUrl, groupData)
+  } catch (e) {
+    return {
+      error: e as AxiosError<{ data: undefined; error?: AxiosError }>,
+    }
+  }
+}
+
+const groupPreviewPost = async (
+  groupData: group,
+  paginate: { current: number; pageSize: number }
+): Promise<
+  response<{
+    data?: {
+      hasNextPage: boolean
+      hasPreviousPage: boolean
+      items: any[]
+      page: number
+      totalCount: number
+      totalPages: number
+    }
+    error?: { message: string }
+  }>
+> => {
   const preview = '/customer'
+  const pagination = `?page=${paginate.current}&pageSize=${paginate.pageSize}`
   try {
     return {
-      data: await api.post(pageUrl + preview, groupData),
+      data: await api.post(pageUrl + preview + pagination, groupData),
     }
   } catch (e) {
     return {

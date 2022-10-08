@@ -5,7 +5,7 @@ import _ from 'lodash'
 import { groupQueryTypeEnum } from '@/core/enums/groupQueryTypeEnum'
 
 const emits = defineEmits(['update:value'])
-const PaidMoneyRange = ref({
+const NumberOfFailedPayment = ref({
   from: null,
   to: null,
 })
@@ -13,12 +13,12 @@ const PaidMoneyRange = ref({
 const passOrderRangeToParents = () =>
   emits('update:value', {
     value: null,
-    type: groupQueryTypeEnum.PAID_MONEY_RANGE,
-    to: PaidMoneyRange.value.to
-      ? _.toNumber(PaidMoneyRange.value.to) * 10
+    type: groupQueryTypeEnum.NUMBER_OF_FAILED_PAYMENT,
+    to: NumberOfFailedPayment.value.to
+      ? _.toNumber(NumberOfFailedPayment.value.to)
       : null,
-    from: PaidMoneyRange.value.from
-      ? _.toNumber(PaidMoneyRange.value.from) * 10
+    from: NumberOfFailedPayment.value.from
+      ? _.toNumber(NumberOfFailedPayment.value.from)
       : null,
   })
 </script>
@@ -30,9 +30,9 @@ const passOrderRangeToParents = () =>
     </span>
     <div class="flex items-center">
       <a-input
-        v-for="(order, key) in PaidMoneyRange"
+        v-for="(order, key) in NumberOfFailedPayment"
         :key="key"
-        v-model:value="PaidMoneyRange[key]"
+        v-model:value="NumberOfFailedPayment[key]"
         type="number"
         :placeholder="
           t('pages.CategoryAddFirstStep.modal.ORDER_RANGE.inputPlaceholder')
@@ -51,7 +51,11 @@ const passOrderRangeToParents = () =>
           </span>
         </template>
         <template #addonAfter>
-          <span class="p-3"> تومان </span>
+          <span class="p-3">
+            {{
+              t('pages.CategoryAddFirstStep.modal.ORDER_RANGE.inputPostfixText')
+            }}
+          </span>
         </template>
       </a-input>
     </div>

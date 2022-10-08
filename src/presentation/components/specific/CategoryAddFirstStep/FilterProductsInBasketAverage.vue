@@ -15,10 +15,10 @@ const passOrderRangeToParents = () =>
     value: null,
     type: groupQueryTypeEnum.PRODUCTS_IN_BASKET_AVERAGE,
     to: ProductsInBasketAverage.value.to
-      ? _.toNumber(ProductsInBasketAverage.value.to)
+      ? _.toNumber(ProductsInBasketAverage.value.to) * 10
       : null,
     from: ProductsInBasketAverage.value.from
-      ? _.toNumber(ProductsInBasketAverage.value.from)
+      ? _.toNumber(ProductsInBasketAverage.value.from) * 10
       : null,
   })
 </script>
@@ -51,11 +51,7 @@ const passOrderRangeToParents = () =>
           </span>
         </template>
         <template #addonAfter>
-          <span class="p-3">
-            {{
-              t('pages.CategoryAddFirstStep.modal.ORDER_RANGE.inputPostfixText')
-            }}
-          </span>
+          <span class="p-3"> تومان </span>
         </template>
       </a-input>
     </div>

@@ -6,7 +6,7 @@ import { useRoute } from 'vue-router'
 import { watch, ref } from 'vue-demi'
 
 const route = useRoute()
-const currentStep = ref(0)
+const currentStep = ref(route.meta?.step)
 watch(
   route,
   () => {

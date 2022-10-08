@@ -164,3 +164,18 @@ export const getCustomerScoreList = async (
     throw 'error'
   }
 }
+
+export const getCustomerCashBack = async (
+  id: string,
+  page?: number,
+  pageSize?: number
+) => {
+  const res = await api.customerCachBackListGet(id, page, pageSize)
+  const customercachback = res.data
+  const errors = res.errors
+  if (Object.is(errors, null)) return customercachback
+  else {
+    showErrorMessage()
+    throw 'error'
+  }
+}

@@ -130,3 +130,24 @@ export type customerScoreList = {
   totalCount: number
   totalPages: number
 }
+
+export type customerDiscount = {
+  title: string
+  code: string
+  type: string
+  consumeType: string
+  stateType: string
+  startAt: string
+  expireAt: string
+  consumedCount: number
+  promotionStepCount: number
+}
+
+export type customerDiscountList = {
+  items: customerDiscount[]
+  hasNextPage: boolean
+  hasPreviousPage: boolean
+  page: number
+  totalCount: number
+  totalPages: number
+}

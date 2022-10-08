@@ -6,15 +6,25 @@ import { useRoute } from 'vue-router'
 import { watch, ref } from 'vue-demi'
 
 const route = useRoute()
-const currentStep = ref(route.meta?.step)
+const currentStep = ref(route.meta?.step as string)
 watch(
   route,
   () => {
-    currentStep.value = route.meta.step
+    currentStep.value = route.meta.step as string
   },
   { deep: true }
 )
-const steps = t('pages.CategoryAdd.steps')
+
+const steps = {
+  firstStep: {
+    title: 'انتخاب فیلتر',
+    description: 'عنوان دسته\u200Cبندی، انتخاب فیلتر ها',
+  },
+  secondStep: {
+    title: 'مشاهده لیست و ساخت دسته\u200Cبندی',
+    description: 'مشاهده لیست ساخته شده و تایید آن',
+  },
+}
 </script>
 
 <template>

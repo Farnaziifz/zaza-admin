@@ -31,6 +31,6 @@ export const customerApi = () => {
   return {
     get: cusotmerListGet,
     put: customerChangeSatatus,
-    getCustomerProfileById
+    getCustomerProfileById,
   }
 }

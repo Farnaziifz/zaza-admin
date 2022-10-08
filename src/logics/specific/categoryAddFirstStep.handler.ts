@@ -53,5 +53,4 @@ export const postGroup = async (groupData: group) => {
     showErrorMessage(res.error?.response?.statusText)
     return
   }
-} 
-
+}

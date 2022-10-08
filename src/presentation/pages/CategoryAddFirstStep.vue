@@ -110,16 +110,22 @@ const deleteQuery = (key: number) => {
         v-model:value="titleValue"
         type="text"
         :placeholder="
-          t('pages.CategoryAddFirstStep.CategoryNameInputPlaceholder')
+          _.toString(
+            t('pages.CategoryAddFirstStep.CategoryNameInputPlaceholder')
+          )
         "
-        :headline="t('pages.CategoryAddFirstStep.CategoryNameInputHeadline')"
+        :headline="
+          _.toString(t('pages.CategoryAddFirstStep.CategoryNameInputHeadline'))
+        "
       />
 
       <b-date-picker
         v-model:value="pickedDate"
         class="mx-4"
         :place-holder="
-          t('pages.CategoryAddFirstStep.CategoryAddDatePickerPlaceHolder')
+          _.toString(
+            t('pages.CategoryAddFirstStep.CategoryAddDatePickerPlaceHolder')
+          )
         "
         :range="true"
       >

@@ -80,8 +80,18 @@ const onChange: TableProps<customerDiscountList>['onChange'] = (paginate) => {
           </div>
         </template>
         <template v-if="column.key === 'codeDate'">
-          {{ $filters.toPersianDate(record.startAt) }} <span>الی</span>
+          {{ $filters.toPersianDate(record.startAt) }}
+          <span class="colored">الی</span>
           {{ $filters.toPersianDate(record.expireAt) }}
+        </template>
+        <template v-if="column.key === 'codeState'">
+          <a-tag v-if="record.status === 'UNUSED'" color="green"
+            >استفاده نشده</a-tag
+          >
+          <a-tag v-if="record.status === 'USED'" color="red">استفاده شده</a-tag>
+          <a-tag v-if="record.status === 'MULTIPLE_USED'" color="orange"
+            >{{ record.consumedCount }} بار استفاده شده</a-tag
+          >
         </template>
       </template>
     </a-table>
@@ -96,5 +106,9 @@ const onChange: TableProps<customerDiscountList>['onChange'] = (paginate) => {
 .ant-tag {
   width: 100%;
   text-align: center;
+}
+.colored {
+  color: #1894ff;
+  margin: 0 4px
 }
 </style>

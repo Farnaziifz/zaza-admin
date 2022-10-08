@@ -63,7 +63,7 @@ const onChange: TableProps<customerScoreList>['onChange'] = (paginate) => {
     >
       <template #bodyCell="{ column, record }">
         <template v-if="column.key === 'orderFinalPrice'">
-          {{ $filters.toPersianCurrency(record.orderFinalPrice, 'تومان') }}
+          {{ $filters.toPersianCurrency(record.orderFinalPrice / 10, 'تومان') }}
         </template>
         <template v-if="column.key === 'type'">
           <span v-if="record.type === 'PRICE'">تومانی</span>
@@ -71,11 +71,11 @@ const onChange: TableProps<customerScoreList>['onChange'] = (paginate) => {
         </template>
         <template v-if="column.key === 'amount'">
           <span v-if="record.type === 'PRICE'">
-            {{ $filters.toPersianCurrency(record.amount, 'تومان') }}
+            {{ $filters.toPersianCurrency(record.amount / 10, 'تومان') }}
           </span>
           <span v-else>
             {{ record.amount }} درصد تا سقف
-            {{ $filters.toPersianCurrency(record.maximumPrice, 'تومان') }}
+            {{ $filters.toPersianCurrency(record.maximumPrice / 10, 'تومان') }}
           </span>
         </template>
         <template v-if="column.key === 'date'">

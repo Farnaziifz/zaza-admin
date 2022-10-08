@@ -86,9 +86,9 @@ const onChange: TableProps<customerDiscountList>['onChange'] = (paginate) => {
         </template>
         <template v-if="column.key === 'codeState'">
           <a-tag v-if="record.status === 'UNUSED'" color="green"
-            >استفاده نشده</a-tag
+            >استفاده شده</a-tag
           >
-          <a-tag v-if="record.status === 'USED'" color="red">استفاده شده</a-tag>
+          <a-tag v-if="record.status === 'USED'" color="red">استفاده نشده</a-tag>
           <a-tag v-if="record.status === 'MULTIPLE_USED'" color="orange"
             >{{ record.consumedCount }} بار استفاده شده</a-tag
           >

@@ -108,6 +108,16 @@ const customerCachBackList = async (
   )
   return res.data
 }
+const customerIncentiveDiscount = async (
+  id: string,
+  page?: number,
+  pageSize?: number
+) => {
+  const res = await api.get(
+    `${pageUrl}/${id}/promotion?Page=${page}&PageSize=${pageSize}`
+  )
+  return res.data
+}
 export const customerApi = () => {
   return {
     get: cusotmerListGet,
@@ -121,6 +131,7 @@ export const customerApi = () => {
     customerGroupListGet: cutomerGroupListGet,
     customerCommentDetailsGet: customerCommentDetails,
     customerCommentOrderDetailsGet: customerCommentOrderDetails,
+    customerIncentiveDiscountListGet: customerIncentiveDiscount,
     customerScoreListGet: customerScoreList,
     customerCachBackListGet: customerCachBackList,
   }

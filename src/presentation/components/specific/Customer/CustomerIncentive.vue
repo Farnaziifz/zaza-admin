@@ -1,23 +1,35 @@
 <script lang="ts" setup>
-import CustomerScor from '/src/presentation/components/specific/Customer/CustomerIncentive/score.vue'
+import CustomerScore from '/src/presentation/components/specific/Customer/CustomerIncentive/score.vue'
 import CustomerCashBack from '/src/presentation/components/specific/Customer/CustomerIncentive/cachBack.vue'
+import CustomerDiscount from '/src/presentation/components/specific/Customer/CustomerIncentive/discount.vue'
+
 import {
   getCustomerScoreList,
   getCustomerCashBack,
+  getCustomerIncentiveDiscount,
 } from '../../../../logics/specific/customrtList.handler'
 import {
   customerScoreList,
   customerCasheBackList,
+  customerDiscountList,
 } from '../../../../core/types/customer.type'
 import { onBeforeMount, ref, Ref, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { TableProps } from 'ant-design-vue'
-//
+
 const radioValue = ref<string>('score')
 const route = useRoute()
 const routeId = String(route.params.id)
 //api call must to move in parent but for deadline its ignore
 const scoreData: Ref<customerScoreList> = ref({
+  items: [],
+  hasNextPage: false,
+  hasPreviousPage: false,
+  page: 0,
+  totalCount: 0,
+  totalPages: 0,
+})
+const discountData: Ref<customerDiscountList> = ref({
   items: [],
   hasNextPage: false,
   hasPreviousPage: false,
@@ -34,27 +46,45 @@ const cachBackData: Ref<customerCasheBackList> = ref({
   totalCount: 0,
   totalPages: 0,
 })
-const onChangeTab = () => {
-  switch (radioValue.value) {
-    case 'cashback':
-      getCustomerCachbackData()
-  }
-}
 onBeforeMount(async () => {
   const page = 1
   const pageSize = 6
   scoreData.value = await getCustomerScoreList(routeId, page, pageSize)
 })
 
+const getDiscountData = async () => {
+  const page = 1
+  const pageSize = 10
+  discountData.value = await getCustomerIncentiveDiscount(
+    routeId,
+    page,
+    pageSize
+  )
+}
 const getCustomerCachbackData = async () => {
   const page = 1
   const pageSize = 10
   cachBackData.value = await getCustomerCashBack(routeId, page, pageSize)
 }
+const onChangeTab = () => {
+  switch (radioValue.value) {
+    case 'discount':
+      getDiscountData()
+      break
+    case 'cashback':
+      getCustomerCachbackData()
+  }
+}
 
 const scorePagination = computed(() => ({
   total: scoreData.value.totalCount,
   current: scoreData.value.page,
+  pageSize: 6,
+  // showSizeChanger: true,
+}))
+const discountPagination = computed(() => ({
+  total: discountData.value.totalCount,
+  current: discountData.value.page,
   pageSize: 6,
   // showSizeChanger: true,
 }))
@@ -83,6 +113,14 @@ const changeCashBackPaginate: TableProps<customerCasheBackList>['onChange'] =
       paginate.pageSize
     )
   }
+const changeDiscountPaginate: TableProps<customerScoreList>['onChange'] =
+  async (paginate) => {
+    discountData.value = await getCustomerIncentiveDiscount(
+      routeId,
+      paginate.current,
+      paginate.pageSize
+    )
+  }
 </script>
 
 <template>
@@ -106,18 +144,24 @@ const changeCashBackPaginate: TableProps<customerCasheBackList>['onChange'] =
     </a-radio-group>
     <div class="content-container">
       <div v-if="radioValue === 'score'">
-        <CustomerScor
+        <CustomerScore
           :pagination="scorePagination"
           :scoreData="scoreData"
           @on-change="changeScorePaginate"
         />
       </div>
-      <div v-if="radioValue === 'b'">bbb</div>
       <div v-if="radioValue === 'cashback'">
         <CustomerCashBack
           :cachback-data="cachBackData"
           :pagination="cachebackPagination"
           @on-change="changeCashBackPaginate"
+        />
+      </div>
+      <div v-if="radioValue === 'discount'">
+        <CustomerDiscount
+          :discount-data="discountData"
+          :pagination="discountPagination"
+          @on-change="changeDiscountPaginate"
         />
       </div>
     </div>

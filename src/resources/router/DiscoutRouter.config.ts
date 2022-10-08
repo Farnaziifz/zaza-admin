@@ -1,6 +1,6 @@
-import Discount from '/src/presentation/pages/Discount.vue'
-import DiscountList from '/src/presentation/pages/DiscountList.vue'
-import DiscountDetails from '/src/presentation/pages/DiscountDetails.vue'
+import Discount from '/src/presentation/pages/Discount/Discount.vue'
+import DiscountList from '/src/presentation/pages/Discount/DiscountList.vue'
+import DiscountDetails from '/src/presentation/pages/Discount/DiscountDetails.vue'
 
 export const discountRouterConfig = {
   path: 'discount',

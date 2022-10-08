@@ -18,11 +18,13 @@ export const categoryRouterConfig = {
         {
           name: 'add-first-step',
           path: 'first-step',
+          meta: { step: 0 },
           component: CategoryAddFirstStep,
         },
         {
           name: 'add-second-step',
           path: 'second-step',
+          meta: { step: 1 },
           component: CategoryAddSecondStep,
         },
       ],

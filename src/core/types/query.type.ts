@@ -6,4 +6,3 @@ export type query = {
   to: string | null
   value: string
 }
-  

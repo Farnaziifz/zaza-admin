@@ -16,7 +16,7 @@ import FilterPaidMoneyRange from '@/presentation/components/specific/CategoryAdd
 import FilterPaymnetAverage from '@/presentation/components/specific/CategoryAddFirstStep/FilterPaymnetAverage.vue'
 import FilterHasFeedback from '@/presentation/components/specific/CategoryAddFirstStep/FilterHasFeedback.vue'
 import FilterProductsInBasketAverage from '@/presentation/components/specific/CategoryAddFirstStep/FilterProductsInBasketAverage.vue'
-import { postGroupPreview } from '@/logics/specific/categoryAddFirstStep.handler'
+import { saveGroupQueries } from '@/logics/specific/categoryAddFirstStep.handler'
 import pd from 'persian-date'
 import _ from 'lodash'
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -61,14 +61,14 @@ const queryList: Ref<query[]> = ref([])
 
 watch(queryList, () => console.log(queryList.value), { deep: true })
 
-const convertDate = (date: string): Date | undefined => {
+const convertDate = (date: string): Date | null => {
   if (date)
     return new pd(date.split('/').map((x: string) => _.toNumber(x))).toDate()
-  else return undefined
+  else return null
 }
 
 const nextStep = async () => {
-  await postGroupPreview({
+  await saveGroupQueries({
     from: convertDate(pickedDate.value[0]),
     to: convertDate(pickedDate.value[1]),
     title: titleValue.value,

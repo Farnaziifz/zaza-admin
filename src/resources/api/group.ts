@@ -33,4 +33,4 @@ const groupPreviewPost = async (groupData: group): Promise<response<group>> => {
 export const groupApi = () => ({
   post: groupPost,
   postPreview: groupPreviewPost,
-}) 
+})

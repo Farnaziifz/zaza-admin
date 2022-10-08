@@ -2,79 +2,20 @@
 import ContentLayout from '/src/presentation/layouts/ContentLayout.vue'
 import EmptyLayout from '/src/presentation/layouts/EmptyLayout.vue'
 import BadgeComponent from '/src/presentation/components/shared/Organisms/Badge.vue'
-import { TableColumnType, TableProps } from 'ant-design-vue'
-import { customer, customerList } from '../../core/types/customer.type'
+import { TableProps } from 'ant-design-vue'
+import { customerList } from '../../../core/types/customer.type'
 import {
   initPageHandler,
   chnageCustomerStatus,
-} from '../../logics/specific/customrtList.handler'
-import { onBeforeMount, Ref, ref, reactive, computed } from 'vue'
+} from '../../../logics/specific/customrtList.handler'
+import { onBeforeMount, ref, reactive, computed } from 'vue'
 import router from '@/resources/router'
+import { columns, data } from '../../../core/constants/customer.options'
 
-const columns: TableColumnType<customer>[] = [
-  {
-    title: 'مشتری',
-    key: 'fullName',
-    dataIndex: 'fullName',
-  },
-  {
-    title: 'تاریخ عضویت',
-    key: 'createdAt',
-    dataIndex: 'createdAt',
-    sorter: (a: customer, b: customer) => a.createdAt - b.createdAt,
-  },
-  {
-    title: 'میانگین پرداختی',
-    dataIndex: 'totalExpenses',
-    key: 'totalExpenses',
-    sorter: (a: customer, b: customer) => a.totalExpenses - b.totalExpenses,
-  },
-  {
-    title: 'تعداد سفارش',
-    dataIndex: 'numberOfOrder',
-    key: 'numberOfOrder',
-    sorter: (a: customer, b: customer) => a.numberOfOrder - b.numberOfOrder,
-  },
-  {
-    title: 'ارزش مشتری',
-    dataIndex: 'value',
-    key: 'value',
-    sorter: (a: customer, b: customer) => a.value - b.value,
-  },
-  {
-    title: 'برچسب مشتری',
-    dataIndex: 'clientTags',
-    key: 'clientTags',
-  },
-  {
-    title: 'وضعیت',
-    dataIndex: 'isActive',
-    key: 'isActive',
-    filters: [
-      { text: 'فعال', value: true },
-      { text: 'غیر فعال', value: false },
-    ],
-    // onFilter: (value: boolean, record: customer) => (record.isActive = value),
-  },
-  {
-    title: 'عملیات',
-    dataIndex: 'actions',
-    key: 'actions',
-  },
-]
 const itemForChangeStatus = reactive({ isActive: false, id: '' })
 const modalSubmissionButtonLoader = ref(false)
 const turnOnLoader = () => (modalSubmissionButtonLoader.value = true)
 const turnOffLoader = () => (modalSubmissionButtonLoader.value = false)
-
-const data: Ref<customerList> = ref({
-  items: [],
-  hasNextPage: false,
-  hasPreviousPage: false,
-  page: 0,
-  totalCount: 0,
-  totalPages: 0,
-})
 
 onBeforeMount(async () => {
   const page = 1

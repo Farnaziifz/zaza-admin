@@ -87,13 +87,24 @@ const customerCommentOrderDetails = async (cId: string, oId: string) => {
   return res.data
 }
 
-const cusromerScoreList = async (
+const customerScoreList = async (
   id: string,
   page?: number,
   pageSize?: number
 ) => {
   const res = await api.get(
     `${pageUrl}/${id}/score?Page=${page}&PageSize=${pageSize}`
+  )
+  return res.data
+}
+
+const customerCachBackList = async (
+  id: string,
+  page?: number,
+  pageSize?: number
+) => {
+  const res = await api.get(
+    `${pageUrl}/${id}/cashback?Page=${page}&PageSize=${pageSize}`
   )
   return res.data
 }
@@ -120,7 +131,8 @@ export const customerApi = () => {
     customerGroupListGet: cutomerGroupListGet,
     customerCommentDetailsGet: customerCommentDetails,
     customerCommentOrderDetailsGet: customerCommentOrderDetails,
-    customerScoreListGet: cusromerScoreList,
     customerIncentiveDiscountListGet: customerIncentiveDiscount,
+    customerScoreListGet: customerScoreList,
+    customerCachBackListGet: customerCachBackList,
   }
 }

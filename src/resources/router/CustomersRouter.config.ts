@@ -1,7 +1,7 @@
-import Customers from '/src/presentation/pages/Customers.vue'
-import CustomersList from '/src/presentation/pages/CustomersList.vue'
-import CustomerDetails from '/src/presentation/pages/CustomerDetails.vue'
-import CustomerCommentDetails from '/src/presentation/pages/CustomerCommentDetails.vue'
+import Customers from '/src/presentation/pages/Customer/Customers.vue'
+import CustomersList from '/src/presentation/pages/Customer/CustomersList.vue'
+import CustomerDetails from '/src/presentation/pages/Customer/CustomerDetails.vue'
+import CustomerCommentDetails from '/src/presentation/pages/Customer/CustomerCommentDetails.vue'
 
 export const customerRouterConfig = {
   path: 'customers',

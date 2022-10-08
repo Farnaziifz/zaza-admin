@@ -37,7 +37,36 @@ const getDiscountDetails = async (data: string): Promise<detaislRes> => {
   return res.data
 }
 
-const getDiscountGroup = async (
+const getDiscountGroup = async (id: [], page?: number, pageSize?: number) => {
+  let gpID = ''
+  for (let i = 0; i < id.length; i++) {
+    gpID += `GroupIds=${id[i]}`
+    if (i < id.length - 1) gpID += '&'
+  }
+  const res = await api.get(
+    `customer/group?${gpID}&Page=${page}&PageSize=${pageSize}`
+  )
+
+  return res.data
+}
+
+// const getDiscountGroupDetails = async (
+//   id: { groupId: string }[],
+//   page?: number,
+//   pageSize?: number
+// ) => {
+//   let gpID = ''
+//   for (let i = 0; i < id.length; i++) {
+//     gpID += `GroupIds=${id[i].groupId}`
+//     if (i < id.length - 1) gpID += '&'
+//   }
+//   const res = await api.get(
+//     `group/title?${gpID}&Page=${page}&PageSize=${pageSize}`
+//   )
+
+//   return res.data
+// }
+const getDiscountGroupDetails = async (
   id: { groupId: string }[],
   page: number,
   pageSize: number
@@ -53,6 +82,7 @@ const getDiscountGroup = async (
 
   return res.data
 }
+
 export const discountApi = () => {
   return {
     get: discountListGet,
@@ -60,5 +90,6 @@ export const discountApi = () => {
     delete: deleteDiscount,
     getDetails: getDiscountDetails,
     getGroup: getDiscountGroup,
+    getGroupDetails: getDiscountGroupDetails,
   }
 }

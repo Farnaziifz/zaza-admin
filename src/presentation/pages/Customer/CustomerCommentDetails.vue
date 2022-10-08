@@ -3,21 +3,15 @@ import IncentiveDetailLayout from '/src/presentation/layouts/IncentiveDetailLayo
 import {
   getCustomerCommentDetails,
   getCustomerCommentOrderDetails,
-} from '../../logics/specific/customrtList.handler'
-import { Ref, ref, onBeforeMount } from 'vue'
-import {
-  customerCommentDetailsList,
-  customerOrderDetails,
-} from '../../core/types/customer.type'
+} from '../../../logics/specific/customrtList.handler'
+import { onBeforeMount } from 'vue'
 import { useRoute } from 'vue-router'
 
-const commentData: Ref<customerCommentDetailsList> = ref([])
-const commnetOrderData: Ref<customerOrderDetails> = ref({
-  createdAt: '',
-  finalPrice: 0,
-  trackingCode: '',
-  products: [],
-})
+import {
+  commentData,
+  commnetOrderData,
+} from '../../../core/constants/customer.options'
+
 const route = useRoute()
 const cId = String(route.params.cId)
 const fId = String(route.params.fId)
@@ -36,9 +30,9 @@ onBeforeMount(async () => {
     <template #layout-content>
       <div v-if="commentData && commentData.length === 1">
         <div
-          class="comment-container"
           v-for="item in commentData"
           :key="item.id"
+          class="comment-container"
         >
           <div class="title-container">
             <h3>امتیاز و متن نظر</h3>
@@ -61,9 +55,9 @@ onBeforeMount(async () => {
           <h3>امتیاز و متن نظر</h3>
         </div>
         <div
-          class="multi-comment-container"
           v-for="(item, index) in commentData"
           :key="item.id"
+          class="multi-comment-container"
         >
           <div class="product-rate-title">
             <div class="product">
@@ -110,9 +104,9 @@ onBeforeMount(async () => {
         </div>
         <ul>
           <li
-            class="product-item"
             v-for="item in commnetOrderData.products"
             :key="item.id"
+            class="product-item"
           >
             <div class="title">
               {{ item.title }}

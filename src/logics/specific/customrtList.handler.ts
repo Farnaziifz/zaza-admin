@@ -165,17 +165,32 @@ export const getCustomerScoreList = async (
   }
 }
 
+export const getCustomerCashBack = async (
+  id: string,
+  page?: number,
+  pageSize?: number
+) => {
+  const res = await api.customerCachBackListGet(id, page, pageSize)
+  const customercachback = res.data
+  const errors = res.errors
+  if (Object.is(errors, null)) return customercachback
+  else {
+    showErrorMessage()
+    throw 'error'
+  }
+}
+
 export const getCustomerIncentiveDiscount = async (
   id: string,
   page?: number,
   pageSize?: number
 ) => {
   const res = await api.customerIncentiveDiscountListGet(id, page, pageSize)
-   const customerIncentiveDiscount = res.data
-   const errors = res.errors
-   if (Object.is(errors, null)) return customerIncentiveDiscount
-   else {
-     showErrorMessage()
-     throw 'error'
-   }
+  const customerIncentiveDiscount = res.data
+  const errors = res.errors
+  if (Object.is(errors, null)) return customerIncentiveDiscount
+  else {
+    showErrorMessage()
+    throw 'error'
+  }
 }

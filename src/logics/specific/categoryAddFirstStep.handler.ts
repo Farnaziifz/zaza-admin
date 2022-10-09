@@ -18,7 +18,7 @@ export const saveGroupQueries = async (
   showLoadingMessage()
   const res = await groupApiCaller.postPreview(groupData, paginate)
 
-  if (res.data?.status === 200) {
+  if (res.data?.status === 200 || res.data?.status === 204) {
     showSuccessMessage()
     goToPath('/category/add/second-step')
     const store = useGroupStore()
@@ -35,7 +35,7 @@ export const postGroupPreview = async (
   showLoadingMessage()
   const res = await groupApiCaller.postPreview(groupData, paginate)
 
-  if (res.data?.status === 204) {
+  if (res.data?.status === 200 || res.data?.status === 204) {
     showSuccessMessage()
     return res.data.data.data
   } else {
@@ -46,7 +46,7 @@ export const postGroupPreview = async (
 export const postGroup = async (groupData: group) => {
   showLoadingMessage()
   const res = await groupApiCaller.post(groupData)
-  if (res.data?.status === 200) {
+  if (res.data?.status === 200 || res.data?.status === 204) {
     showSuccessMessage()
     return res.data.data.data
   } else {

@@ -25,7 +25,9 @@ const groupPost = async (
   }>
 > => {
   try {
-    return await api.post(pageUrl, groupData)
+    return {
+      data: await api.post(pageUrl, groupData),
+    }
   } catch (e) {
     return {
       error: e as AxiosError<{ data: undefined; error?: AxiosError }>,

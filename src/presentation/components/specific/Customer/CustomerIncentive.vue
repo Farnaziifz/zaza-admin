@@ -2,16 +2,18 @@
 import CustomerScore from '/src/presentation/components/specific/Customer/CustomerIncentive/score.vue'
 import CustomerCashBack from '/src/presentation/components/specific/Customer/CustomerIncentive/cachBack.vue'
 import CustomerDiscount from '/src/presentation/components/specific/Customer/CustomerIncentive/discount.vue'
-
+import CustomerCredit from '../../../../presentation/components/specific/Customer/CustomerIncentive/credit.vue'
 import {
   getCustomerScoreList,
   getCustomerCashBack,
   getCustomerIncentiveDiscount,
+  getCustomerIncentiveCredit,
 } from '../../../../logics/specific/customrtList.handler'
 import {
   customerScoreList,
   customerCasheBackList,
   customerDiscountList,
+  customerCreditList,
 } from '../../../../core/types/customer.type'
 import { onBeforeMount, ref, Ref, computed } from 'vue'
 import { useRoute } from 'vue-router'
@@ -46,6 +48,14 @@ const cachBackData: Ref<customerCasheBackList> = ref({
   totalCount: 0,
   totalPages: 0,
 })
+const creditData: Ref<customerCreditList> = ref({
+  items: [],
+  hasNextPage: false,
+  hasPreviousPage: false,
+  page: 0,
+  totalCount: 0,
+  totalPages: 0,
+})
 onBeforeMount(async () => {
   const page = 1
   const pageSize = 6
@@ -66,6 +76,11 @@ const getCustomerCachbackData = async () => {
   const pageSize = 10
   cachBackData.value = await getCustomerCashBack(routeId, page, pageSize)
 }
+const getCustomerCreditData = async () => {
+  const page = 1
+  const pageSize = 10
+  creditData.value = await getCustomerIncentiveCredit(routeId, page, pageSize)
+}
 const onChangeTab = () => {
   switch (radioValue.value) {
     case 'discount':
@@ -73,6 +88,9 @@ const onChangeTab = () => {
       break
     case 'cashback':
       getCustomerCachbackData()
+      break
+    case 'credit':
+      getCustomerCreditData()
   }
 }
 
@@ -91,6 +109,12 @@ const discountPagination = computed(() => ({
 const cachebackPagination = computed(() => ({
   total: cachBackData.value.totalCount,
   current: cachBackData.value.page,
+  pageSize: 6,
+  // showSizeChanger: true,
+}))
+const creditPagination = computed(() => ({
+  total: creditData.value.totalCount,
+  current: creditData.value.page,
   pageSize: 6,
   // showSizeChanger: true,
 }))
@@ -121,6 +145,15 @@ const changeDiscountPaginate: TableProps<customerScoreList>['onChange'] =
       paginate.pageSize
     )
   }
+const changeCreditPaginate: TableProps<customerScoreList>['onChange'] = async (
+  paginate
+) => {
+  creditData.value = await getCustomerIncentiveCredit(
+    routeId,
+    paginate.current,
+    paginate.pageSize
+  )
+}
 </script>
 
 <template>
@@ -137,7 +170,7 @@ const changeDiscountPaginate: TableProps<customerScoreList>['onChange'] =
     >
       <a-radio-button value="score">امتیازهای دریافتی</a-radio-button>
       <a-radio-button value="price">جایزه</a-radio-button>
-      <a-radio-button value="payment">هدیه اعتباری</a-radio-button>
+      <a-radio-button value="credit">هدیه اعتباری</a-radio-button>
       <a-radio-button value="discount">کد تخفیف</a-radio-button>
       <a-radio-button value="cashback">کش‌بک</a-radio-button>
       <a-radio-button value="coupon">کوپن</a-radio-button>
@@ -164,7 +197,13 @@ const changeDiscountPaginate: TableProps<customerScoreList>['onChange'] =
           @on-change="changeDiscountPaginate"
         />
       </div>
-      <div v-if="radioValue === 'payment'"><CustomerPayment /></div>
+      <div v-if="radioValue === 'credit'">
+        <CustomerCredit
+          :pagination="creditPagination"
+          :credit-data="creditData"
+          @on-change="changeCreditPaginate"
+        />
+      </div>
     </div>
   </a-card>
 </template>

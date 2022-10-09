@@ -168,3 +168,20 @@ export type customerCasheBackList = {
   totalCount: number
   totalPages: number
 }
+
+export type customerCredit = {
+  amount: number
+  createdAt: string
+  startAt: string
+  expireAt: string
+  hasPeriod: boolean
+}
+
+export type customerCreditList = {
+  items: customerCredit[]
+  hasNextPage: boolean
+  hasPreviousPage: boolean
+  page: number
+  totalCount: number
+  totalPages: number
+}

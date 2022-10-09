@@ -194,3 +194,18 @@ export const getCustomerIncentiveDiscount = async (
     throw 'error'
   }
 }
+
+export const getCustomerIncentiveCredit = async (
+  id: string,
+  page?: number,
+  pageSize?: number
+) => {
+  const res = await api.customerIncentiveCreditGet(id, page, pageSize)
+  const customerIncentiveCredit = res.data
+  const errors = res.errors
+  if (Object.is(errors, null)) return customerIncentiveCredit
+  else {
+    showErrorMessage()
+    throw 'error'
+  }
+}

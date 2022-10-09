@@ -2,18 +2,21 @@
 import CustomerScore from '/src/presentation/components/specific/Customer/CustomerIncentive/score.vue'
 import CustomerCashBack from '/src/presentation/components/specific/Customer/CustomerIncentive/cachBack.vue'
 import CustomerDiscount from '/src/presentation/components/specific/Customer/CustomerIncentive/discount.vue'
-import CustomerCredit from '../../../../presentation/components/specific/Customer/CustomerIncentive/credit.vue'
+import CustomerCredit from '/src/presentation/components/specific/Customer/CustomerIncentive/credit.vue'
+import CustomerCoupon from '/src/presentation/components/specific/Customer/CustomerIncentive/coupon.vue'
 import {
   getCustomerScoreList,
   getCustomerCashBack,
   getCustomerIncentiveDiscount,
   getCustomerIncentiveCredit,
+  getCustomerIncentiveCoupon,
 } from '../../../../logics/specific/customrtList.handler'
 import {
   customerScoreList,
   customerCasheBackList,
   customerDiscountList,
   customerCreditList,
+  customerCouponList,
 } from '../../../../core/types/customer.type'
 import { onBeforeMount, ref, Ref, computed } from 'vue'
 import { useRoute } from 'vue-router'
@@ -56,6 +59,15 @@ const creditData: Ref<customerCreditList> = ref({
   totalCount: 0,
   totalPages: 0,
 })
+
+const couponData: Ref<customerCouponList> = ref({
+  items: [],
+  hasNextPage: false,
+  hasPreviousPage: false,
+  page: 0,
+  totalCount: 0,
+  totalPages: 0,
+})
 onBeforeMount(async () => {
   const page = 1
   const pageSize = 6
@@ -64,7 +76,7 @@ onBeforeMount(async () => {
 
 const getDiscountData = async () => {
   const page = 1
-  const pageSize = 10
+  const pageSize = 6
   discountData.value = await getCustomerIncentiveDiscount(
     routeId,
     page,
@@ -73,13 +85,18 @@ const getDiscountData = async () => {
 }
 const getCustomerCachbackData = async () => {
   const page = 1
-  const pageSize = 10
+  const pageSize = 6
   cachBackData.value = await getCustomerCashBack(routeId, page, pageSize)
 }
 const getCustomerCreditData = async () => {
   const page = 1
-  const pageSize = 10
+  const pageSize = 6
   creditData.value = await getCustomerIncentiveCredit(routeId, page, pageSize)
+}
+const getCustomerCoupon = async () => {
+  const page = 1
+  const pageSize = 6
+  couponData.value = await getCustomerIncentiveCoupon(routeId, page, pageSize)
 }
 const onChangeTab = () => {
   switch (radioValue.value) {
@@ -91,6 +108,9 @@ const onChangeTab = () => {
       break
     case 'credit':
       getCustomerCreditData()
+      break
+    case 'coupon':
+      getCustomerCoupon()
   }
 }
 
@@ -115,6 +135,12 @@ const cachebackPagination = computed(() => ({
 const creditPagination = computed(() => ({
   total: creditData.value.totalCount,
   current: creditData.value.page,
+  pageSize: 6,
+  // showSizeChanger: true,
+}))
+const couponPagination = computed(() => ({
+  total: couponData.value.totalCount,
+  current: couponData.value.page,
   pageSize: 6,
   // showSizeChanger: true,
 }))
@@ -149,6 +175,16 @@ const changeCreditPaginate: TableProps<customerScoreList>['onChange'] = async (
   paginate
 ) => {
   creditData.value = await getCustomerIncentiveCredit(
+    routeId,
+    paginate.current,
+    paginate.pageSize
+  )
+}
+
+const changeCouponPaginate: TableProps<customerCouponList>['onChange'] = async (
+  paginate
+) => {
+  couponData.value = await getCustomerIncentiveCoupon(
     routeId,
     paginate.current,
     paginate.pageSize
@@ -202,6 +238,13 @@ const changeCreditPaginate: TableProps<customerScoreList>['onChange'] = async (
           :pagination="creditPagination"
           :credit-data="creditData"
           @on-change="changeCreditPaginate"
+        />
+      </div>
+      <div v-if="radioValue === 'coupon'">
+        <CustomerCoupon
+          :coupon-data="couponData"
+          :pagination="couponPagination"
+          @on-change="changeCouponPaginate"
         />
       </div>
     </div>

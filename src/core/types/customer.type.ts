@@ -185,3 +185,26 @@ export type customerCreditList = {
   totalCount: number
   totalPages: number
 }
+
+export type customerCoupon = {
+  title: string
+  type: string
+  reward: string
+  value?: {
+    amount?: number
+  }
+  rewardValue?: {
+    amount?: number
+    discountPercentage?: number
+    discountMaximumPrice?: number
+  }
+}
+
+export type customerCouponList = {
+  items: customerCoupon[]
+  hasNextPage: boolean
+  hasPreviousPage: boolean
+  page: number
+  totalCount: number
+  totalPages: number
+}

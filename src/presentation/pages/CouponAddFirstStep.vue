@@ -1,42 +1,20 @@
 <script setup lang="ts">
-import { ref, Ref, computed } from 'vue'
+import { ref, computed } from 'vue'
 import inputWithHadline from '/src/presentation/components/shared/molecules/InputWithHeadline.vue'
 import BSelect from '/src/presentation/components/shared/atoms/BSelect.vue'
 import InputWithHeadlineAndUnit from '/src/presentation/components/shared/molecules/InputWithHeadlineAndUnit.vue'
 import { CouponsTypesType } from '../../core/enums/couponsType.enum'
-import { productsList, products } from '../../core/types/product.type'
+import { productsList } from '../../core/types/product.type'
 import { getProductList } from '../../logics/specific/products.handler'
 import { t } from 'vui18n'
 import { UnorderedListOutlined } from '@ant-design/icons-vue'
-import { TableColumnType } from 'ant-design-vue'
+import { TableProps } from 'ant-design-vue'
+import { productsColumns, productListData } from '../../core/constants/coupons.options'
 
 const titleValue = ref('')
 const selectedCouponType = ref('')
-const productsColumns: TableColumnType<products>[] = [
-  {
-    title: 'عکس',
-    key: 'imageId',
-    dataIndex: 'imageId',
-  },
-  {
-    title: 'نام محصول',
-    key: 'title',
-    dataIndex: 'title',
-  },
-  {
-    title: 'قیمت محصول',
-    key: 'price',
-    dataIndex: 'price',
-  },
-]
-const productListData: Ref<productsList> = ref({
-  items: [],
-  hasNextPage: false,
-  hasPreviousPage: false,
-  page: 0,
-  totalCount: 0,
-  totalPages: 0,
-})
+
+
 const selectedProduct: any[] = []
 const couponTypeOptions: any[] = []
 for (const type in CouponsTypesType)
@@ -66,7 +44,7 @@ const onGetProductList = async () => {
 const productPagination = computed(() => ({
   total: productListData.value.totalCount,
   current: productListData.value.page,
-  pageSize: 10,
+  pageSize: 5,
 }))
 const rowSelection = ref({
   onChange: (selectedRows: productsList[]) => {
@@ -91,6 +69,14 @@ const rowSelection = ref({
     console.log(selected, selectedRows, changeRows)
   },
 })
+const onChangeProductList: TableProps<productsList>['onChange'] = async (
+  paginate
+) => {
+  productListData.value = await getProductList(
+    paginate.current,
+    paginate.pageSize
+  )
+}
 </script>
 
 <template>
@@ -151,8 +137,21 @@ const rowSelection = ref({
               :pagination="productPagination"
               :data-source="productListData.items"
               :row-selection="rowSelection"
-            ></a-table>
-            <!-- @change="onChange" -->
+              @change="onChangeProductList"
+            >
+              <template #bodyCell="{ column, record }">
+                <template v-if="column.key === 'imageId'">
+                  <img
+                    :src="record.host + record.path + record.imageId"
+                    alt=""
+                    class="product-image"
+                  />
+                </template>
+                <template v-if="column.key === 'price'">
+                  {{ $filters.toPersianCurrency(record.price / 10, 'تومان') }}
+                </template>
+              </template>
+            </a-table>
           </div>
         </a-modal>
       </div>
@@ -199,5 +198,12 @@ const rowSelection = ref({
   height: 1px;
   background-color: #e2e2e2;
   margin: 32px 0;
+}
+.product-image {
+  width: 22px;
+  height: 22px;
+  object-fit: cover;
+  border-radius: 4px;
+  margin: 0 auto;
 }
 </style>

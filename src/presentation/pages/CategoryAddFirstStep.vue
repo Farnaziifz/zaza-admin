@@ -25,13 +25,15 @@ import { DeleteOutlined } from '@ant-design/icons-vue'
 // @ts-ignore
 import pd from 'persian-date'
 import _ from 'lodash'
+import { useGroupStore } from '@/resources/store/group.store'
 
 const titleValue = ref('')
 const btnDisabled = computed(() => !titleValue.value)
-console.log(btnDisabled)
 const showModal = ref(false)
 const selectValue: Ref<string | undefined> = ref('')
 const pickedDate = ref([])
+const groupStore = useGroupStore()
+
 const openModal = () => {
   showModal.value = true
 }
@@ -108,6 +110,11 @@ const nextStep = async () => {
 
 const deleteQuery = (key: number) => {
   queryList.value.splice(key, 1)
+}
+
+if (groupStore.title) {
+  titleValue.value = groupStore.title
+  queryList.value = groupStore.queries
 }
 </script>
 

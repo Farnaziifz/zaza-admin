@@ -71,7 +71,7 @@ const onChange: TableProps<customerScoreList>['onChange'] = (paginate) => {
             }}</span>
             <span v-if="record.type === 'BUY_ABOVE_SPECIFIC_PRICE'">
               {{
-                $filters.toPersianCurrency(record.value.amount, 'تومان')
+                $filters.toPersianCurrency(record.value.amount / 10, 'تومان')
               }}</span
             >
             <span v-if="record.type === 'BUY_FROM_SPECIFIC_CATEGORY'">

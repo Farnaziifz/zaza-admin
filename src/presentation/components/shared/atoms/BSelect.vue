@@ -6,7 +6,7 @@ import ChevronUpIcon from './ChevronUpIcon.vue'
 type BSelectPropsType = {
   placeHolder?: string
   options: CascaderOptionType
-  suffixIconColor: string
+  suffixIconColor?: string
   disabled?: boolean
   value?: string
 }

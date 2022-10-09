@@ -10,9 +10,39 @@
       "BUY_SPECIFIC_PRODUCT": "خرید محصولات",
       "BUY_FROM_SPECIFIC_CATEGORY": "خرید از دسته‌بندی",
       "BUY_ABOVE_SPECIFIC_PRICE": "خرید بیش از یک مبلغ مشخص"
+    },
+    "groupQuery": {
+      "BUSINESS_CLASSIFICATION": "طبقه\u200Cبندی تجاری",
+      "ORDER_RANGE": "بازه دلخواه تعداد سفارش",
+      "PURCHASED_PRODUCT_RANGE": "بازه دلخواه تعداد محصول خریداری شده",
+      "PAID_MONEY_RANGE": "بازه دلخواه پول پرداختی",
+      "PRODUCTS_IN_BASKET_AVERAGE": "بازه دلخواه میانگین تعداد محصولات خریداری شده در هر سفارش",
+      "PAYMENT_AVERAGE": "بازه دلخواه میانگین پول پرداختی در هر سفارش",
+      "HAS_FEEDBACK": "وضعیت ثبت نظر",
+      "NUMBER_OF_FAILED_PAYMENT": "بازه دلخواه تعداد پرداخت ناموفق\u200Cها",
+      "BADGE_LABEL": "برچسب فعالیت",
+      "SATISFACTION_LABEL": "برچسب رضایتمندی"
+    },
+    "businessClassification": {
+      "CHURN": "از دست رفته",
+      "LAZY": "خواب آلود",
+      "NORMAL": "امیدوار کننده",
+      "HERO": "وفادار",
+      "LOYAL": "معمولی",
+      "ATTENTION_NEED": "عادی"
+    },
+    "satisfaction": {
+      "HAPPY": "راضی",
+      "UN_HAPPY": "ناراضی",
+      "NORMAL": "خنثی"
     }
   },
   "components": {
+    "molecules": {
+      "returnButton": {
+        "defaultText": "بازگشت"
+      }
+    },
     "organisms": {
       "HintCollapse": {
         "defaultHeader": "راهنما"
@@ -49,6 +79,43 @@
       "bodyTitle": "اطلاعات برچسب",
       "hint": "راهنمای صفحه برچسب ها",
       "inputPlaceHolder": "میزان درجه را وارد کنید"
+    },
+    "CategoryAdd": {
+      "title": "افزودن دسته بندی",
+      "steps": {
+        "firstStep": {
+          "title": "انتخاب فیلتر",
+          "description": "عنوان دسته\u200Cبندی، انتخاب فیلتر ها"
+        },
+        "secondStep": {
+          "title": "مشاهده لیست و ساخت دسته\u200Cبندی",
+          "description": "مشاهده لیست ساخته شده و تایید آن"
+        }
+      }
+    },
+    "CategoryAddFirstStep": {
+      "CategoryNameInputHeadline": "عنوان دسته بندی",
+      "CategoryNameInputPlaceholder": "عنوان دسته بندی را وارد کنید",
+      "CategoryFilterTitle": "فیلترها",
+      "CategoryAddFilterButtonText": "افزودن فیلتر",
+      "CategoryAddDatePickerHeadline": "بازه زمانی دلخواه",
+      "CategoryAddDatePickerPlaceHolder": "بازه زمانی دلخواه را انتخاب کنید",
+      "modal": {
+        "categoryFilterModalTitle": "افزودن فیلتر",
+        "categoryFilterModalSelectHeadline": "فیلتر",
+        "categoryFilterModalSelectPlaceHolder": "فیلتر مورد نظر را انتخاب کنید",
+        "BUSINESS_CLASSIFICATION": {
+          "selectPlaceHolder": "طبقه\u200Cبندی تجاری را انتخاب کنید",
+          "selectHeadline": "طبقه بندی"
+        },
+        "ORDER_RANGE": {
+          "title": "بازه دلخواه تعداد دفعات ثبت سفارش",
+          "inputPlaceholder": "تعداد را وارد کنید",
+          "inputToPrefixText": "تا",
+          "inputFromPrefixText": "از",
+          "inputPostfixText": "تعداد"
+        }
+      }
     }
   }
 }

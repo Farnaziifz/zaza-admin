@@ -4,6 +4,8 @@ import { labelSettingsRouterConfig } from './labelSettingsRouter.config'
 import { customerRouterConfig } from './CustomersRouter.config'
 import { couponsRouterConfig } from './CouponsRouter.config'
 import { creditRouterConfig } from './CreditsRouter.config'
+import { categoryRouterConfig } from './categoryRouter.config'
+
 import { discountRouterConfig } from './DiscoutRouter.config'
 const config: RouterOptions = {
   routes: [
@@ -13,6 +15,7 @@ const config: RouterOptions = {
       component: Main,
       children: [
         labelSettingsRouterConfig,
+        categoryRouterConfig,
         customerRouterConfig,
         couponsRouterConfig,
         creditRouterConfig,

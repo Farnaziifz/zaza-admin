@@ -3,7 +3,7 @@ import { ref, watch } from 'vue'
 
 type InputWithHeadline = {
   type: string
-  headline: string
+  headline?: string
   value: string | number
   placeholder: string
 }
@@ -22,7 +22,9 @@ watch(
 
 <template>
   <div>
-    {{ props.headline }}
+    <slot name="headlineText">
+      {{ props.headline }}
+    </slot>
     <a-input
       v-model:value="inputValue"
       :placeholder="placeholder"

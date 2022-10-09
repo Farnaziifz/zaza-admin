@@ -23,6 +23,7 @@ export default defineConfig({
     alias: {
       '@': path.resolve(__dirname, './src'),
     },
+    mainFields: ['browser', 'module', 'main', 'jsnext:main', 'jsnext'],
   },
   css: {
     preprocessorOptions: {
@@ -34,4 +35,4 @@ export default defineConfig({
       },
     },
   },
-});
+})

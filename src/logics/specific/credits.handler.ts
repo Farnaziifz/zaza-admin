@@ -1,5 +1,5 @@
-import { creditsApi } from '../../resources/api/credits'
-import { creditsList, creditCustomerGroup } from '../../core/types/credits.type'
+import { creditsApi } from '@/resources/api/credits'
+import { creditsList, creditCustomerGroup } from '@/core/types/credits.type'
 
 const api = creditsApi()
 

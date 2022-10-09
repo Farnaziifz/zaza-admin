@@ -293,6 +293,15 @@ if (groupStore.title) {
               {{ t(`types.badge.${q.value.toLowerCase()}`) }}
             </span>
           </div>
+
+          <div v-if="q.value" class="mt-1">
+            <span
+              v-if="q.type === groupQueryTypeEnum.HAS_FEEDBACK"
+              style="color: #1894ff"
+            >
+              {{ q.value ? 'دارد' : 'ندارد' }}
+            </span>
+          </div>
         </div>
       </a-card>
     </div>

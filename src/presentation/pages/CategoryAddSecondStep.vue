@@ -9,7 +9,7 @@ import { returnToPreviousRoute } from '@/logics/shared/route.handler'
 
 const columns = [
   {
-    title: 'مشتری',
+    title: 'نام مشتری',
     key: 'fullName',
     dataIndex: 'fullName',
   },

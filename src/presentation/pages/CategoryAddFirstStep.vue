@@ -195,7 +195,7 @@ if (groupStore.title) {
               {{
                 q.type === groupQueryTypeEnum.PAID_MONEY_RANGE ||
                 q.type === groupQueryTypeEnum.PAYMENT_AVERAGE
-                  ? q.from / 10
+                  ? _.toNumber(q.from) / 10
                   : q.from
               }}
               <template v-if="q.type === groupQueryTypeEnum.ORDER_RANGE">
@@ -219,22 +219,21 @@ if (groupStore.title) {
               <template
                 v-if="
                   q.type === groupQueryTypeEnum.PRODUCTS_IN_BASKET_AVERAGE ||
-                  q.type === groupQueryTypeEnum.PRODUCTS_IN_BASKET_AVERAGE
+                  q.type === groupQueryTypeEnum.PURCHASED_PRODUCT_RANGE
                 "
               >
                 زیرمحصول
               </template>
             </span>
-
-            <!-- <span> {{ t('') }} </span> -->
           </div>
+
           <div v-if="q.to" class="mt-1">
             <span> تا </span>
             <span style="color: #1894ff">
               {{
                 q.type === groupQueryTypeEnum.PAID_MONEY_RANGE ||
                 q.type === groupQueryTypeEnum.PAYMENT_AVERAGE
-                  ? q.to / 10
+                  ? _.toNumber(q.to) / 10
                   : q.to
               }}
 
@@ -259,7 +258,7 @@ if (groupStore.title) {
               <template
                 v-if="
                   q.type === groupQueryTypeEnum.PRODUCTS_IN_BASKET_AVERAGE ||
-                  q.type === groupQueryTypeEnum.PRODUCTS_IN_BASKET_AVERAGE
+                  q.type === groupQueryTypeEnum.PURCHASED_PRODUCT_RANGE
                 "
               >
                 زیرمحصول

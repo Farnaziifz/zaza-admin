@@ -26,7 +26,7 @@ const passOrderRangeToParents = () =>
 <template>
   <div>
     <span style="font-weight: 500; font-size: 16px">
-      {{ t('pages.CategoryAddFirstStep.modal.ORDER_RANGE.title') }}
+      بازه دلخواه تعداد زیرمحصولات خریداری شده
     </span>
     <div class="flex items-center">
       <a-input
@@ -51,11 +51,7 @@ const passOrderRangeToParents = () =>
           </span>
         </template>
         <template #addonAfter>
-          <span class="p-3">
-            {{
-              t('pages.CategoryAddFirstStep.modal.ORDER_RANGE.inputPostfixText')
-            }}
-          </span>
+          <span class="p-3"> تعداد </span>
         </template>
       </a-input>
     </div>

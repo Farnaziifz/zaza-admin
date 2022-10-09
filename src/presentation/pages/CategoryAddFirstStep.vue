@@ -25,7 +25,6 @@ import { DeleteOutlined } from '@ant-design/icons-vue'
 // @ts-ignore
 import pd from 'persian-date'
 import _ from 'lodash'
-// import moment from "moment";
 
 const titleValue = ref('')
 const btnDisabled = computed(() => !titleValue.value)
@@ -44,6 +43,16 @@ const closeModal = () => {
 }
 
 const addQueryToList = () => {
+  if (
+    (selectValue.value === groupQueryTypeEnum.PAID_MONEY_RANGE ||
+      selectValue.value === groupQueryTypeEnum.PAYMENT_AVERAGE) &&
+    (queryValue.value?.from < 5000 || queryValue.value?.to < 5000)
+  ) {
+    closeModal()
+    showErrorMessage('مقادیر وارده برای بازه اشتباه میباشد')
+    return
+  }
+
   if (
     queryValue.value?.to &&
     queryValue.value?.from &&
@@ -77,7 +86,7 @@ for (const key in groupQueryTypeEnum) {
   groupQueryOptions.push({ value: key, label: t(`types.groupQuery.${key}`) })
 }
 
-const queryValue: Ref<query | undefined> = ref(undefined)
+const queryValue = ref()
 const queryList: Ref<query[]> = ref([])
 
 watch(queryList, () => console.log(queryList.value), { deep: true })
@@ -114,10 +123,13 @@ const deleteQuery = (key: number) => {
             t('pages.CategoryAddFirstStep.CategoryNameInputPlaceholder')
           )
         "
-        :headline="
-          _.toString(t('pages.CategoryAddFirstStep.CategoryNameInputHeadline'))
-        "
-      />
+      >
+        <template #headlineText>
+          <span style="font-weight: 500; font-size: 16px">
+            {{ t('pages.CategoryAddFirstStep.CategoryNameInputHeadline') }}
+          </span>
+        </template>
+      </input-with-headline>
 
       <b-date-picker
         v-model:value="pickedDate"
@@ -172,12 +184,80 @@ const deleteQuery = (key: number) => {
         <div class="flex flex-row items-center">
           <div v-if="q.from" class="mt-1">
             <span> از </span>
-            <span style="color: #1894ff"> {{ q.from }} </span>
+            <span style="color: #1894ff">
+              {{
+                q.type === groupQueryTypeEnum.PAID_MONEY_RANGE ||
+                q.type === groupQueryTypeEnum.PAYMENT_AVERAGE
+                  ? q.from / 10
+                  : q.from
+              }}
+              <template v-if="q.type === groupQueryTypeEnum.ORDER_RANGE">
+                سفارش
+              </template>
+              <template
+                v-if="
+                  q.type === groupQueryTypeEnum.PAID_MONEY_RANGE ||
+                  q.type === groupQueryTypeEnum.PAYMENT_AVERAGE
+                "
+              >
+                تومان
+              </template>
+
+              <template
+                v-if="q.type === groupQueryTypeEnum.NUMBER_OF_FAILED_PAYMENT"
+              >
+                پرداخت
+              </template>
+
+              <template
+                v-if="
+                  q.type === groupQueryTypeEnum.PRODUCTS_IN_BASKET_AVERAGE ||
+                  q.type === groupQueryTypeEnum.PRODUCTS_IN_BASKET_AVERAGE
+                "
+              >
+                زیرمحصول
+              </template>
+            </span>
+
             <!-- <span> {{ t('') }} </span> -->
           </div>
           <div v-if="q.to" class="mt-1">
             <span> تا </span>
-            <span style="color: #1894ff"> {{ q.to }} </span>
+            <span style="color: #1894ff">
+              {{
+                q.type === groupQueryTypeEnum.PAID_MONEY_RANGE ||
+                q.type === groupQueryTypeEnum.PAYMENT_AVERAGE
+                  ? q.to / 10
+                  : q.to
+              }}
+
+              <template v-if="q.type === groupQueryTypeEnum.ORDER_RANGE">
+                سفارش
+              </template>
+              <template
+                v-if="
+                  q.type === groupQueryTypeEnum.PAID_MONEY_RANGE ||
+                  q.type === groupQueryTypeEnum.PAYMENT_AVERAGE
+                "
+              >
+                تومان
+              </template>
+
+              <template
+                v-if="q.type === groupQueryTypeEnum.NUMBER_OF_FAILED_PAYMENT"
+              >
+                پرداخت
+              </template>
+
+              <template
+                v-if="
+                  q.type === groupQueryTypeEnum.PRODUCTS_IN_BASKET_AVERAGE ||
+                  q.type === groupQueryTypeEnum.PRODUCTS_IN_BASKET_AVERAGE
+                "
+              >
+                زیرمحصول
+              </template>
+            </span>
           </div>
 
           <div v-if="q.value" class="mt-1">
@@ -271,13 +351,13 @@ const deleteQuery = (key: number) => {
       v-model:value="queryValue"
     />
 
-    <FilterPaymnetAverage
-      v-if="selectValue === groupQueryTypeEnum.PAYMENT_AVERAGE"
+    <FilterProductsInBasketAverage
+      v-if="selectValue === groupQueryTypeEnum.PRODUCTS_IN_BASKET_AVERAGE"
       v-model:value="queryValue"
     />
 
-    <FilterProductsInBasketAverage
-      v-if="selectValue === groupQueryTypeEnum.PRODUCTS_IN_BASKET_AVERAGE"
+    <FilterPaymnetAverage
+      v-if="selectValue === groupQueryTypeEnum.PAYMENT_AVERAGE"
       v-model:value="queryValue"
     />
 

@@ -26,7 +26,7 @@ const passOrderRangeToParents = () =>
 <template>
   <div>
     <span style="font-weight: 500; font-size: 16px">
-      {{ t('pages.CategoryAddFirstStep.modal.ORDER_RANGE.title') }}
+      بازه دلخواه میزان پول پرداختی
     </span>
     <div class="flex items-center">
       <a-input

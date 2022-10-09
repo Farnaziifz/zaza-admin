@@ -15,10 +15,10 @@ const passOrderRangeToParents = () =>
     value: null,
     type: groupQueryTypeEnum.PRODUCTS_IN_BASKET_AVERAGE,
     to: ProductsInBasketAverage.value.to
-      ? _.toNumber(ProductsInBasketAverage.value.to) * 10
+      ? _.toNumber(ProductsInBasketAverage.value.to)
       : null,
     from: ProductsInBasketAverage.value.from
-      ? _.toNumber(ProductsInBasketAverage.value.from) * 10
+      ? _.toNumber(ProductsInBasketAverage.value.from)
       : null,
   })
 </script>
@@ -26,7 +26,7 @@ const passOrderRangeToParents = () =>
 <template>
   <div>
     <span style="font-weight: 500; font-size: 16px">
-      {{ t('pages.CategoryAddFirstStep.modal.ORDER_RANGE.title') }}
+      بازه دلخواه میانگین تعداد زیرمحصولات خریداری شده در هر سفارش
     </span>
     <div class="flex items-center">
       <a-input
@@ -51,7 +51,7 @@ const passOrderRangeToParents = () =>
           </span>
         </template>
         <template #addonAfter>
-          <span class="p-3"> تومان </span>
+          <span class="p-3"> تعداد </span>
         </template>
       </a-input>
     </div>

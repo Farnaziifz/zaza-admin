@@ -31,13 +31,7 @@ watch(
 </script>
 <template>
   <div class="flex flex-col">
-    <span style="font-weight: 500; font-size: 16px">
-      {{
-        t(
-          'pages.CategoryAddFirstStep.modal.BUSINESS_CLASSIFICATION.selectHeadline'
-        )
-      }}
-    </span>
+    <span style="font-weight: 500; font-size: 16px"> برچسب </span>
     <b-select
       v-model:value="satisfactionSelectValue"
       :options="satisfactionOptions"

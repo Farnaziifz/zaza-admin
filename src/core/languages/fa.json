@@ -24,6 +24,11 @@
       "HERO": "وفادار",
       "LOYAL": "معمولی",
       "ATTENTION_NEED": "عادی"
+    },
+    "satisfaction": {
+      "HAPPY": "راضی",
+      "UN_HAPPY": "ناراضی",
+      "NORMAL": "خنثی"
     }
   },
   "components": {

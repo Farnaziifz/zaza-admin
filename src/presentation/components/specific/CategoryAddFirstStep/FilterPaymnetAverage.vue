@@ -14,9 +14,11 @@ const passOrderRangeToParents = () =>
   emits('update:value', {
     value: null,
     type: groupQueryTypeEnum.PAYMENT_AVERAGE,
-    to: PaymentAverage.value.to ? _.toNumber(PaymentAverage.value.to) : null,
+    to: PaymentAverage.value.to
+      ? _.toNumber(PaymentAverage.value.to) * 10
+      : null,
     from: PaymentAverage.value.from
-      ? _.toNumber(PaymentAverage.value.from)
+      ? _.toNumber(PaymentAverage.value.from) * 10
       : null,
   })
 </script>
@@ -24,7 +26,7 @@ const passOrderRangeToParents = () =>
 <template>
   <div>
     <span style="font-weight: 500; font-size: 16px">
-      {{ t('pages.CategoryAddFirstStep.modal.ORDER_RANGE.title') }}
+      بازه دلخواه میانگین پول پرداختی در هر سفارش
     </span>
     <div class="flex items-center">
       <a-input
@@ -49,11 +51,7 @@ const passOrderRangeToParents = () =>
           </span>
         </template>
         <template #addonAfter>
-          <span class="p-3">
-            {{
-              t('pages.CategoryAddFirstStep.modal.ORDER_RANGE.inputPostfixText')
-            }}
-          </span>
+          <span class="p-3"> تومان </span>
         </template>
       </a-input>
     </div>

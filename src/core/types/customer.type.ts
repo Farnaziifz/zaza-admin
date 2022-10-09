@@ -130,3 +130,81 @@ export type customerScoreList = {
   totalCount: number
   totalPages: number
 }
+
+export type customerDiscount = {
+  title: string
+  code: string
+  type: string
+  consumeType: string
+  stateType: string
+  startAt: string
+  expireAt: string
+  consumedCount: number
+  promotionStepCount: number
+}
+
+export type customerDiscountList = {
+  items: customerDiscount[]
+  hasNextPage: boolean
+  hasPreviousPage: boolean
+  page: number
+  totalCount: number
+  totalPages: number
+}
+export type customerCasheBack = {
+  orderFinalPrice: number
+  type: string
+  amount: number
+  maximumPrice: number
+  startAt: string
+  expireAt: string
+}
+
+export type customerCasheBackList = {
+  items: customerCasheBack[]
+  hasNextPage: boolean
+  hasPreviousPage: boolean
+  page: number
+  totalCount: number
+  totalPages: number
+}
+
+export type customerCredit = {
+  amount: number
+  createdAt: string
+  startAt: string
+  expireAt: string
+  hasPeriod: boolean
+}
+
+export type customerCreditList = {
+  items: customerCredit[]
+  hasNextPage: boolean
+  hasPreviousPage: boolean
+  page: number
+  totalCount: number
+  totalPages: number
+}
+
+export type customerCoupon = {
+  title: string
+  type: string
+  reward: string
+  value?: {
+    amount?: number
+  }
+  rewardValue?: {
+    amount?: number
+    discountPercentage?: number
+    discountMaximumPrice?: number
+  }
+}
+
+export type customerCouponList = {
+  items: customerCoupon[]
+  hasNextPage: boolean
+  hasPreviousPage: boolean
+  page: number
+  totalCount: number
+  totalPages: number
+}

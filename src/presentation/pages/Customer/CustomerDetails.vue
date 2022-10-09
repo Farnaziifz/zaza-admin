@@ -1,15 +1,12 @@
 <script lang="ts" async setup>
 import IncentiveDetailLayout from '/src/presentation/layouts/IncentiveDetailLayout.vue'
-import { onBeforeMount, Ref, ref, reactive, computed } from 'vue'
+import { onBeforeMount, ref, reactive, computed } from 'vue'
 import {
-  customer,
-  walletBalance,
   transactionHistoryList,
   customerOrderList,
   customerPaymentList,
   customerCommentList,
-  customerGroupList,
-} from '../../core/types/customer.type'
+} from '../../../core/types/customer.type'
 
 import {
   getCustomerProfile,
@@ -20,7 +17,7 @@ import {
   getCustomerPayment,
   getCustomerComment,
   getCustomerGroup,
-} from '../../logics/specific/customrtList.handler'
+} from '../../../logics/specific/customrtList.handler'
 
 import { useRoute } from 'vue-router'
 import { TableProps } from 'ant-design-vue'
@@ -32,54 +29,15 @@ import CustomerPayment from '/src/presentation/components/specific/Customer/Cust
 import CustomerComment from '/src/presentation/components/specific/Customer/CustomerComment.vue'
 import CustomerMemebershipGroup from '/src/presentation/components/specific/Customer/CustomerMembershipGroup.vue'
 import CustomerInsentive from '/src/presentation/components/specific/Customer/CustomerIncentive.vue'
-
-const profileData: Ref<customer> = ref({
-  id: '',
-  fullName: '',
-  createdAt: 0,
-  numberOfOrder: 0,
-  totalExpenses: 0,
-  value: 0,
-  orderLabel: '',
-  DegreeLabel: '',
-  isActive: false,
-})
-const walletBalanceData: Ref<walletBalance> = ref({
-  amount: 0,
-})
-const transactionWalletData: Ref<transactionHistoryList> = ref({
-  items: [],
-  hasNextPage: false,
-  hasPreviousPage: false,
-  page: 0,
-  totalCount: 0,
-  totalPages: 0,
-})
-const customerOrderData: Ref<customerOrderList> = ref({
-  items: [],
-  hasNextPage: false,
-  hasPreviousPage: false,
-  page: 0,
-  totalCount: 0,
-  totalPages: 0,
-})
-const customerPaymentData: Ref<customerPaymentList> = ref({
-  items: [],
-  hasNextPage: false,
-  hasPreviousPage: false,
-  page: 0,
-  totalCount: 0,
-  totalPages: 0,
-})
-const customerCommentData: Ref<customerCommentList> = ref({
-  items: [],
-  hasNextPage: false,
-  hasPreviousPage: false,
-  page: 0,
-  totalCount: 0,
-  totalPages: 0,
-})
-const customerGroupData: Ref<customerGroupList> = ref([])
+import {
+  profileData,
+  walletBalanceData,
+  transactionWalletData,
+  customerGroupData,
+  customerCommentData,
+  customerPaymentData,
+  customerOrderData,
+} from '../../../core/constants/customer.options'
 
 const visible = ref<boolean>(false)
 const itemForChangeStatus = reactive({ isActive: false, id: '' })
@@ -241,38 +199,38 @@ const changeCustomerStatus = async () => {
     <template #layout-content>
       <a-tabs v-model:activeKey="activeKey" @change="onChangeTab">
         <a-tab-pane key="1" tab="اطلاعات مشتری">
-          <CustomerProfile :profileData="profileData"
+          <CustomerProfile :profile-data="profileData"
         /></a-tab-pane>
         <a-tab-pane key="2" tab="کیف پول"
           ><CustomerWallet
-            :walletBalance="walletBalanceData"
+            :wallet-balance="walletBalanceData"
             :pagination="pagination"
-            :transactionData="transactionWalletData"
-            @onChange="changetransactionPaginate"
+            :transaction-data="transactionWalletData"
+            @on-change="changetransactionPaginate"
         /></a-tab-pane>
         <a-tab-pane key="3" tab="سفارش‌ها"
           ><CustomerOrder
-            :orderData="customerOrderData"
+            :order-data="customerOrderData"
             :pagination="orderPagination"
-            @onChange="changeOrderPaginate"
+            @on-change="changeOrderPaginate"
         /></a-tab-pane>
         <a-tab-pane key="4" tab="پرداخت‌ها">
           <CustomerPayment
-            :paymentData="customerPaymentData"
+            :payment-data="customerPaymentData"
             :pagination="paymentPagination"
-            @onChange="changePaymentPaginate"
+            @on-change="changePaymentPaginate"
           />
         </a-tab-pane>
         <a-tab-pane key="5" tab="مشوق‌ها"> <CustomerInsentive /> </a-tab-pane>
         <a-tab-pane key="6" tab="نظرات">
           <CustomerComment
-            :commentData="customerCommentData"
+            :comment-data="customerCommentData"
             :pagination="commentPagination"
-            @onChange="changeCommentPaginate"
+            @on-change="changeCommentPaginate"
           />
         </a-tab-pane>
         <a-tab-pane key="7" tab="دسته‌بندی های عضو">
-          <CustomerMemebershipGroup :groupData="customerGroupData" />
+          <CustomerMemebershipGroup :group-data="customerGroupData" />
         </a-tab-pane>
       </a-tabs>
     </template>

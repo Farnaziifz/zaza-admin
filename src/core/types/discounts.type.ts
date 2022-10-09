@@ -44,3 +44,16 @@ export type discountGroup = {
   totalCount: number
   totalPages: number
 }
+
+export type discountCustomer = {
+  fullName: string
+  mobileNumber: number
+}
+export type discountCustomerGroup = {
+  items: discountCustomer[]
+  hasNextPage: boolean
+  hasPreviousPage: boolean
+  page: number
+  totalCount: number
+  totalPages: number
+}

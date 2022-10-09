@@ -1,70 +1,39 @@
 <script lang="ts" setup async>
 import ContentLayout from '@/presentation/layouts/ContentLayout.vue'
-import { TableColumnType, TableProps } from 'ant-design-vue'
 import PlusIcon from '/src/presentation/components/shared/atoms/PlusIcon.vue'
-import { discounts, discountsList } from '@/core/types/discounts.type'
-import { Ref, ref, onBeforeMount, computed, reactive } from 'vue'
+import { TableProps } from 'ant-design-vue'
+import {
+  discountsList,
+  discountCustomerGroup,
+} from '@/core/types/discounts.type'
+import { ref, onBeforeMount, computed, reactive } from 'vue'
 import {
   initPageHandler,
   chnageDiscountStatus,
   deleteDiscount,
-} from '../../logics/specific/discount.handler'
+  getDiscoutGroup,
+} from '../../../logics/specific/discount.handler'
 import router from '@/resources/router'
+import {
+  columns,
+  customerGroupColumns,
+  data,
+  customerData,
+} from '../../../core/constants/discount.options'
 
-const columns: TableColumnType<discounts>[] = [
-  {
-    title: 'عنوان تخفیف',
-    key: 'title',
-    dataIndex: 'title',
-  },
-  {
-    title: 'تنظیمات تخفیف',
-    key: 'setting',
-    dataIndex: 'setting',
-  },
-  {
-    title: 'مقدار تخفیف',
-    dataIndex: 'amount',
-    key: 'amount',
-  },
-  {
-    title: 'مشتریان هدف',
-    dataIndex: 'customersCount',
-    key: 'customersCount',
-  },
-  {
-    title: 'وضعیت تخفیف',
-    dataIndex: 'isActive',
-    key: 'isActive',
-  },
-  {
-    title: 'زمان شروع و پایان',
-    dataIndex: 'startAt',
-    key: 'startAt',
-  },
-  {
-    title: 'عملیات',
-    dataIndex: 'actions',
-    key: 'actions',
-  },
-]
-const data: Ref<discountsList> = ref({
-  items: [],
-  hasNextPage: false,
-  hasPreviousPage: false,
-  page: 0,
-  totalCount: 0,
-  totalPages: 0,
-})
 const pagination = computed(() => ({
   total: data.value.totalCount,
   current: data.value.page,
   pageSize: 10,
-  showSizeChanger: true,
+  // showSizeChanger: true,
 }))
+
 const itemForChangeStatus = reactive({ isActive: false, id: '' })
 const itemForDelete = reactive({ id: '', title: '' })
 const modalSubmissionButtonLoader = ref(false)
+let activeItemInModal: [] = reactive([])
+const visibleGroupModal = ref<boolean>(false)
+
 const turnOnLoader = () => (modalSubmissionButtonLoader.value = true)
 const turnOffLoader = () => (modalSubmissionButtonLoader.value = false)
 onBeforeMount(async () => {
@@ -72,11 +41,7 @@ onBeforeMount(async () => {
   const pageSize = 10
   data.value = await initPageHandler(page, pageSize)
 })
-const onChange: TableProps<discountsList>['onChange'] = async (
-  paginate,
-  sorter
-) => {
-  console.log('params', paginate, sorter)
+const onChange: TableProps<discountsList>['onChange'] = async (paginate) => {
   data.value = await initPageHandler(paginate.current, paginate.pageSize)
 }
 const visibleStatusModal = ref<boolean>(false)
@@ -115,6 +80,29 @@ const hideModal = () => {
 const gotoDetails = (item: string) => {
   router.push({ name: 'discount-details', params: { id: item } })
 }
+const openGroupModal = async (item: []) => {
+  const page = 1
+  const pageSize = 10
+  customerData.value = await getDiscoutGroup(item, page, pageSize)
+  activeItemInModal = item
+  visibleGroupModal.value = true
+}
+const handleCancel = () => {
+  visibleGroupModal.value = false
+}
+const customerpagination = computed(() => ({
+  total: customerData.value.totalCount,
+  current: customerData.value.page,
+  pageSize: 10,
+}))
+const onChangeCustomerGroup: TableProps<discountCustomerGroup>['onChange'] =
+  async (paginate) => {
+    customerData.value = await getDiscoutGroup(
+      activeItemInModal,
+      paginate.current,
+      paginate.pageSize
+    )
+  }
 </script>
 <template>
   <content-layout>
@@ -168,7 +156,9 @@ const gotoDetails = (item: string) => {
             </span>
           </template>
           <template v-else-if="column.key === 'customersCount'">
-            <a class="customer-count">{{ record.customersCount }} مشتری</a>
+            <a class="customer-count" @click="openGroupModal(record.groupIds)"
+              >{{ record.customersCount }} مشتری</a
+            >
           </template>
           <template v-else-if="column.key === 'startAt'">
             <p>{{ $filters.toPersianDate(record.startAt) }}</p>
@@ -229,6 +219,18 @@ const gotoDetails = (item: string) => {
         @ok="confirmModal"
       >
         <p>آیا از حذف کوپن "{{ itemForDelete.title }}" مطمئن هستید؟</p>
+      </a-modal>
+      <a-modal v-model:visible="visibleGroupModal" title="مشتریان هدف">
+        <template #footer>
+          <a-button key="back" @click="handleCancel">بستن</a-button>
+        </template>
+        <a-table
+          :columns="customerGroupColumns"
+          :pagination="customerpagination"
+          :data-source="customerData.items"
+          @change="onChangeCustomerGroup"
+        >
+        </a-table>
       </a-modal>
     </template>
   </content-layout>

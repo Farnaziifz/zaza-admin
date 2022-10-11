@@ -5,6 +5,12 @@
       "silver": "نقره ای",
       "bronze": "برنزی"
     },
+    "couponTypeEnum": {
+      "FIRST_ORDER": "اولین خرید",
+      "BUY_SPECIFIC_PRODUCT": "خرید محصولات",
+      "BUY_FROM_SPECIFIC_CATEGORY": "خرید از دسته‌بندی",
+      "BUY_ABOVE_SPECIFIC_PRICE": "خرید بیش از یک مبلغ مشخص"
+    },
     "groupQuery": {
       "BUSINESS_CLASSIFICATION": "طبقه\u200Cبندی تجاری",
       "ORDER_RANGE": "بازه دلخواه تعداد سفارش",
@@ -53,6 +59,19 @@
       "modalContentForDeActivation": "آیا از غیرفعال\u200Cسازی اطلاع\u200Cرسانی برچسب مطمئن هستید؟",
       "modalActiveButtonContent": "فعال",
       "modalDeActiveButtonContent": "غیرفعال"
+    },
+    "CouponAdd": {
+      "title": "افزودن کوپن",
+      "steps": {
+        "firstStep": {
+          "title": "اطلاعات کوپن",
+          "description": "عنوان کوپن نوع کوپن"
+        },
+        "secondStep": {
+          "title": "انتخاب نوع پاداش",
+          "description": "انتخاب پاداش و مشخصات آن"
+        }
+      }
     },
     "LabelSettingsBadge": {
       "pageTitle": "برچسب",

@@ -31,6 +31,7 @@ declare module '@vue/runtime-core' {
     ATabPane: typeof import('ant-design-vue/es')['TabPane']
     ATabs: typeof import('ant-design-vue/es')['Tabs']
     ATag: typeof import('ant-design-vue/es')['Tag']
+    ATree: typeof import('ant-design-vue/es')['Tree']
     ATypographyText: typeof import('ant-design-vue/es')['TypographyText']
     ATypographyTitle: typeof import('ant-design-vue/es')['TypographyTitle']
     RouterLink: typeof import('vue-router')['RouterLink']

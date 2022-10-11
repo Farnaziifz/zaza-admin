@@ -3,7 +3,16 @@ import { t } from 'vui18n'
 import ContentLayout from '@/presentation/layouts/ContentLayout.vue'
 import BSteps from '/src/presentation/components/shared/atoms/BSteps.vue'
 
-const steps = t('pages.CouponAdd.steps')
+const steps = [
+  {
+    title: 'اطلاعات کوپن',
+    description: 'عنوان کوپن نوع کوپن',
+  },
+  {
+    title: 'انتخاب نوع پاداش',
+    description: 'انتخاب پاداش و مشخصات آن',
+  },
+]
 </script>
 
 <template>

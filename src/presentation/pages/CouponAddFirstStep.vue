@@ -1,22 +1,34 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, Ref } from 'vue'
 import inputWithHadline from '/src/presentation/components/shared/molecules/InputWithHeadline.vue'
 import BSelect from '/src/presentation/components/shared/atoms/BSelect.vue'
 import InputWithHeadlineAndUnit from '/src/presentation/components/shared/molecules/InputWithHeadlineAndUnit.vue'
 import { CouponsTypesType } from '../../core/enums/couponsType.enum'
-import { productsList } from '../../core/types/product.type'
+import { products, productsList } from '../../core/types/product.type'
 import { getProductList } from '../../logics/specific/products.handler'
+import { getCategoryList } from '../../logics/specific/category.handler'
 import { t } from 'vui18n'
 import { UnorderedListOutlined } from '@ant-design/icons-vue'
-import { TableProps } from 'ant-design-vue'
-import { productsColumns, productListData } from '../../core/constants/coupons.options'
+import { TableProps, TreeProps } from 'ant-design-vue'
+import { category } from '../../core/types/category.type'
+
+import {
+  productsColumns,
+  productListData,
+  categoryListData,
+} from '../../core/constants/coupons.options'
 
 const titleValue = ref('')
 const selectedCouponType = ref('')
-
-
-const selectedProduct: any[] = []
 const couponTypeOptions: any[] = []
+
+const selectedProductKeyInPage: Ref<Map<string, products>> = ref(new Map())
+const allSelectedProductInPages: Ref<Map<number, Map<string, products>>> = ref(
+  new Map()
+)
+// const allSelectedForList: {}[] = []
+const currentPageNumber: Ref<number> = ref(1)
+
 for (const type in CouponsTypesType)
   couponTypeOptions.push({
     value: type,
@@ -25,8 +37,9 @@ for (const type in CouponsTypesType)
 
 //Category Picking
 const showCategoryPickingModal = ref(false)
-const openCategoryPickingModal = () => {
+const openCategoryPickingModal = async () => {
   showCategoryPickingModal.value = true
+  await onGetCategortList()
 }
 
 // ProductPicking
@@ -39,6 +52,19 @@ const onGetProductList = async () => {
   const page = 1
   const pageSize = 10
   productListData.value = await getProductList(page, pageSize)
+  productListData.value.items.map((el) => {
+    el['isActive'] = false
+  })
+}
+
+const onGetCategortList = async () => {
+  const page = 1
+  const pageSize = 10
+  const id = ''
+  const res = await getCategoryList(page, pageSize, id)
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  categoryListData.value.items = [...res]
 }
 
 const productPagination = computed(() => ({
@@ -46,36 +72,71 @@ const productPagination = computed(() => ({
   current: productListData.value.page,
   pageSize: 5,
 }))
-const rowSelection = ref({
-  onChange: (selectedRows: productsList[]) => {
-    selectedRows.forEach((item) => {
-      console.log('item', item)
-      selectedProduct.push(item)
-      console.log('selecrpro', selectedProduct)
-    })
-  },
-  onSelect: (
-    record: productsList,
-    selected: boolean,
-    selectedRows: productsList[]
-  ) => {
-    console.log(record, selected, selectedRows)
-  },
-  onSelectAll: (
-    selected: boolean,
-    selectedRows: productsList[],
-    changeRows: productsList[]
-  ) => {
-    console.log(selected, selectedRows, changeRows)
-  },
-})
+
 const onChangeProductList: TableProps<productsList>['onChange'] = async (
   paginate
 ) => {
+  currentPageNumber.value = paginate.current ?? 1
+  selectedProductKeyInPage.value =
+    allSelectedProductInPages.value.get(currentPageNumber.value) ?? new Map()
+
   productListData.value = await getProductList(
     paginate.current,
     paginate.pageSize
   )
+}
+
+const onSelectChange = (keys: string[]) => {
+  selectedProductKeyInPage.value = new Map()
+  for (const key of keys) {
+    const product = productListData.value.items.find((c) => c.id === key)
+    if (!product) {
+      throw new Error()
+    }
+    selectedProductKeyInPage.value.set(key, product)
+  }
+  allSelectedProductInPages.value.set(
+    currentPageNumber.value,
+    selectedProductKeyInPage.value
+  )
+}
+
+const selectedOK: Ref<products[]> = ref([])
+
+const onProductPickerModalOkPress = () => {
+  selectedOK.value = [...allSelectedProductInPages.value.values()]
+    .map((c) => [...c.values()])
+    .flat()
+  showProductPickingModal.value = false
+}
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+const selectedItem: Ref<category> = ref({
+  id: '',
+  title: '',
+  level: 0,
+  isLeaf: false,
+  key: '',
+})
+const onLoadData: TreeProps['loadData'] = async (treeNode) => {
+  const test = await getCategoryList(1, 10, treeNode.id)
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  treeNode.dataRef.children = test
+  categoryListData.value.items = [...categoryListData.value.items]
+}
+
+const onSelectNode = (
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  selectedKeys,
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  e: { selected: boolean; selectedNodes; node; event }
+) => {
+  console.log(selectedKeys)
+  selectedItem.value = e.selectedNodes[0]
+  showCategoryPickingModal.value = false
 }
 </script>
 
@@ -110,6 +171,41 @@ const onChangeProductList: TableProps<productsList>['onChange'] = async (
             headline="حداقل قیمت سفارش"
           />
         </div>
+        <div
+          v-if="
+            selectedCouponType === CouponsTypesType.BUY_FROM_SPECIFIC_CATEGORY
+          "
+        >
+          <div class="flex flex-col" style="max-width: 256px">
+            دسته‌بندی
+            <a-input
+              placeholder="دسته‌بندی را انتخاب کنید"
+              type="text"
+              v-model:value="selectedItem.title"
+            >
+              <template #addonAfter>
+                <a-button type="link" @click="openCategoryPickingModal">
+                  <template #icon>
+                    <unordered-list-outlined />
+                  </template>
+                </a-button>
+              </template>
+            </a-input>
+          </div>
+
+          <a-modal
+            v-model:visible="showCategoryPickingModal"
+            title="انتخاب دسته‌بندی"
+          >
+            <a-tree
+              :tree-data="categoryListData.items"
+              :fieldNames="{ key: 'id' }"
+              :load-data="onLoadData"
+              @select="onSelectNode"
+            />
+            <!--  -->
+          </a-modal>
+        </div>
       </div>
 
       <div
@@ -129,15 +225,28 @@ const onChangeProductList: TableProps<productsList>['onChange'] = async (
             </template>
           </a-input>
         </div>
+        <ul class="mt-2">
+          <li v-for="item in selectedOK" :key="item.id" class="list">
+            {{ item.title }}
+          </li>
+        </ul>
 
-        <a-modal v-model:visible="showProductPickingModal" title="انتخاب محصول">
+        <a-modal
+          v-model:visible="showProductPickingModal"
+          @ok="onProductPickerModalOkPress"
+          title="انتخاب محصول"
+        >
           <div v-if="productListData.items && productListData.items.length">
             <a-table
               :columns="productsColumns"
               :pagination="productPagination"
               :data-source="productListData.items"
-              :row-selection="rowSelection"
               @change="onChangeProductList"
+              rowKey="id"
+              :row-selection="{
+                onChange: onSelectChange,
+                selectedRowKeys: [...selectedProductKeyInPage.keys()],
+              }"
             >
               <template #bodyCell="{ column, record }">
                 <template v-if="column.key === 'imageId'">
@@ -153,33 +262,6 @@ const onChangeProductList: TableProps<productsList>['onChange'] = async (
               </template>
             </a-table>
           </div>
-        </a-modal>
-      </div>
-
-      <div
-        class="mt-4"
-        v-if="
-          selectedCouponType === CouponsTypesType.BUY_FROM_SPECIFIC_CATEGORY
-        "
-      >
-        <div class="flex flex-col" style="max-width: 256px">
-          دسته‌بندی
-          <!-- v-model:value="inputValue" -->
-          <a-input placeholder="دسته‌بندی را انتخاب کنید" type="text">
-            <template #addonAfter>
-              <a-button type="link" @click="openCategoryPickingModal">
-                <template #icon>
-                  <unordered-list-outlined />
-                </template>
-              </a-button>
-            </template>
-          </a-input>
-        </div>
-
-        <a-modal
-          v-model:visible="showCategoryPickingModal"
-          title="انتخاب دسته‌بندی"
-        >
         </a-modal>
       </div>
     </div>
@@ -205,5 +287,13 @@ const onChangeProductList: TableProps<productsList>['onChange'] = async (
   object-fit: cover;
   border-radius: 4px;
   margin: 0 auto;
+}
+.list {
+  list-style: disc;
+  margin-right: 16px;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  color: #000000;
 }
 </style>

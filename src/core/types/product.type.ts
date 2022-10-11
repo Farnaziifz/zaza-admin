@@ -6,6 +6,7 @@ export type products = {
   host?: string
   path?: string
   imageId?: string
+  isActive?: boolean
 }
 
 export type productsList = {

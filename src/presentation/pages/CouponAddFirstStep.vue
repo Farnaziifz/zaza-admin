@@ -182,6 +182,7 @@ const onSelectNode = (
               placeholder="دسته‌بندی را انتخاب کنید"
               type="text"
               v-model:value="selectedItem.title"
+              disabled
             >
               <template #addonAfter>
                 <a-button type="link" @click="openCategoryPickingModal">
@@ -215,7 +216,7 @@ const onSelectNode = (
         <div class="flex flex-col" style="max-width: 256px">
           محصولات
           <!-- v-model:value="inputValue" -->
-          <a-input placeholder="محصولات را انتخاب کنید" type="text">
+          <a-input placeholder="محصولات را انتخاب کنید" type="text" disabled>
             <template #addonAfter>
               <a-button type="link" @click="openProductPickingModal">
                 <template #icon>
@@ -295,5 +296,17 @@ const onSelectNode = (
   font-size: 16px;
   line-height: 24px;
   color: #000000;
+}
+</style>
+
+<style lang="scss">
+.ant-input[disabled] {
+  background-color: #fff !important;
+  opacity: 1;
+  color: #000 !important;
+}
+.ant-input-disabled {
+  background-color: #fff !important;
+  color: #000 !important;
 }
 </style>

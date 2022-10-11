@@ -1,10 +1,11 @@
 <script lang="ts" setup>
-import { computed, ref, Ref } from 'vue'
+import { computed, onMounted, ref, Ref } from 'vue'
 import BConfirmModal from '@/presentation/components/shared/atoms/BConfirmModal.vue'
 import { t } from 'vui18n'
 import HintCollapse from '@/presentation/components/shared/Organisms/HintCollapse.vue'
 import ContentLayout from '@/presentation/layouts/ContentLayout.vue'
 import InputWithHeadlineAndUnit from '@/presentation/components/shared/molecules/InputWithHeadlineAndUnit.vue'
+import { initHandler } from '@/logics/specific/cashback.handler'
 
 const serverData = ref({
   isActive: true,
@@ -56,8 +57,16 @@ const changeCashbackActivation = () => {
 const submitDataHandler = async () => {
   return
 }
-</script>
 
+const init = async () => {
+  const res = await initHandler()
+  if (res.status === 200 || res.status === 204)
+    serverData.value = res.data.data as { isActive: boolean }
+}
+onMounted(async () => {
+  await init()
+})
+</script>
 <template>
   <content-layout>
     <template #content-title> کش بک</template>
@@ -85,7 +94,7 @@ const submitDataHandler = async () => {
 
           <input-with-headline-and-unit
             v-if="serverData.isActive"
-            v-model:value="minimumPaidMoneyForCashback"
+            v-model:value="serverData.minimumAmount"
             headline="حداقل مبلغ برای دریافت کش‌بک"
             placeholder="مبلغ مورد نظر را وارد کنید"
             unit="تومان"
@@ -98,7 +107,7 @@ const submitDataHandler = async () => {
             <div class="flex flex-col">
               <span style="font-weight: 500; font-size: 16px"> نوع کش‌بک </span>
               <a-radio-group
-                v-model:value="cashbackType"
+                v-model:value="serverData.type"
                 :disabled="!serverData.isActive"
                 size="large"
               >
@@ -116,7 +125,7 @@ const submitDataHandler = async () => {
             <div class="flex flex-col mx-4">
               <span style="font-weight: 500; font-size: 16px"> مدت مصرف</span>
               <a-radio-group
-                v-model:value="cashbackHasExpirationDate"
+                v-model:value="serverData.durationType"
                 :disabled="!serverData.isActive"
                 size="large"
               >
@@ -134,7 +143,7 @@ const submitDataHandler = async () => {
             <div v-if="cashbackType === 'percentage'" class="flex flex-wrap">
               <!-- TODO => cashBack precentage <number> \ if(serverData.isActive) \  if (cashbackType === precentage)   -->
               <input-with-headline-and-unit
-                v-model:value="cashbackPercentage"
+                v-model:value="serverData.amount"
                 unit="درصد"
                 placeholder="درصد مورد نظر را وارد کنید"
                 class="ml-4"
@@ -148,7 +157,7 @@ const submitDataHandler = async () => {
 
               <!-- TODO => cashBack maximum amount <number> \ if(serverData.isActive) \  if (cashbackType === precentage)   -->
               <input-with-headline-and-unit
-                v-model:value="cashbackPercentageMaximumPrice"
+                v-model:value="serverData.maximumPrice"
                 unit="تومان"
                 placeholder="سقف را وارد کنید"
                 class="ml-4"
@@ -164,7 +173,7 @@ const submitDataHandler = async () => {
             <!-- TODO => cashback amount <toman | rial> \ if(serverData.isActive) \ if(cashbackType === cash) -->
             <input-with-headline-and-unit
               v-if="cashbackType === 'cash'"
-              v-model:value="cashbackCashAmount"
+              v-model:value="serverData.amount"
               unit="تومان"
               placeholder="مبلغ مورد نظر را وارد کنید"
               class="ml-4"
@@ -183,7 +192,7 @@ const submitDataHandler = async () => {
               <!-- TODO => expiration time  \ if(serverData.isActive) \ if(expireTime === true)  -->
               <div class="flex flex-col ml-4">
                 <span style="font-weight: 500; font-size: 16px">نوع مدت</span>
-                <a-radio-group v-model:value="expireDateType">
+                <a-radio-group v-model:value="serverData.durationType">
                   <a-radio-button value="daily">
                     <span> روز </span>
                   </a-radio-button>
@@ -197,7 +206,7 @@ const submitDataHandler = async () => {
               </div>
               <!-- TODO => time \ if(serverData.isActive) \  if(expireTime === true) -->
               <input-with-headline-and-unit
-                v-model:value="expireDateTime"
+                v-model:value="serverData.duration"
                 :unit="dateTimeInputUnit"
                 :placeholder="'تعداد ' + dateTimeInputUnit + ' را وارد کنید'"
                 class="ml-4"

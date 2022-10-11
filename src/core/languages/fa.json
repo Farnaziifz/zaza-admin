@@ -29,6 +29,13 @@
       "HAPPY": "راضی",
       "UN_HAPPY": "ناراضی",
       "NORMAL": "خنثی"
+    },
+    "cashback": {
+      "duration": {
+        "DAILY": "روز",
+        "WEEKLY": "هفته",
+        "MONTHLY": "ماه"
+      }
     }
   },
   "components": {
@@ -97,6 +104,8 @@
           "inputPostfixText": "تعداد"
         }
       }
+    },
+    "Cashback": {
     }
   }
 }

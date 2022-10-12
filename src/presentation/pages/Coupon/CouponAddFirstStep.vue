@@ -3,20 +3,20 @@ import { ref, computed, Ref } from 'vue'
 import inputWithHadline from '/src/presentation/components/shared/molecules/InputWithHeadline.vue'
 import BSelect from '/src/presentation/components/shared/atoms/BSelect.vue'
 import InputWithHeadlineAndUnit from '/src/presentation/components/shared/molecules/InputWithHeadlineAndUnit.vue'
-import { CouponsTypesType } from '../../core/enums/couponsType.enum'
-import { products, productsList } from '../../core/types/product.type'
-import { getProductList } from '../../logics/specific/products.handler'
-import { getCategoryList } from '../../logics/specific/category.handler'
+import { CouponsTypesType } from '../../../core/enums/couponsType.enum'
+import { products, productsList } from '../../../core/types/product.type'
+import { getProductList } from '../../../logics/specific/products.handler'
+import { getCategoryList } from '../../../logics/specific/category.handler'
 import { t } from 'vui18n'
 import { UnorderedListOutlined } from '@ant-design/icons-vue'
 import { TableProps, TreeProps } from 'ant-design-vue'
-import { category } from '../../core/types/category.type'
+import { category } from '../../../core/types/category.type'
 
 import {
   productsColumns,
   productListData,
   categoryListData,
-} from '../../core/constants/coupons.options'
+} from '../../../core/constants/coupons.options'
 
 const titleValue = ref('')
 const selectedCouponType = ref('')
@@ -26,7 +26,6 @@ const selectedProductKeyInPage: Ref<Map<string, products>> = ref(new Map())
 const allSelectedProductInPages: Ref<Map<number, Map<string, products>>> = ref(
   new Map()
 )
-// const allSelectedForList: {}[] = []
 const currentPageNumber: Ref<number> = ref(1)
 
 for (const type in CouponsTypesType)

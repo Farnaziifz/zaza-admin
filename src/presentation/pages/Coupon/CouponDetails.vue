@@ -3,8 +3,8 @@ import IncentiveDetailLayout from '/src/presentation/layouts/IncentiveDetailLayo
 import {
   getCouponDetails,
   changeCouponsStatus,
-} from '../../logics/specific/coupons.handler'
-import { coupons } from '../../core/types/coupons.type'
+} from '../../../logics/specific/coupons.handler'
+import { coupons } from '../../../core/types/coupons.type'
 import { Ref, ref, onBeforeMount, reactive } from 'vue'
 import { useRoute } from 'vue-router'
 
@@ -224,5 +224,5 @@ const hideModal = () => {
 </template>
 
 <style lang="scss" scoped>
-@import '../../assets/styles/couponDetails.scss';
+@import '../../../assets/styles/couponDetails.scss';
 </style>

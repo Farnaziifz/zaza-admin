@@ -99,8 +99,12 @@ onMounted(async () => {
         </a-card>
 
         <hint-collapse
-          :hints="[{ body: t('pages.LabelSettingsDegree.hint') }]"
-          header="راهنما"
+          :hints="[
+            {
+              body: t('pages.Cashback.hints.hintBody'),
+              description: t('pages.Cashback.hints.hintDescription'),
+            },
+          ]"
         />
 
         <a-card style="margin: 8px 0; background-color: #f6f6f6">

@@ -57,7 +57,12 @@ const isCollapseActive = (key: string) => {
         </h2>
       </template>
 
-      <li v-for="(hint, index) in props.hints" :key="index">{{ hint.body }}</li>
+      <li v-for="(hint, index) in props.hints" :key="index">
+        {{ hint.body }}
+        <div style="font-size: 14px; font-weight: 400; color: #888">
+          {{ hint.description }}
+        </div>
+      </li>
     </a-collapse-panel>
   </a-collapse>
 </template>

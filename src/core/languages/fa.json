@@ -105,6 +105,11 @@
         }
       }
     },
-    "Cashback": {}
+    "Cashback": {
+      "hints": {
+        "hintBody": "غیرفعال کردن کش\u200Cبک",
+        "hintDescription": "با غیرفعال کردن کش بک..."
+      }
+    }
   }
 }

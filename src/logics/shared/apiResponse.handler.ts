@@ -37,15 +37,13 @@ export const makeARequest = async <T>(
 
 export const handleError = <T>(e: AxiosError<response<T>>): response<T> => {
   handleErrorMessageBroadcasting<T>(e)
-
-  if (e.response) return e.response.data
-  else return defaultError
+  throw e
 }
 
 export const handleErrorMessageBroadcasting = <T>(
   e: AxiosError<response<T>>
 ) => {
-  if (e.response?.data.errors) {
+  if (e.response?.data?.errors) {
     showErrorMessage(e.response.data.errors.message)
   } else {
     showErrorMessage(e.message)

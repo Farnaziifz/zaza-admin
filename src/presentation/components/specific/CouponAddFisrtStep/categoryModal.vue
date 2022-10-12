@@ -13,5 +13,4 @@ const props = defineProps({
 
 <template>
   <p>{{ props.categoryData }}</p>
- 
 </template>

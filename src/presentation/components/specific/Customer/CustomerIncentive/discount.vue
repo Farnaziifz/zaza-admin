@@ -88,7 +88,9 @@ const onChange: TableProps<customerDiscountList>['onChange'] = (paginate) => {
           <a-tag v-if="record.status === 'UNUSED'" color="green"
             >استفاده شده</a-tag
           >
-          <a-tag v-if="record.status === 'USED'" color="red">استفاده نشده</a-tag>
+          <a-tag v-if="record.status === 'USED'" color="red"
+            >استفاده نشده</a-tag
+          >
           <a-tag v-if="record.status === 'MULTIPLE_USED'" color="orange"
             >{{ record.consumedCount }} بار استفاده شده</a-tag
           >
@@ -109,6 +111,6 @@ const onChange: TableProps<customerDiscountList>['onChange'] = (paginate) => {
 }
 .colored {
   color: #1894ff;
-  margin: 0 4px
+  margin: 0 4px;
 }
 </style>

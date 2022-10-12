@@ -66,11 +66,11 @@ const changeRoute = (to: string) => {
         </template>
 
         <a-menu-item key="1" @click="changeRoute('/label-settings/degree')"
-          >درجه</a-menu-item
-        >
+          >درجه
+        </a-menu-item>
         <a-menu-item key="2" @click="changeRoute('/label-settings/badge')"
-          >برچسب</a-menu-item
-        >
+          >برچسب
+        </a-menu-item>
       </a-sub-menu>
       <a-menu-item key="3" @click="changeRoute('/customers/list')">
         <span>لیست مشتریان</span>
@@ -84,14 +84,17 @@ const changeRoute = (to: string) => {
         </template>
 
         <a-menu-item key="4" @click="changeRoute('/coupons/list')"
-          >کوپن‌ها</a-menu-item
-        >
+          >کوپن‌ها
+        </a-menu-item>
         <a-menu-item key="5" @click="changeRoute('/credits/list')"
-          >هدیه اعتباری</a-menu-item
-        >
+          >هدیه اعتباری
+        </a-menu-item>
         <a-menu-item key="6" @click="changeRoute('/discount/list')"
-          >کد تخفیف</a-menu-item
-        >
+          >کد تخفیف
+        </a-menu-item>
+        <a-menu-item key="7" @click="changeRoute('/cashback')">
+          کش‌بک
+        </a-menu-item>
       </a-sub-menu>
     </a-menu>
   </a-layout-sider>

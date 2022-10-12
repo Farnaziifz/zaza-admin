@@ -29,12 +29,19 @@
       "NORMAL": "امیدوار کننده",
       "HERO": "وفادار",
       "LOYAL": "معمولی",
-      "ATTENTION_NEED": "عادی"
+      "ATTENTION_NEED": "نیازمند توجه"
     },
     "satisfaction": {
       "HAPPY": "راضی",
       "UN_HAPPY": "ناراضی",
       "NORMAL": "خنثی"
+    },
+    "cashback": {
+      "duration": {
+        "DAILY": "روز",
+        "WEEKLY": "هفته",
+        "MONTHLY": "ماه"
+      }
     }
   },
   "components": {
@@ -115,6 +122,12 @@
           "inputFromPrefixText": "از",
           "inputPostfixText": "تعداد"
         }
+      }
+    },
+    "Cashback": {
+      "hints": {
+        "hintBody": "غیرفعال کردن کش\u200Cبک",
+        "hintDescription": "با غیرفعال کردن کش بک..."
       }
     }
   }

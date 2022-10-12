@@ -15,8 +15,11 @@ import { cashbackType, durationTypeEnum } from '@/core/enums/cashback.enum'
 import { cashbackComputedPropertiesFactory } from '@/presentation/factory/specific/Cashback/cashbackComputedProperties.factory'
 
 const serverData: Ref<cashback> = ref({
+  amount: 0,
   isActive: false,
   minimumAmount: 0,
+  maximumPrice: 0,
+  duration: 0,
 })
 
 const { isBtnDisabled } = cashbackComputedPropertiesFactory(serverData)
@@ -24,8 +27,8 @@ const { isBtnDisabled } = cashbackComputedPropertiesFactory(serverData)
 const hasExpirationDate = ref(false)
 const showModal = ref(false)
 
-const dateTimeInputUnit = computed(() =>
-  t(`types.cashback.duration.${serverData.value.durationType}`)
+const dateTimeInputUnit = computed(
+  () => t(`types.cashback.duration.${serverData.value.durationType}`) as string
 )
 
 const openSubmissionModal = () => {
@@ -48,8 +51,8 @@ const submitDataHandler = async () => {
 
 const init = async () => {
   const res = await initHandler()
-  if (res.status === 200 || res.status === 204) {
-    serverData.value = res.data.data as cashback
+  if (!res.errors) {
+    serverData.value = res.data as cashback
     serverData.value.durationType === durationTypeEnum.NONE
       ? (hasExpirationDate.value = false)
       : (hasExpirationDate.value = true)

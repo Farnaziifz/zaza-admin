@@ -1,11 +1,11 @@
 import { cashbackType, durationTypeEnum } from '@/core/enums/cashback.enum'
 
 export type cashback = {
-  amount?: number
-  minimumAmount?: number
-  maximumPrice?: number
+  amount: number
+  minimumAmount: number
+  maximumPrice: number
   type?: cashbackType
   durationType?: durationTypeEnum
-  duration?: number
+  duration: number
   isActive: boolean
 }

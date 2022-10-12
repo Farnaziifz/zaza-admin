@@ -22,8 +22,13 @@ export const makeARequest = async <T>(
   data?: T
 ): Promise<response<T>> => {
   try {
-    if (data) return apiHandler(route, data).then((res) => res.data)
-    else return apiHandler(route).then((res) => res.data) as response<T>
+    if (data) {
+      const res = await apiHandler(route, data)
+      return res.data
+    } else {
+      const res = await apiHandler(route)
+      return res.data as response<T>
+    }
   } catch (e) {
     const err = e as AxiosError<response<T>>
     return handleError<T>(err)

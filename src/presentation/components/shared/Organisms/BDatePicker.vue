@@ -4,7 +4,7 @@ import { CalendarOutlined } from '@ant-design/icons-vue'
 import { ref, watch } from 'vue'
 
 type BDatePickerProps = {
-  value: string | string[]
+  value?: string | string[] | Date
   placeHolder: string
   range: boolean
   customId?: string

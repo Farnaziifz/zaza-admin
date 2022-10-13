@@ -137,8 +137,7 @@
     "Credit": {
       "Add": {
         "title": "افزودن اعتبار",
-        "FirstStep": {
-        }
+        "FirstStep": {}
       }
     }
   }

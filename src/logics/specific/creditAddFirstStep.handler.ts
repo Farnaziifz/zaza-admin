@@ -16,4 +16,4 @@ export const saveCreditToStore = (creditData: credit) => {
     )
 
   creditStore.saveCreditDataInStore(creditData)
-} 
+}

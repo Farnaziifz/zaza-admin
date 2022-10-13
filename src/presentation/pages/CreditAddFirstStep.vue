@@ -71,6 +71,7 @@ const nextStep = () => saveCreditToStore(serverData.value)
         class="ml-4"
         :range="false"
         place-holder="تاریخ و زمان شروع را انتخاب کنید"
+        @change="checkDate"
       >
         <template #headline>
           <span style="font-weight: 500; font-size: 16px">

@@ -10,9 +10,10 @@ type BDatePickerProps = {
   customId?: string
 }
 const props = defineProps<BDatePickerProps>()
-const emits = defineEmits(['update:value'])
+const emits = defineEmits(['update:value', 'change'])
 
 const pickedDate = ref(props.value)
+const onChange = emits('change')
 
 watch(
   pickedDate,
@@ -28,6 +29,7 @@ watch(
     <a-input
       :id="`${customId ?? 'b-date-picker'}`"
       :placeholder="props.placeHolder"
+      @change="onChange"
     >
       <template #prefix>
         <calendar-outlined class="ml-1" />

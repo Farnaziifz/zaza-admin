@@ -8,6 +8,7 @@ import { categoryRouterConfig } from './categoryRouter.config'
 
 import { discountRouterConfig } from './DiscoutRouter.config'
 import { cashbackConfig } from '@/resources/router/cashback.config'
+import { scoreConfig } from '@/resources/router/score.config'
 
 const config: RouterOptions = {
   routes: [
@@ -23,6 +24,7 @@ const config: RouterOptions = {
         creditRouterConfig,
         discountRouterConfig,
         cashbackConfig,
+        scoreConfig,
       ],
     },
   ],

@@ -1,26 +1,21 @@
 import { api } from './index'
-import { score } from '../../core/types/score.type'
-import { error } from '../../core/types/error.type'
+import { score } from '@/core/types/score.type'
+import { makeARequest } from '@/logics/shared/apiResponse.handler'
 
 const pageUrl = 'score'
-type response = {
-  data: score
-  errors: error
-}
+const status = '/status'
 
-const scorePut = async (data: score): Promise<response> => {
-  const res = await api.put(pageUrl, data)
-  return res.data
-}
+const scorePut = async (data: score) =>
+  makeARequest<score>(api.put, pageUrl, data)
 
-const scoreGet = async (): Promise<response> => {
-  const res = await api.get(pageUrl)
-  return res.data
-}
+const scoreGet = async () => makeARequest<score>(api.get, pageUrl)
+
+const scoreStatusPut = async () => makeARequest(api.put, pageUrl + status)
 
 export const scoreApi = () => {
   return {
     get: scoreGet,
     put: scorePut,
+    putStatus: scoreStatusPut,
   }
 }

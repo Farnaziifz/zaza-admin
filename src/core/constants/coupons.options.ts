@@ -33,7 +33,7 @@ export const productListData: Ref<productsList> = ref({
   page: 0,
   totalCount: 0,
   totalPages: 0,
-  key: 0
+  key: 0,
 })
 export const categoryListData: Ref<categoryList> = ref({
   items: [],

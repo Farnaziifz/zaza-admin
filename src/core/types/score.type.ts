@@ -1,7 +1,7 @@
 import { scoreType } from '../enums/scoreType.enum'
 
 export type score = {
-  type: string | null | scoreType
+  type?: scoreType
   unit: number
   amount: number
   isActive: boolean

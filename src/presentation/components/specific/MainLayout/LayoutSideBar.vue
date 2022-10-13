@@ -95,6 +95,9 @@ const changeRoute = (to: string) => {
         <a-menu-item key="7" @click="changeRoute('/cashback')">
           کش‌بک
         </a-menu-item>
+        <a-menu-item key="8" @click="changeRoute('/score')">
+          امتیاز
+        </a-menu-item>
       </a-sub-menu>
     </a-menu>
   </a-layout-sider>

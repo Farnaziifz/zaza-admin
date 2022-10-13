@@ -4,6 +4,7 @@ import {
   showLoadingMessage,
   showSuccessMessage,
 } from '@/logics/shared/message.handler'
+import { scoreType } from '@/core/enums/scoreType.enum'
 
 const api = scoreApi()
 
@@ -16,7 +17,6 @@ export const changeScoreStatusHandler = async () => {
 }
 
 export const sendScoreDataToServer = async (scoreData: score) => {
-  showLoadingMessage()
-  const res = await api.put(scoreData)
-  if (res.data) showSuccessMessage()
+  if (scoreData.type === scoreType.PRICE) scoreData.unit *= 10
+  await api.put(scoreData)
 }

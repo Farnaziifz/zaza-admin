@@ -7,6 +7,7 @@ type BDatePickerProps = {
   value: string | string[]
   placeHolder: string
   range: boolean
+  customId?: string
 }
 const props = defineProps<BDatePickerProps>()
 const emits = defineEmits(['update:value'])
@@ -24,7 +25,10 @@ watch(
 <template>
   <div>
     <slot name="headline" />
-    <a-input id="b-date-picker" :placeholder="props.placeHolder">
+    <a-input
+      :id="`${customId ?? 'b-date-picker'}`"
+      :placeholder="props.placeHolder"
+    >
       <template #prefix>
         <calendar-outlined class="ml-1" />
       </template>
@@ -32,7 +36,7 @@ watch(
     <date-picker
       v-model="pickedDate"
       :range="props.range"
-      custom-input="#b-date-picker"
+      :custom-input="`${customId ? '#' + customId : '#b-date-picker'}`"
     />
   </div>
 </template>

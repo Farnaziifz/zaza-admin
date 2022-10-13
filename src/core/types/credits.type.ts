@@ -2,6 +2,14 @@ type group = {
   groupId: ''
   groupTitle: ''
 }
+
+export type credit = {
+  amount: number
+  startAt?: Date | string
+  expireAt?: Date | string
+  creditGroups?: { groupId: string }[]
+}
+
 export type credits = {
   amount: number
   startAt: string

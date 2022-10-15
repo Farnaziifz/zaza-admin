@@ -2,7 +2,7 @@
 import ChevronDownIcon from '../atoms/ChevronDownIcon.vue'
 import { t } from 'vui18n'
 import { ref } from 'vue'
-import { hintType } from '../../../../core/types/hints.type'
+import { hintType } from '@/core/types/hints.type'
 
 type HintCollapseProps = {
   hints: hintType[]
@@ -57,8 +57,15 @@ const isCollapseActive = (key: string) => {
         </h2>
       </template>
 
-      <li v-for="(hint, index) in props.hints" :key="index">
-        {{ hint.body }}
+      <li
+        v-for="(hint, index) in props.hints"
+        :key="index"
+        :class="index === 0 ? '' : 'mt-4'"
+        style="list-style: disc"
+      >
+        <span style="font-weight: 500; font-size: 16px">
+          {{ hint.body }}
+        </span>
         <div style="font-size: 14px; font-weight: 400; color: #888">
           {{ hint.description }}
         </div>

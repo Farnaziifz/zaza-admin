@@ -3,6 +3,7 @@ import CreditList from '/src/presentation/pages/CreditList.vue'
 import CreditDetails from '/src/presentation/pages/CreditDetail.vue'
 import CreditAdd from '@/presentation/pages/CreditAdd.vue'
 import CreditAddFirstStep from '@/presentation/pages/CreditAddFirstStep.vue'
+import CreditAddSecondStep from '@/presentation/pages/CreditAddSecondStep.vue'
 
 export const creditRouterConfig = {
   path: 'credits',
@@ -23,6 +24,11 @@ export const creditRouterConfig = {
           meta: {
             step: 0,
           },
+        },
+        {
+          path: 'second-step',
+          name: 'add-credit-second-step',
+          component: CreditAddSecondStep,
         },
       ],
     },

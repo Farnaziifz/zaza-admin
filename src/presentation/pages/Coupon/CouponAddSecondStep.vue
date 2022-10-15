@@ -140,7 +140,7 @@ const goToPastStep = () => returnToPreviousRoute()
     </h3>
     <div class="flex items-center">
       <div class="mx-4">
-        <div>نوع کوپن</div>
+        <div>نوع پاداش</div>
         <BSelect
           v-model:value="selectedCouponReward"
           placeholder="نوع پاداش را انتخاب کنبد"

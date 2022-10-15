@@ -7,6 +7,7 @@ import {
 import { coupons } from '../../../core/types/coupons.type'
 import { Ref, ref, onBeforeMount, reactive } from 'vue'
 import { useRoute } from 'vue-router'
+import _ from "lodash"
 
 const serverData: Ref<coupons> = ref({
   id: '',
@@ -52,14 +53,14 @@ const hideModal = () => {
 <template>
   <IncentiveDetailLayout>
     <template #layout-title>جزئیات کوپن</template>
-    <template #layout-actions>
+    <template #layout-actions v-if="serverData">
       <div class="actions-button">
         <a-tag v-if="serverData.isActive" color="green">فعال</a-tag>
         <a-tag v-else color="red">غیرفعال</a-tag>
         <a-button
           type="primary"
           size="small"
-          @click="showModal(serverData.id, serverData.isActive)"
+          @click="showModal(_.toString(serverData.id), typeof(serverData.isActive) === 'boolean' ? serverData.isActive : false)"
           >تغییر وضعیت</a-button
         >
       </div>

@@ -1,6 +1,7 @@
 import { AxiosError, AxiosResponse } from 'axios'
 import {
-  showErrorMessage, showLoadingMessage,
+  showErrorMessage,
+  showLoadingMessage,
   showSuccessMessage,
 } from '@/logics/shared/message.handler'
 

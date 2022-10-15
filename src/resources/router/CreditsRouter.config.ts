@@ -1,6 +1,8 @@
 import Credits from '/src/presentation/pages/Credit.vue'
 import CreditList from '/src/presentation/pages/CreditList.vue'
 import CreditDetails from '/src/presentation/pages/CreditDetail.vue'
+import CreditAdd from '@/presentation/pages/CreditAdd.vue'
+import CreditAddFirstStep from '@/presentation/pages/CreditAddFirstStep.vue'
 
 export const creditRouterConfig = {
   path: 'credits',
@@ -8,6 +10,22 @@ export const creditRouterConfig = {
   component: Credits,
   redirect: '/credits/list',
   children: [
+    {
+      path: 'add',
+      name: 'add-credit',
+      component: CreditAdd,
+      redirect: '/credits/add/first-step',
+      children: [
+        {
+          path: 'first-step',
+          name: 'add-credit-first-step',
+          component: CreditAddFirstStep,
+          meta: {
+            step: 0,
+          },
+        },
+      ],
+    },
     {
       path: 'list',
       name: 'credit-list',

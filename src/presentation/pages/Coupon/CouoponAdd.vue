@@ -1,8 +1,19 @@
 <script setup lang="ts">
 import { t } from 'vui18n'
-import ContentLayout from '@/presentation/layouts/ContentLayout.vue'
+import ContentLayout from '/src/presentation/layouts/ContentLayout.vue'
 import BSteps from '/src/presentation/components/shared/atoms/BSteps.vue'
+import { useRoute } from 'vue-router'
+import { watch, ref } from 'vue-demi'
 
+const route = useRoute()
+const currentStep = ref(route.meta?.step as string)
+watch(
+  route,
+  () => {
+    currentStep.value = route.meta.step as string
+  },
+  { deep: true }
+)
 const steps = [
   {
     title: 'اطلاعات کوپن',
@@ -22,7 +33,7 @@ const steps = [
     </template>
     <template #content-body>
       <div class="flex justify-center items-center">
-        <b-steps :current="0">
+        <b-steps :current="currentStep">
           <a-step
             v-for="(item, key) in steps"
             :key="key"

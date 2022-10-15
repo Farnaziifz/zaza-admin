@@ -9,6 +9,7 @@ type BSelectPropsType = {
   suffixIconColor?: string
   disabled?: boolean
   value?: string
+  // selectedValue: string
 }
 const props = defineProps<BSelectPropsType>()
 const emits = defineEmits(['update:value', 'change'])
@@ -18,7 +19,8 @@ const expandIcon = () => {
   isActivated.value = !isActivated.value
 }
 
-const selectedValue = ref(props.placeHolder)
+
+const selectedValue = ref(props.value ? props.value : props.placeHolder)
 watch(
   props,
   () => {

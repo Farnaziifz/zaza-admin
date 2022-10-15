@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import ReturnButton from '@/presentation/components/shared/molecules/ReturnButton.vue'
+import ReturnButton from '/src/presentation/components/shared/molecules/ReturnButton.vue'
 import { returnToPreviousRoute } from '@/logics/shared/route.handler'
 
 type contentLayoutPropsType = {

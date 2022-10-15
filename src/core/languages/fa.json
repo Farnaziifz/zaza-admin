@@ -11,6 +11,13 @@
       "BUY_FROM_SPECIFIC_CATEGORY": "خرید از دسته‌بندی",
       "BUY_ABOVE_SPECIFIC_PRICE": "خرید بیش از یک مبلغ مشخص"
     },
+    "couponRewardEnum": {
+      "FREE_SHIPPING": "ارسال رایگان",
+      "PRODUCT": "جایزه محصول",
+      "DISCOUNT": "تخفیف",
+      "SCORE": "امتیاز",
+      "CREDIT": "اعتبار"
+    },
     "groupQuery": {
       "BUSINESS_CLASSIFICATION": "طبقه\u200Cبندی تجاری",
       "ORDER_RANGE": "بازه دلخواه تعداد سفارش",

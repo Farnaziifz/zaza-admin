@@ -1,14 +1,14 @@
 <script lang="ts" setup async>
-import ContentLayout from '../layouts/ContentLayout.vue'
+import ContentLayout from '/src/presentation/layouts/ContentLayout.vue'
 import EmptyLayout from '/src/presentation/layouts/EmptyLayout.vue'
 import { TableColumnType, TableProps } from 'ant-design-vue'
-import { coupons, couponsList } from '../../core/types/coupons.type'
+import { coupons, couponsList } from '../../../core/types/coupons.type'
 import { Ref, ref, onBeforeMount, computed, reactive } from 'vue'
 import {
   initPageHandler,
   changeCouponsStatus,
   deleteCoupons,
-} from '../../logics/specific/coupons.handler'
+} from '../../../logics/specific/coupons.handler'
 import PlusIcon from '/src/presentation/components/shared/atoms/PlusIcon.vue'
 import router from '@/resources/router'
 const columns: TableColumnType<coupons>[] = [
@@ -109,13 +109,16 @@ const changeCouponSatatus = async () => {
 const goToCouponDetails = (item: string) => {
   router.push({ name: 'coupon-detail', params: { id: item } })
 }
+const goToAdd = () => {
+  router.push({ name: 'coupon-add' })
+}
 </script>
 
 <template>
   <content-layout>
     <template #content-title>کوپن‌ها</template>
     <template #content-actions>
-      <a-button type="primary">
+      <a-button type="primary" @click="goToAdd">
         <template #icon><PlusIcon color="#fff" /></template>
         <span>افزودن کوپن</span>
       </a-button>

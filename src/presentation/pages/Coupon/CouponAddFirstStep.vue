@@ -3,31 +3,59 @@ import { ref, computed, Ref } from 'vue'
 import inputWithHadline from '/src/presentation/components/shared/molecules/InputWithHeadline.vue'
 import BSelect from '/src/presentation/components/shared/atoms/BSelect.vue'
 import InputWithHeadlineAndUnit from '/src/presentation/components/shared/molecules/InputWithHeadlineAndUnit.vue'
-import { CouponsTypesType } from '../../core/enums/couponsType.enum'
-import { products, productsList } from '../../core/types/product.type'
-import { getProductList } from '../../logics/specific/products.handler'
-import { getCategoryList } from '../../logics/specific/category.handler'
+import { CouponsTypesType } from '../../../core/enums/couponsType.enum'
+import { products, productsList } from '../../../core/types/product.type'
+import { getProductList } from '../../../logics/specific/products.handler'
+import { getCategoryList } from '../../../logics/specific/category.handler'
+import { saveCouponDataFirstStep } from '../../../logics/specific/coupons.handler'
 import { t } from 'vui18n'
 import { UnorderedListOutlined } from '@ant-design/icons-vue'
 import { TableProps, TreeProps } from 'ant-design-vue'
-import { category } from '../../core/types/category.type'
-
+import { category } from '../../../core/types/category.type'
+import { useCouponStore } from '../../../resources/store/coupon.store'
 import {
-  productsColumns,
+  productsSelectColumns,
   productListData,
   categoryListData,
-} from '../../core/constants/coupons.options'
+} from '../../../core/constants/coupons.options'
+
+const couponStore = useCouponStore()
 
 const titleValue = ref('')
 const selectedCouponType = ref('')
-const couponTypeOptions: any[] = []
 
-const selectedProductKeyInPage: Ref<Map<string, products>> = ref(new Map())
-const allSelectedProductInPages: Ref<Map<number, Map<string, products>>> = ref(
-  new Map()
-)
-// const allSelectedForList: {}[] = []
-const currentPageNumber: Ref<number> = ref(1)
+const couponTypeOptions: any[] = []
+const btnDisabled = computed(() => {
+  if (titleValue.value && selectedCouponType.value) {
+    if (
+      (selectedCouponType.value === CouponsTypesType.BUY_ABOVE_SPECIFIC_PRICE &&
+        buyAboveSprecificPriceInput.value) ||
+      (selectedCouponType.value ===
+        CouponsTypesType.BUY_FROM_SPECIFIC_CATEGORY &&
+        selectedItem.value.id) ||
+      (selectedCouponType.value === CouponsTypesType.BUY_SPECIFIC_PRODUCT &&
+        selectedProductInModal.value.id)
+    ) {
+      return false
+    } else if (selectedCouponType.value === CouponsTypesType.FIRST_ORDER) {
+      return false
+    }
+  } else {
+    return true
+  }
+  return true
+})
+const buyAboveSprecificPriceInput = ref()
+const selectedProductInModal: Ref<products> = ref({
+  id: '',
+  title: '',
+  price: 0,
+  discount: 0,
+  host: '',
+  path: '',
+  imageId: '',
+  isActive: false,
+})
 
 for (const type in CouponsTypesType)
   couponTypeOptions.push({
@@ -76,37 +104,13 @@ const productPagination = computed(() => ({
 const onChangeProductList: TableProps<productsList>['onChange'] = async (
   paginate
 ) => {
-  currentPageNumber.value = paginate.current ?? 1
-  selectedProductKeyInPage.value =
-    allSelectedProductInPages.value.get(currentPageNumber.value) ?? new Map()
-
   productListData.value = await getProductList(
     paginate.current,
     paginate.pageSize
   )
 }
 
-const onSelectChange = (keys: string[]) => {
-  selectedProductKeyInPage.value = new Map()
-  for (const key of keys) {
-    const product = productListData.value.items.find((c) => c.id === key)
-    if (!product) {
-      throw new Error()
-    }
-    selectedProductKeyInPage.value.set(key, product)
-  }
-  allSelectedProductInPages.value.set(
-    currentPageNumber.value,
-    selectedProductKeyInPage.value
-  )
-}
-
-const selectedOK: Ref<products[]> = ref([])
-
 const onProductPickerModalOkPress = () => {
-  selectedOK.value = [...allSelectedProductInPages.value.values()]
-    .map((c) => [...c.values()])
-    .flat()
   showProductPickingModal.value = false
 }
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -138,6 +142,77 @@ const onSelectNode = (
   selectedItem.value = e.selectedNodes[0]
   showCategoryPickingModal.value = false
 }
+
+const nextStep = () => {
+  saveCouponDataFirstStep({
+    title: titleValue.value,
+    type: selectedCouponType.value,
+    value: {
+      id: (() => {
+        if (selectedCouponType.value === CouponsTypesType.BUY_SPECIFIC_PRODUCT)
+          return selectedProductInModal.value.id
+        else if (
+          selectedCouponType.value ===
+          CouponsTypesType.BUY_FROM_SPECIFIC_CATEGORY
+        )
+          return selectedItem.value.id
+
+        return undefined
+      })(),
+      amount: (() => {
+        if (
+          selectedCouponType.value === CouponsTypesType.BUY_ABOVE_SPECIFIC_PRICE
+        )
+          return buyAboveSprecificPriceInput.value
+      })(),
+      title: (() => {
+        if (selectedCouponType.value === CouponsTypesType.BUY_SPECIFIC_PRODUCT)
+          return selectedProductInModal.value.title
+        else if (
+          selectedCouponType.value ===
+          CouponsTypesType.BUY_FROM_SPECIFIC_CATEGORY
+        )
+          return selectedItem.value.title
+
+        return undefined
+      })(),
+    },
+    selectItem: {
+      title: 'اولین خرید',
+      value: selectedCouponType.value,
+    },
+  })
+}
+const selectProduct = (item: object) => {
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  selectedProductInModal.value.id === item.id
+    ? (selectedProductInModal.value = {
+        id: '',
+        title: '',
+        price: 0,
+        discount: 0,
+        host: '',
+        path: '',
+        imageId: '',
+        isActive: false,
+      })
+    : // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      (selectedProductInModal.value = item)
+}
+
+if (couponStore.title) {
+  titleValue.value = couponStore.title
+  selectedCouponType.value = couponStore.type
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  selectedProductInModal.value.title = couponStore.value.title
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  selectedItem.value.title = couponStore.value?.title
+  buyAboveSprecificPriceInput.value = couponStore.value?.amount
+}
 </script>
 
 <template>
@@ -156,7 +231,6 @@ const onSelectNode = (
 
         <div class="mx-4">
           <div>نوع کوپن</div>
-
           <BSelect
             v-model:value="selectedCouponType"
             placeholder="نوع کوپن را انتخاب کنبد"
@@ -169,6 +243,7 @@ const onSelectNode = (
             unit="تومان"
             placeholder="حداقل قیمت سفارش را وارد کنید"
             headline="حداقل قیمت سفارش"
+            v-model:value="buyAboveSprecificPriceInput"
           />
         </div>
         <div
@@ -216,7 +291,12 @@ const onSelectNode = (
         <div class="flex flex-col" style="max-width: 256px">
           محصولات
           <!-- v-model:value="inputValue" -->
-          <a-input placeholder="محصولات را انتخاب کنید" type="text" disabled>
+          <a-input
+            placeholder="محصولات را انتخاب کنید"
+            type="text"
+            disabled
+            v-model:value="selectedProductInModal.title"
+          >
             <template #addonAfter>
               <a-button type="link" @click="openProductPickingModal">
                 <template #icon>
@@ -226,11 +306,6 @@ const onSelectNode = (
             </template>
           </a-input>
         </div>
-        <ul class="mt-2">
-          <li v-for="item in selectedOK" :key="item.id" class="list">
-            {{ item.title }}
-          </li>
-        </ul>
 
         <a-modal
           v-model:visible="showProductPickingModal"
@@ -239,15 +314,10 @@ const onSelectNode = (
         >
           <div v-if="productListData.items && productListData.items.length">
             <a-table
-              :columns="productsColumns"
+              :columns="productsSelectColumns"
               :pagination="productPagination"
               :data-source="productListData.items"
               @change="onChangeProductList"
-              rowKey="id"
-              :row-selection="{
-                onChange: onSelectChange,
-                selectedRowKeys: [...selectedProductKeyInPage.keys()],
-              }"
             >
               <template #bodyCell="{ column, record }">
                 <template v-if="column.key === 'imageId'">
@@ -260,6 +330,25 @@ const onSelectNode = (
                 <template v-if="column.key === 'price'">
                   {{ $filters.toPersianCurrency(record.price / 10, 'تومان') }}
                 </template>
+                <template v-if="column.key === 'actions'">
+                  <a-button
+                    type="primary"
+                    :id="record.id"
+                    @click="selectProduct(record)"
+                    v-if="selectedProductInModal.id"
+                    :disabled="record.id !== selectedProductInModal.id"
+                  >
+                    <span>انتخاب</span>
+                  </a-button>
+                  <a-button
+                    type="primary"
+                    :id="record.id"
+                    @click="selectProduct(record)"
+                    v-else
+                  >
+                    <span>انتخاب</span>
+                  </a-button>
+                </template>
               </template>
             </a-table>
           </div>
@@ -269,7 +358,7 @@ const onSelectNode = (
   </a-card>
   <div class="line"></div>
   <div class="btn-container flex justify-end">
-    <a-button type="primary">
+    <a-button type="primary" :disabled="btnDisabled" @click="nextStep">
       <span>مرحله بعد</span>
     </a-button>
   </div>

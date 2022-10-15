@@ -4,17 +4,20 @@ import { CouponsRewardsType } from '../../../core/enums/couponsType.enum'
 import { t } from 'vui18n'
 import { productsList, products } from '../../../core/types/product.type'
 import { getProductList } from '../../../logics/specific/products.handler'
-
+import { newCouponAdd } from '../../../logics/specific/coupons.handler'
 import BSelect from '/src/presentation/components/shared/atoms/BSelect.vue'
 import InputWithHeadlineAndUnit from '/src/presentation/components/shared/molecules/InputWithHeadlineAndUnit.vue'
 import { UnorderedListOutlined } from '@ant-design/icons-vue'
 import { TableProps } from 'ant-design-vue'
-
+import { showErrorMessage } from '@/logics/shared/message.handler'
 import {
   productsSelectColumns,
   productListData,
 } from '../../../core/constants/coupons.options'
+import { useCouponStore } from '../../../resources/store/coupon.store'
+import { returnToPreviousRoute } from '@/logics/shared/route.handler'
 
+const couponStore = useCouponStore()
 const selectedCouponReward = ref('')
 const couponRewardOptions: any[] = []
 const selectedProductInModal: Ref<products> = ref({
@@ -85,6 +88,49 @@ const selectProduct = (item: object) => {
 const confirmModal = () => {
   showProductPickingModal.value = false
 }
+
+const discountMaximumPriceInput = ref()
+const percentageAmountInput = ref()
+const scoreInput = ref()
+const creditInput = ref()
+const onSubmitCoupon = async () => {
+  if (percentageAmountInput.value > 100) {
+    showErrorMessage('درصد نباید بیشتر از صد باشد.')
+  } else if (discountMaximumPriceInput.value * 10 < 5000) {
+    showErrorMessage('سقف قیمتی نباید کمتر ۵۰۰ تومان باشد.')
+  } else if (creditInput.value * 10 < 5000) {
+    showErrorMessage('مقدار اعتبار نباید کمتر ۵۰۰ تومان باشد.')
+  } else {
+    await newCouponAdd({
+      title: couponStore.title,
+      type: couponStore.type,
+      value: couponStore.value,
+      reward: selectedCouponReward.value,
+      rewardValue: {
+        id: (() => {
+          if (selectedCouponReward.value === CouponsRewardsType.PRODUCT)
+            return selectedProductInModal.value.id
+        })(),
+        discountMaximumPrice: (() => {
+          if (selectedCouponReward.value === CouponsRewardsType.DISCOUNT)
+            return discountMaximumPriceInput.value
+        })(),
+        discountPercentage: (() => {
+          if (selectedCouponReward.value === CouponsRewardsType.DISCOUNT)
+            return percentageAmountInput.value
+        })(),
+        amount: (() => {
+          if (selectedCouponReward.value === CouponsRewardsType.SCORE)
+            return scoreInput.value
+          if (selectedCouponReward.value === CouponsRewardsType.CREDIT)
+            return creditInput.value
+        })(),
+      },
+    })
+  }
+}
+
+const goToPastStep = () => returnToPreviousRoute()
 </script>
 
 <template>
@@ -175,12 +221,14 @@ const confirmModal = () => {
           unit="درصد"
           placeholder="درصد تخفیف را وارد کنید"
           headline="درصد تخفیف"
+          v-model:value="percentageAmountInput"
         />
         <InputWithHeadlineAndUnit
           class="mr-4"
           unit="تومان"
           placeholder="سقف قیمتی را وارد کنید"
           headline="سقف قیمتی"
+          v-model:value="discountMaximumPriceInput"
         />
       </div>
       <div v-if="selectedCouponReward === 'SCORE'" class="mx-4">
@@ -188,6 +236,8 @@ const confirmModal = () => {
           unit="امتیاز"
           placeholder="مقدار امتیاز را وارد کنید"
           headline="مقدار امتیاز"
+          type="number"
+          v-model:value="scoreInput"
         />
       </div>
       <div v-if="selectedCouponReward === 'CREDIT'" class="mx-4">
@@ -195,16 +245,17 @@ const confirmModal = () => {
           unit="اعتبار"
           placeholder="مقدار اعتبار را وارد کنید"
           headline="مقدار اعتبار"
+          v-model:value="creditInput"
         />
       </div>
     </div>
   </a-card>
   <div class="line"></div>
   <div class="btn-container flex justify-end">
-    <a-button type="primary">
+    <a-button class="ml-4" @click="goToPastStep">
       <span>مرحله قبل</span>
     </a-button>
-    <a-button type="primary">
+    <a-button type="primary" @click="onSubmitCoupon">
       <span>ثبت</span>
     </a-button>
   </div>

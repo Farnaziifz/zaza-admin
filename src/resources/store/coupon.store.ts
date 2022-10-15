@@ -46,5 +46,26 @@ export const useCouponStore = defineStore('coupon-store', {
         value: couponData.selectItem?.value,
       }
     },
+    emptyCouponStore() {
+      this.title = ''
+      this.type = ''
+      this.reward = ''
+      this.value = {
+        id: '',
+        title: '',
+        amount: 0,
+      }
+      this.rewardValue = {
+        id: '',
+        amount: 0,
+        title: '',
+        discountMaximumPrice: 0,
+        discountPercentage: 0,
+      }
+      this.selectItem = {
+        title: '',
+        value: '',
+      }
+    },
   },
 })

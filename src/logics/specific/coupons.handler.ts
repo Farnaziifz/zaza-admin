@@ -65,5 +65,7 @@ export const newCouponAdd = async (data: coupons) => {
   if (res.data?.status === 204) {
     showSuccessMessage()
     goToPath('/coupons/list')
+    const couponStore = useCouponStore()
+    couponStore.emptyCouponStore()
   } else showErrorMessage(res.error?.response?.statusText)
 }

@@ -11,7 +11,7 @@ const changePathToPreviousRoute = () => returnToPreviousRoute()
 </script>
 
 <template>
-  <div class="px-6 py-10 background-color-pure-white">
+  <div class="px-6 py-6 background-color-pure-white">
     <div
       v-if="props.placeReturnButton"
       id="return-button-container"

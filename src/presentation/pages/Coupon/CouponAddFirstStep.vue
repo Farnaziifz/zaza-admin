@@ -279,7 +279,6 @@ if (couponStore.title) {
               :load-data="onLoadData"
               @select="onSelectNode"
             />
-            <!--  -->
           </a-modal>
         </div>
       </div>

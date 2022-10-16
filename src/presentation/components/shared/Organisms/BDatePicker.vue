@@ -9,6 +9,8 @@ type BDatePickerProps = {
   range: boolean
   customId?: string
   dateType?: boolean
+  minDate: string
+  disabled: boolean
 }
 const props = defineProps<BDatePickerProps>()
 const emits = defineEmits(['update:value'])
@@ -29,6 +31,7 @@ watch(
     <a-input
       :id="`${customId ?? 'b-date-picker'}`"
       :placeholder="props.placeHolder"
+      :disabled="disabled"
     >
       <template #prefix>
         <calendar-outlined class="ml-1" />
@@ -39,6 +42,7 @@ watch(
       :range="props.range"
       :custom-input="`${customId ? '#' + customId : '#b-date-picker'}`"
       :type="props.dateType ? 'datetime' : ''"
+      :min="minDate"
     />
   </div>
 </template>

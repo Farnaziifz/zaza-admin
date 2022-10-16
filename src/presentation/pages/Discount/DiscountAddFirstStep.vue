@@ -5,8 +5,46 @@ import GenerateIcon from '/src/presentation/components/shared/atoms/Genrate.vue'
 import BDatePicker from '/src/presentation/components/shared/Organisms/BDatePicker.vue'
 
 import { t } from 'vui18n'
-import { ref } from 'vue'
-const pickedDate = ref([])
+import { ref, computed } from 'vue'
+import { showErrorMessage } from '@/logics/shared/message.handler'
+import {
+  checkCodeValidation,
+  generateCode,
+} from '../../../logics/specific/discount.handler'
+
+const pickedStartDate = ref('')
+const pickedEndDate = ref('')
+const discountCode = ref('')
+const discountName = ref('')
+// const randomCode = ref({
+//   code: '',
+// })
+
+const btnDisabled = computed(() => {
+  if (
+    discountName.value &&
+    discountCode.value &&
+    pickedStartDate.value &&
+    pickedEndDate.value
+  ) {
+    return false
+  }
+  return true
+})
+
+const checkCode = async () => {
+  const res = await checkCodeValidation(discountCode.value)
+  if (res.isValid) {
+    console.log('inja add mikonim')
+  } else {
+    showErrorMessage(res.message)
+  }
+}
+
+const generateRandomCode = async () => {
+  const res = await generateCode()
+  discountCode.value = res.code
+}
 </script>
 
 <template>
@@ -31,6 +69,7 @@ const pickedDate = ref([])
               placeholder="عنوان تخفیف را وارد کنید"
               type="text"
               style="width: 250px"
+              v-model:value="discountName"
             >
             </a-input>
           </div>
@@ -40,9 +79,14 @@ const pickedDate = ref([])
               placeholder="کد تخفیف را وارد کنید"
               type="text"
               style="width: 250px"
+              v-model:value="discountCode"
             >
               <template #addonAfter>
-                <a-button type="link" class="flex justify-center icon-btn">
+                <a-button
+                  type="link"
+                  class="flex justify-center icon-btn"
+                  @click="generateRandomCode"
+                >
                   <template #icon>
                     <GenerateIcon />
                   </template>
@@ -52,10 +96,12 @@ const pickedDate = ref([])
           </div>
           <div class="mx-4">
             <b-date-picker
-              v-model:value="pickedDate"
+              v-model:value="pickedStartDate"
               place-holder="تاریخ و زمان شروع را انتخاب کنید"
               :range="false"
               :dateType="true"
+              ref="start"
+              customId="startDate"
             >
               <template #headline>
                 <span style="font-weight: 500; font-size: 16px">
@@ -66,10 +112,14 @@ const pickedDate = ref([])
           </div>
           <div class="mx-4">
             <b-date-picker
-              v-model:value="pickedDate"
+              v-model:value="pickedEndDate"
               place-holder="تاریخ و زمان پایان را انتخاب کنید"
               :range="false"
               :dateType="true"
+              ref="end"
+              customId="endDate"
+              :minDate="pickedStartDate"
+              :disabled="!pickedStartDate.length"
             >
               <template #headline>
                 <span style="font-weight: 500; font-size: 16px">
@@ -82,7 +132,7 @@ const pickedDate = ref([])
       </a-card>
       <div class="line"></div>
       <div class="btn-container flex justify-end">
-        <a-button type="primary">
+        <a-button type="primary" @click="checkCode" :disabled="btnDisabled">
           <span>مرحله بعد</span>
         </a-button>
       </div>

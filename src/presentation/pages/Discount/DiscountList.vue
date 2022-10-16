@@ -103,12 +103,15 @@ const onChangeCustomerGroup: TableProps<discountCustomerGroup>['onChange'] =
       paginate.pageSize
     )
   }
+const goToAdd = () => {
+  router.push({ name: 'discount-add' })
+}
 </script>
 <template>
   <content-layout>
     <template #content-title>کد تخفیف</template>
     <template #content-actions>
-      <a-button type="primary">
+      <a-button type="primary" @click="goToAdd">
         <template #icon><PlusIcon color="#fff" /></template>
         <span>افزودن کد تخفیف</span>
       </a-button>

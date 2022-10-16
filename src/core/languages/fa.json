@@ -91,6 +91,13 @@
         }
       }
     },
+    "DiscountAdd": {
+      "title": "افزودن تخفیف",
+      "hints": {
+        "hintBody": "تایتل راهنما تخفیف",
+        "hintDescription": "توضیح کامل راهنمای"
+      }
+    },
     "LabelSettingsBadge": {
       "pageTitle": "برچسب",
       "inputUnit": "درجه",

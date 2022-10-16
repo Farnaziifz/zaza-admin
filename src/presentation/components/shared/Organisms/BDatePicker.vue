@@ -43,6 +43,7 @@ watch(
       :custom-input="`${customId ? '#' + customId : '#b-date-picker'}`"
       :type="props.dateType ? 'datetime' : ''"
       :min="minDate"
+      :disabled="disabled"
     />
   </div>
 </template>

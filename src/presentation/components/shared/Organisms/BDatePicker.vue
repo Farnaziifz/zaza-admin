@@ -9,8 +9,8 @@ type BDatePickerProps = {
   range: boolean
   customId?: string
   dateType?: boolean
-  minDate: string
-  disabled: boolean
+  minDate?: string
+  disabled?: boolean
 }
 const props = defineProps<BDatePickerProps>()
 const emits = defineEmits(['update:value'])

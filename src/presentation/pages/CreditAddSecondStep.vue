@@ -174,6 +174,7 @@ onMounted(async () => {
       <a-button
         type="primary"
         class="button-secondary mx-4"
+        :disabled="!selectedGroup"
         @click="addSelectedGroupToSelectedList"
       >
         افزودن به لیست
@@ -194,7 +195,7 @@ onMounted(async () => {
         >
           <div class="customer-action-button">
             <a @click="showTargetCustomerModal(record)">
-              {{ record.customersCount }}
+              {{ record.customersCount }} مشتری
             </a>
           </div>
         </div>

@@ -19,7 +19,6 @@ const expandIcon = () => {
   isActivated.value = !isActivated.value
 }
 
-
 const selectedValue = ref(props.value ? props.value : props.placeHolder)
 watch(
   props,

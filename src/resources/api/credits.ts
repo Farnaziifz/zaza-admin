@@ -1,7 +1,7 @@
 import { api } from './index'
-import {credit, creditsList} from '@/core/types/credits.type'
+import { credit, creditsList } from '@/core/types/credits.type'
 import { error } from '@/core/types/error.type'
-import {makeARequest} from "@/logics/shared/apiResponse.handler";
+import { makeARequest } from '@/logics/shared/apiResponse.handler'
 
 const pageUrl = 'credit'
 type response = {
@@ -10,8 +10,7 @@ type response = {
 }
 
 const creditPost = async (creditData: credit) =>
-  await makeARequest<credit>(api.post, pageUrl,creditData)
-
+  await makeARequest<credit>(api.post, pageUrl, creditData)
 
 const creditsListGet = async (
   page?: number,

@@ -1,7 +1,7 @@
 import { CouponsTypesType, CouponsRewardsType } from '../enums/couponsType.enum'
 
 export type coupons = {
-  id?: string 
+  id?: string
   title: string
   type: string | CouponsTypesType
   reward?: string | CouponsRewardsType

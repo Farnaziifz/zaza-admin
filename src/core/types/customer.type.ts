@@ -212,10 +212,10 @@ export type customerCoupon = {
 }
 
 export type customerCouponList = {
-    items: customerCoupon[]
-    hasNextPage: boolean
-    hasPreviousPage: boolean
-    page: number
-    totalCount: number
-    totalPages: number
+  items: customerCoupon[]
+  hasNextPage: boolean
+  hasPreviousPage: boolean
+  page: number
+  totalCount: number
+  totalPages: number
 }

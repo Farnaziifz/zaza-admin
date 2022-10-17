@@ -1,4 +1,5 @@
 <script lang="ts" setup async>
+import { goToPath } from '@/logics/shared/route.handler'
 import ContentLayout from '/src/presentation/layouts/ContentLayout.vue'
 import PlusIcon from '/src/presentation/components/shared/atoms/PlusIcon.vue'
 import { TableColumnType, TableProps } from 'ant-design-vue'
@@ -6,12 +7,13 @@ import {
   credits,
   creditsList,
   creditCustomerGroup,
-} from '../../core/types/credits.type'
+} from '@/core/types/credits.type'
 import { ref, Ref, onBeforeMount, computed, reactive } from 'vue'
 import {
   initPageHandler,
   getCustomerGroup,
-} from '../../logics/specific/credits.handler'
+} from '@/logics/specific/credits.handler'
+
 const columns: TableColumnType<credits>[] = [
   {
     title: 'مشتریان هدف',
@@ -115,8 +117,10 @@ const handleCancel = () => {
   <content-layout>
     <template #content-title>هدیه اعتباری</template>
     <template #content-actions>
-      <a-button type="primary">
-        <template #icon><PlusIcon color="#fff" /></template>
+      <a-button type="primary" @click="goToPath('/credits/add')">
+        <template #icon>
+          <PlusIcon color="#fff" />
+        </template>
         <span>افزودن اعتبار</span>
       </a-button>
     </template>
@@ -136,9 +140,9 @@ const handleCancel = () => {
               </span>
               <span>
                 <a-typography-text
+                  v-if="record.groups.length > 2"
                   type="danger"
                   class="moreGroup"
-                  v-if="record.groups.length > 2"
                   @click="openGroupModal(record.groups)"
                   >دیگر...</a-typography-text
                 >

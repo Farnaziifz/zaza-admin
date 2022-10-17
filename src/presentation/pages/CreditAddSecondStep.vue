@@ -214,7 +214,7 @@ onMounted(async () => {
       cancel-text="بستن"
       ok-type="primary"
       title="حذف دسته‌بندی از لیست مشتریان هدف"
-      content="آیا از حذف دسته‌بندی A از لیست مشتریان هدف مطمئن هستید؟"
+      content="آیا از حذف دسته‌بندی از لیست مشتریان هدف مطمئن هستید؟"
       @ok="deleteRowFromSelectedGroups"
       @cancel="closeDeleteModal"
     />

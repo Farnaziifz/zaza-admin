@@ -171,7 +171,9 @@ onMounted(() => {
             <template v-else-if="column.key === 'actions'">
               <div class="customer-action-container">
                 <div class="customer-action-button">
-                  <a>جزئیات</a>
+                  <a @click="goToPath(`/credits/details/${record.id}`)">
+                    جزئیات
+                  </a>
                 </div>
               </div>
             </template>

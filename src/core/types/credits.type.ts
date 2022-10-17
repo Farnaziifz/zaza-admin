@@ -1,13 +1,25 @@
+import { pagination } from '@/core/types/pagination.type'
+
 type group = {
   groupId: ''
   groupTitle: ''
 }
+export type creditTitleList = {
+  groupIds: string[]
+  title: string
+  customersCount: number
+  amount: number
+}
 
 export type credit = {
+  id?: string
   amount: number
+  hasPeriod?: boolean
   startAt?: Date | string
   expireAt?: Date | string
   creditGroups?: { groupId: string }[]
+  groups?: { groupId: string }[]
+  groupIds?: string[]
 }
 
 export type credits = {

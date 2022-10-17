@@ -4,7 +4,7 @@ import { pagination } from '@/core/types/pagination.type'
 export type groupItemTitle = {
   groupId: string
   title: string
-  customerCount: number
+  customersCount: number
 }
 
 export type groupTitle = {

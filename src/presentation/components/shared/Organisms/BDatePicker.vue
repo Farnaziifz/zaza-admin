@@ -55,7 +55,7 @@ const pickedComputed = computed(() => {
       v-model="pickedDate"
       :range="props.range"
       :custom-input="`${customId ? '#' + customId : '#b-date-picker'}`"
-      :type="props.dateType ? 'datetime' : ''"
+      :type="props.dateType ? 'datetime' : 'date'"
       :min="minDate"
       :disabled="disabled"
     />

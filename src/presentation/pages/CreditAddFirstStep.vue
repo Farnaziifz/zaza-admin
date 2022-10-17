@@ -84,6 +84,7 @@ const nextStep = () => saveCreditToStore(serverData.value)
         custom-id="start-date"
         class="ml-4"
         :range="false"
+        :date-type="false"
         place-holder="تاریخ و زمان شروع را انتخاب کنید"
       >
         <template #headline>
@@ -97,6 +98,7 @@ const nextStep = () => saveCreditToStore(serverData.value)
         v-model:value="serverData.expireAt"
         custom-id="end-date"
         :range="false"
+        :date-type="false"
         place-holder="تاریخ و زمان پایان را انتخاب کنید"
       >
         <template #headline>

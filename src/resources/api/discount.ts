@@ -50,22 +50,6 @@ const getDiscountGroup = async (id: [], page?: number, pageSize?: number) => {
   return res.data
 }
 
-// const getDiscountGroupDetails = async (
-//   id: { groupId: string }[],
-//   page?: number,
-//   pageSize?: number
-// ) => {
-//   let gpID = ''
-//   for (let i = 0; i < id.length; i++) {
-//     gpID += `GroupIds=${id[i].groupId}`
-//     if (i < id.length - 1) gpID += '&'
-//   }
-//   const res = await api.get(
-//     `group/title?${gpID}&Page=${page}&PageSize=${pageSize}`
-//   )
-
-//   return res.data
-// }
 const getDiscountGroupDetails = async (
   id: { groupId: string }[],
   page: number,
@@ -83,6 +67,14 @@ const getDiscountGroupDetails = async (
   return res.data
 }
 
+const checkDiscountValidation = async (code: string) => {
+  const res = await api.get(`${pageUrl}/code-validation?Code=${code}`)
+  return res.data
+}
+const generateCode = async () => {
+  const res = await api.get(`${pageUrl}/generate-random-code`)
+  return res.data
+}
 export const discountApi = () => {
   return {
     get: discountListGet,
@@ -91,5 +83,7 @@ export const discountApi = () => {
     getDetails: getDiscountDetails,
     getGroup: getDiscountGroup,
     getGroupDetails: getDiscountGroupDetails,
+    checkCodeValidation: checkDiscountValidation,
+    generateCode: generateCode,
   }
 }

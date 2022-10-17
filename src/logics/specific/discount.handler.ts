@@ -81,3 +81,26 @@ export const getDiscoutGroupDetails = async (
     throw 'errors'
   }
 }
+
+export const checkCodeValidation = async (code: string) => {
+  const res = await api.checkCodeValidation(code)
+  console.log(res)
+  const checkCode = res.data
+  const errors = res.errors
+  if (Object.is(errors, null)) return checkCode
+  else {
+    showErrorMessage()
+    throw 'errors'
+  }
+}
+
+export const generateCode = async () => {
+  const res = await api.generateCode()
+  const generateCode = res.data
+  const errors = res.errors
+  if (Object.is(errors, null)) return generateCode
+  else {
+    showErrorMessage()
+    throw 'errors'
+  }
+}

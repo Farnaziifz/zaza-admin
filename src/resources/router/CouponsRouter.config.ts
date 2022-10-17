@@ -1,9 +1,9 @@
-import Coupons from '/src/presentation/pages/Coupons.vue'
-import CouponsList from '/src/presentation//pages/CouponsList.vue'
-import CouponDetail from '/src/presentation/pages/CouponDetails.vue'
-import CouponAdd from '/src/presentation/pages/CouoponAdd.vue'
-import CouponAddFirstStep from '/src/presentation/pages/CouponAddFirstStep.vue'
-
+import Coupons from '/src/presentation/pages/Coupon/Coupons.vue'
+import CouponsList from '/src/presentation/pages/Coupon/CouponsList.vue'
+import CouponDetail from '/src/presentation/pages/Coupon/CouponDetails.vue'
+import CouponAdd from '/src/presentation/pages/Coupon/CouoponAdd.vue'
+import CouponAddFirstStep from '/src/presentation/pages/Coupon/CouponAddFirstStep.vue'
+import CouponAddSecondStep from '/src/presentation/pages/Coupon/CouponAddSecondStep.vue'
 export const couponsRouterConfig = {
   path: 'coupons',
   name: 'coupons',
@@ -29,7 +29,14 @@ export const couponsRouterConfig = {
         {
           path: 'first-step',
           name: 'coupon-add-first-step',
+          meta: { step: 0 },
           component: CouponAddFirstStep,
+        },
+        {
+          path: 'second-step',
+          name: 'coupon-add-second-step',
+          meta: { step: 1 },
+          component: CouponAddSecondStep,
         },
       ],
     },

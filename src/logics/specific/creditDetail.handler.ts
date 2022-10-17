@@ -1,6 +1,6 @@
 import { creditsApi } from '@/resources/api/credits'
 import { groupApi } from '@/resources/api/group'
-import {showErrorMessage} from "@/logics/shared/message.handler";
+import { showErrorMessage } from '@/logics/shared/message.handler'
 
 const api = creditsApi()
 const gpApi = groupApi()
@@ -15,7 +15,7 @@ export const initHandler = async (id: string) => {
       creditDetails: res.data,
       groupDetails: groupDetails.data,
     }
-  }else {
+  } else {
     showErrorMessage('خطایی رخ داده است')
   }
 }

@@ -8,11 +8,12 @@ import {
   creditsList,
   creditCustomerGroup,
 } from '@/core/types/credits.type'
-import { ref, Ref, onBeforeMount, computed, reactive } from 'vue'
+import { ref, Ref, onBeforeMount, computed, reactive, onMounted } from 'vue'
 import {
   initPageHandler,
   getCustomerGroup,
 } from '@/logics/specific/credits.handler'
+import { useCreditStore } from '@/resources/store/credit.store'
 
 const columns: TableColumnType<credits>[] = [
   {
@@ -111,6 +112,11 @@ const openGroupModal = async (item: { groupId: string }[]) => {
 const handleCancel = () => {
   visibleGroupModal.value = false
 }
+
+onMounted(() => {
+  const store = useCreditStore()
+  store.clearStore()
+})
 </script>
 
 <template>

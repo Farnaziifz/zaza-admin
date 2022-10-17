@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import InputWithHeadlineAndUnit from '@/presentation/components/shared/molecules/InputWithHeadlineAndUnit.vue'
 import BDatePicker from '@/presentation/components/shared/Organisms/BDatePicker.vue'
-import { computed, onMounted, ref, Ref } from 'vue'
+import { computed, onMounted, ref, Ref, watch } from 'vue'
 import { credit } from '@/core/types/credits.type'
 import _ from 'lodash'
 import { saveCreditToStore } from '@/logics/specific/creditAddFirstStep.handler'
@@ -13,6 +13,12 @@ const serverData: Ref<credit> = ref({
   expireAt: '',
 })
 const creditHasExpirationDate = ref(false)
+watch(creditHasExpirationDate, () => {
+  if (creditHasExpirationDate.value === false) {
+    serverData.value.expireAt = undefined
+    serverData.value.startAt = undefined
+  }
+})
 
 const isBtnDisabled = computed(() => {
   if (!_.toNumber(serverData.value.amount)) return true

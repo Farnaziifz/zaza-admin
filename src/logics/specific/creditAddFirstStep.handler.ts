@@ -21,6 +21,8 @@ export const sendDataToServerHandler = async (
       expireAt: store.expireAt ? store.expireAt : undefined,
       creditGroups: groups ? groups : undefined,
     })
+    goToPath('/credits')
+    store.clearStore()
   } else {
     showErrorMessage('دیتای کافی برای ارسال به سرور موجود نیست.')
   }

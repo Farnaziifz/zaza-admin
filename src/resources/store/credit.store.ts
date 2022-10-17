@@ -27,5 +27,11 @@ export const useCreditStore = defineStore('credit-store', {
       this.expireAt = creditData.expireAt
       this.creditGroups = creditData.creditGroups
     },
+    clearStore () {
+      this.amount = 0
+      this.startAt = undefined
+      this.expireAt = undefined
+      this.creditGroups = undefined
+    }
   },
 })

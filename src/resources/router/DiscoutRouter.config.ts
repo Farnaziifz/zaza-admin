@@ -1,6 +1,8 @@
 import Discount from '/src/presentation/pages/Discount/Discount.vue'
 import DiscountList from '/src/presentation/pages/Discount/DiscountList.vue'
 import DiscountDetails from '/src/presentation/pages/Discount/DiscountDetails.vue'
+import DiscountAdd from '/src/presentation/pages/Discount/DiscountAdd.vue'
+import DiscountAddFirstStep from '/src/presentation/pages/Discount/DiscountAddFirstStep.vue'
 
 export const discountRouterConfig = {
   path: 'discount',
@@ -17,6 +19,20 @@ export const discountRouterConfig = {
       path: 'details/:id',
       name: 'discount-details',
       component: DiscountDetails,
+    },
+    {
+      path: 'add',
+      name: 'discount-add',
+      component: DiscountAdd,
+      redirect: '/discount/add/first-step',
+      children: [
+        {
+          path: 'first-step',
+          name: 'discount-add-first-step',
+          meta: { step: 0 },
+          component: DiscountAddFirstStep,
+        },
+      ],
     },
   ],
 }

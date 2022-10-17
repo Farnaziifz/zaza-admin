@@ -1,10 +1,12 @@
 import { couponsApi } from '../../resources/api/coupons'
-import { couponsList } from '../../core/types/coupons.type'
+import { couponsList, coupons } from '../../core/types/coupons.type'
 import {
   showErrorMessage,
   showLoadingMessage,
   showSuccessMessage,
 } from '@/logics/shared/message.handler'
+import { useCouponStore } from '@/resources/store/coupon.store'
+import { goToPath } from '@/logics/shared/route.handler'
 
 const api = couponsApi()
 
@@ -49,4 +51,21 @@ export const getCouponDetails = async (data: string) => {
     // TODO: error handling
     throw 'errors'
   }
+}
+
+export const saveCouponDataFirstStep = (coupon: coupons) => {
+  const couponStore = useCouponStore()
+  couponStore.changeCouponSettings(coupon)
+  goToPath('/coupons/add/second-step')
+}
+
+export const newCouponAdd = async (data: coupons) => {
+  const res = await api.post(data)
+  showLoadingMessage()
+  if (res.data?.status === 204) {
+    showSuccessMessage()
+    goToPath('/coupons/list')
+    const couponStore = useCouponStore()
+    couponStore.emptyCouponStore()
+  } else showErrorMessage(res.error?.response?.statusText)
 }

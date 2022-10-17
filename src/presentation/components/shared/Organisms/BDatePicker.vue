@@ -11,6 +11,9 @@ type BDatePickerProps = {
   placeHolder: string
   range: boolean
   customId?: string
+  dateType?: boolean
+  minDate?: string
+  disabled?: boolean
 }
 const props = defineProps<BDatePickerProps>()
 const emits = defineEmits(['update:value'])
@@ -52,6 +55,9 @@ const pickedComputed = computed(() => {
       v-model="pickedDate"
       :range="props.range"
       :custom-input="`${customId ? '#' + customId : '#b-date-picker'}`"
+      :type="props.dateType ? 'datetime' : ''"
+      :min="minDate"
+      :disabled="disabled"
     />
   </div>
 </template>

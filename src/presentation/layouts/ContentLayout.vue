@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import ReturnButton from '@/presentation/components/shared/molecules/ReturnButton.vue'
+import ReturnButton from '/src/presentation/components/shared/molecules/ReturnButton.vue'
 import { returnToPreviousRoute } from '@/logics/shared/route.handler'
 
 type contentLayoutPropsType = {
@@ -11,7 +11,7 @@ const changePathToPreviousRoute = () => returnToPreviousRoute()
 </script>
 
 <template>
-  <div class="px-6 py-10 background-color-pure-white">
+  <div class="px-6 py-6 background-color-pure-white">
     <div
       v-if="props.placeReturnButton"
       id="return-button-container"

@@ -3,30 +3,53 @@ import { ref, computed, Ref } from 'vue'
 import inputWithHadline from '/src/presentation/components/shared/molecules/InputWithHeadline.vue'
 import BSelect from '/src/presentation/components/shared/atoms/BSelect.vue'
 import InputWithHeadlineAndUnit from '/src/presentation/components/shared/molecules/InputWithHeadlineAndUnit.vue'
-import { CouponsTypesType } from '../../core/enums/couponsType.enum'
-import { products, productsList } from '../../core/types/product.type'
-import { getProductList } from '../../logics/specific/products.handler'
-import { getCategoryList } from '../../logics/specific/category.handler'
+import { CouponsTypesType } from '../../../core/enums/couponsType.enum'
+import { products, productsList } from '../../../core/types/product.type'
+import { getProductList } from '../../../logics/specific/products.handler'
+import { getCategoryList } from '../../../logics/specific/category.handler'
+import { saveCouponDataFirstStep } from '../../../logics/specific/coupons.handler'
 import { t } from 'vui18n'
 import { UnorderedListOutlined } from '@ant-design/icons-vue'
 import { TableProps, TreeProps } from 'ant-design-vue'
-import { category } from '../../core/types/category.type'
-
+import { category } from '../../../core/types/category.type'
+import { useCouponStore } from '../../../resources/store/coupon.store'
 import {
-  productsColumns,
+  productsSelectColumns,
   productListData,
   categoryListData,
-} from '../../core/constants/coupons.options'
+} from '../../../core/constants/coupons.options'
+
+const couponStore = useCouponStore()
 
 const titleValue = ref('')
 const selectedCouponType = ref('')
 const couponTypeOptions: any[] = []
+const btnDisabled = computed(() => {
+  if (titleValue.value && selectedCouponType.value) {
+    if (
+      (selectedCouponType.value === CouponsTypesType.BUY_ABOVE_SPECIFIC_PRICE &&
+        buyAboveSprecificPriceInput.value) ||
+      (selectedCouponType.value ===
+        CouponsTypesType.BUY_FROM_SPECIFIC_CATEGORY &&
+        selectedItem.value.id) ||
+      (selectedCouponType.value === CouponsTypesType.BUY_SPECIFIC_PRODUCT &&
+        selectedOK.value.length)
+    ) {
+      return false
+    } else if (selectedCouponType.value === CouponsTypesType.FIRST_ORDER) {
+      return false
+    }
+  } else {
+    return true
+  }
+  return true
+})
+const buyAboveSprecificPriceInput = ref()
 
 const selectedProductKeyInPage: Ref<Map<string, products>> = ref(new Map())
 const allSelectedProductInPages: Ref<Map<number, Map<string, products>>> = ref(
   new Map()
 )
-// const allSelectedForList: {}[] = []
 const currentPageNumber: Ref<number> = ref(1)
 
 for (const type in CouponsTypesType)
@@ -138,6 +161,35 @@ const onSelectNode = (
   selectedItem.value = e.selectedNodes[0]
   showCategoryPickingModal.value = false
 }
+
+const nextStep = () => {
+  saveCouponDataFirstStep({
+    title: titleValue.value,
+    type: selectedCouponType.value,
+    value: {
+      id: (() => {
+        if (selectedCouponType.value === CouponsTypesType.BUY_SPECIFIC_PRODUCT)
+          return selectedOK.value.map((el) => el.id)
+        else if (
+          selectedCouponType.value ===
+          CouponsTypesType.BUY_FROM_SPECIFIC_CATEGORY
+        )
+          return selectedItem.value.id
+
+        return undefined
+      })(),
+      amount: (() => {
+        if (
+          selectedCouponType.value === CouponsTypesType.BUY_ABOVE_SPECIFIC_PRICE
+        )
+          return buyAboveSprecificPriceInput.value
+      })(),
+    },
+  })
+}
+if (couponStore) {
+  console.log('salam')
+}
 </script>
 
 <template>
@@ -169,6 +221,7 @@ const onSelectNode = (
             unit="تومان"
             placeholder="حداقل قیمت سفارش را وارد کنید"
             headline="حداقل قیمت سفارش"
+            v-model:value="buyAboveSprecificPriceInput"
           />
         </div>
         <div
@@ -239,16 +292,16 @@ const onSelectNode = (
         >
           <div v-if="productListData.items && productListData.items.length">
             <a-table
-              :columns="productsColumns"
+              :columns="productsSelectColumns"
               :pagination="productPagination"
               :data-source="productListData.items"
               @change="onChangeProductList"
               rowKey="id"
-              :row-selection="{
+            >
+              <!-- :row-selection="{
                 onChange: onSelectChange,
                 selectedRowKeys: [...selectedProductKeyInPage.keys()],
-              }"
-            >
+              }" -->
               <template #bodyCell="{ column, record }">
                 <template v-if="column.key === 'imageId'">
                   <img
@@ -269,7 +322,7 @@ const onSelectNode = (
   </a-card>
   <div class="line"></div>
   <div class="btn-container flex justify-end">
-    <a-button type="primary">
+    <a-button type="primary" :disabled="btnDisabled" @click="nextStep">
       <span>مرحله بعد</span>
     </a-button>
   </div>

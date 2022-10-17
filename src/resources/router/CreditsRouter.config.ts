@@ -29,6 +29,9 @@ export const creditRouterConfig = {
           path: 'second-step',
           name: 'add-credit-second-step',
           component: CreditAddSecondStep,
+          meta: {
+            step: 1
+          }
         },
       ],
     },

@@ -12,6 +12,7 @@ type response<T> = {
   error?: AxiosError<T>
 }
 
+
 const groupTitleGet = async () =>
   makeARequest<groupTitle>(api.get, pageUrl + title + titlePageQuery)
 

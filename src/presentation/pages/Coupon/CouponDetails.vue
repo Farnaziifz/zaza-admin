@@ -7,7 +7,7 @@ import {
 import { coupons } from '../../../core/types/coupons.type'
 import { Ref, ref, onBeforeMount, reactive } from 'vue'
 import { useRoute } from 'vue-router'
-import _ from "lodash"
+import _ from 'lodash'
 
 const serverData: Ref<coupons> = ref({
   id: '',
@@ -60,7 +60,14 @@ const hideModal = () => {
         <a-button
           type="primary"
           size="small"
-          @click="showModal(_.toString(serverData.id), typeof(serverData.isActive) === 'boolean' ? serverData.isActive : false)"
+          @click="
+            showModal(
+              _.toString(serverData.id),
+              typeof serverData.isActive === 'boolean'
+                ? serverData.isActive
+                : false
+            )
+          "
           >تغییر وضعیت</a-button
         >
       </div>

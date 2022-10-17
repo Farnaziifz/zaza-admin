@@ -5,7 +5,7 @@ import {
   postGroup,
   postGroupPreview,
 } from '@/logics/specific/categoryAddFirstStep.handler'
-import { returnToPreviousRoute } from '@/logics/shared/route.handler'
+import { goToPath, returnToPreviousRoute } from '@/logics/shared/route.handler'
 
 const columns = [
   {
@@ -59,6 +59,7 @@ const submitGroup = async () => {
     queries: groupStore.queries,
     title: groupStore.title,
   })
+  goToPath('/credits')
 }
 
 const goToPastStep = () => returnToPreviousRoute()

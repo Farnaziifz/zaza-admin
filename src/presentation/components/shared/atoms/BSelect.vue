@@ -19,7 +19,6 @@ const expandIcon = () => {
   isActivated.value = !isActivated.value
 }
 
-
 const selectedValue = ref(props.value ? props.value : props.placeHolder)
 watch(
   props,
@@ -45,6 +44,7 @@ watch(
     dropdown-match-select-width
     :options="props.options"
     :placeholder="props.placeHolder"
+    style="min-width: 216px"
     @click="expandIcon"
     @change="emits('change')"
   >

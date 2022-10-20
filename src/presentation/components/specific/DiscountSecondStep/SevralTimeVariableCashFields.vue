@@ -206,7 +206,7 @@ const showDeleteModal = (id: string, price: string) => {
         </div>
       </a-modal>
     </div>
-    <div class="varibale-item-container mt-4 flex items-center">
+    <div class="varibale-item-container mt-4 flex items-center flex-wrap">
       <a-card
         v-for="item in varibleItem"
         :key="item.id"
@@ -231,9 +231,17 @@ const showDeleteModal = (id: string, price: string) => {
           {{ $filters.toPersianCurrency(_.toNumber(item.price), 'تومان') }}
         </div>
         <div class="hint-container mt-4">
-          <span v-if="_.toNumber(item.id) === varibleItem.length">
-            {{ $filters.toPersianCurrency(remainingPrice, 'تومان') }} باقی‌مانده
-          </span>
+          <a-typography-text type="danger"
+            ><span
+              v-if="
+                _.toNumber(item.id) === varibleItem.length &&
+                varibleItem.length > 1
+              "
+            >
+              {{ $filters.toPersianCurrency(remainingPrice, 'تومان') }}
+              باقی‌مانده
+            </span></a-typography-text
+          >
         </div>
       </a-card>
     </div>
@@ -255,5 +263,6 @@ const showDeleteModal = (id: string, price: string) => {
 }
 .item-card {
   margin-left: 16px;
+  margin-bottom: 16px;
 }
 </style>

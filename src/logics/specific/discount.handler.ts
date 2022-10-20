@@ -11,6 +11,8 @@ import {
   showSuccessMessage,
 } from '@/logics/shared/message.handler'
 import { useDiscountStore } from '@/resources/store/discount.store'
+import { goToPath } from '@/logics/shared/route.handler'
+
 const api = discountApi()
 
 export const initPageHandler = async (
@@ -109,4 +111,5 @@ export const generateCode = async () => {
 export const saveDiscountDataFirstStep = (discount: discounts) => {
   const discountStore = useDiscountStore()
   discountStore.changeDiscountSetting(discount)
+  goToPath('/discount/add/second-step')
 }

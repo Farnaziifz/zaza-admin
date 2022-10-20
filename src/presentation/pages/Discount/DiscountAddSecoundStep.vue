@@ -10,6 +10,7 @@ import InputWithHeadlineAndUnit from '/src/presentation/components/shared/molecu
 import SevralTimeVariableCashField from '/src/presentation/components/specific/DiscountSecondStep/SevralTimeVariableCashFields.vue'
 import { ref, computed } from 'vue'
 import { t } from 'vui18n'
+import { returnToPreviousRoute } from '@/logics/shared/route.handler'
 
 const settingData = ref({
   consumeType: '',
@@ -28,6 +29,12 @@ const btnDisabled = computed(() => {
   }
   return true
 })
+
+const onAddDiscountSecondStep = () => {
+  console.log('add')
+}
+
+const goToPastStep = () => returnToPreviousRoute()
 </script>
 <template>
   <content-layout>
@@ -236,6 +243,15 @@ const btnDisabled = computed(() => {
           </div>
         </div>
       </a-card>
+      <div class="line"></div>
+      <div class="btn-container flex justify-end">
+        <a-button class="ml-4" @click="goToPastStep">
+          <span>مرحله قبل</span>
+        </a-button>
+        <a-button type="primary" @click="onAddDiscountSecondStep">
+          <span>ثبت</span>
+        </a-button>
+      </div>
     </template>
   </content-layout>
 </template>

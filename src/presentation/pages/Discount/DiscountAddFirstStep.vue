@@ -16,7 +16,7 @@ import {
 import { useDiscountStore } from '../../../resources/store/discount.store'
 
 const pickedStartDate = ref('')
-const pickedEndDate = ref('')
+const pickedEndDate = ref('hjgjh')
 const discountCode = ref('')
 const discountName = ref('')
 
@@ -59,7 +59,10 @@ const generateRandomCode = async () => {
 }
 
 if (discountStore.title) {
-  console.log('is store')
+  discountName.value = discountStore.title
+  discountStore.code ? (discountCode.value = discountStore.code) : ''
+  discountStore.startAt ? (pickedStartDate.value = discountStore.startAt) : ''
+  discountStore.expireAt ? (pickedEndDate.value = discountStore.expireAt) : ''
 }
 </script>
 

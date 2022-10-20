@@ -2,6 +2,13 @@
 import { ref, computed, Ref } from 'vue'
 import InputWithHeadlineAndUnit from '/src/presentation/components/shared/molecules/InputWithHeadlineAndUnit.vue'
 import _ from 'lodash'
+import { showErrorMessage } from '@/logics/shared/message.handler'
+import EditIcon from '/src/presentation/components/shared/atoms/EditIcon.vue'
+import DeleteIcon from '/src/presentation/components/shared/atoms/DeleteIcon.vue'
+import { Modal } from 'ant-design-vue'
+import { ExclamationCircleOutlined } from '@ant-design/icons-vue'
+import { createVNode } from 'vue'
+
 type varibelItem = {
   id: string
   price: string
@@ -9,44 +16,69 @@ type varibelItem = {
 const minPayPriceInput = ref('')
 const discountPriceInput = ref('')
 const visibleeModal = ref<boolean>(false)
+const visibleEditModal = ref<boolean>(false)
 const varibalePrice = ref('')
 const varibleCount = ref(0)
 const varibleItem: Ref<varibelItem[]> = ref([])
-
+const itemForEdit = ref({ id: '', price: '' })
+const itemForDelete = ref({ id: '', price: '' })
 const openVaribaleModal = () => {
   visibleeModal.value = true
 }
 
 const btnVaribleDisable = computed(() => {
-  if (minPayPriceInput.value && discountPriceInput.value) {
+  console.log(
+    _.toNumber(checkSumPriceInArray(varibleItem.value)) ===
+      _.toNumber(discountPriceInput.value)
+  )
+  if (
+    minPayPriceInput.value &&
+    discountPriceInput.value &&
+    _.toNumber(checkSumPriceInArray(varibleItem.value)) !==
+      _.toNumber(discountPriceInput.value)
+  ) {
     return false
   }
   return true
 })
+const remainingPrice = computed(() => {
+  const remain =
+    _.toNumber(discountPriceInput.value) -
+    _.toNumber(checkSumPriceInArray(varibleItem.value))
+  return remain
+})
+
 const confirmModal = async () => {
-  if (varibleItem.value.length === 0) {
+  if (
+    varibleItem.value.length === 0 &&
+    varibalePrice.value <= discountPriceInput.value
+  ) {
     varibleItem.value.push({
       id: _.toString(varibleCount.value + 1),
       price: varibalePrice.value,
     })
+    varibleCount.value++
+    varibalePrice.value = ''
   } else {
     if (
-      varibalePrice.value + checkSumPriceInArray(varibleItem.value) >
-      discountPriceInput.value
+      _.toNumber(varibalePrice.value) +
+        _.toNumber(checkSumPriceInArray(varibleItem.value)) >
+      _.toNumber(discountPriceInput.value)
     ) {
-      console.log('nmishe agha jooon')
+      showErrorMessage('مبلغ مرتبه بیش از مبلغ تخفیف تعیین شده است.')
     } else {
       varibleItem.value.push({
         id: _.toString(varibleCount.value + 1),
         price: varibalePrice.value,
       })
+      varibleCount.value++
+      varibalePrice.value = ''
     }
   }
 
-  varibleCount.value++
-  varibalePrice.value = ''
   visibleeModal.value = false
 }
+
 const checkSumPriceInArray = (arr: { id: string; price: string }[]) => {
   const sumPriceItem = arr
     .map((a) => {
@@ -56,6 +88,29 @@ const checkSumPriceInArray = (arr: { id: string; price: string }[]) => {
       return _.toNumber(a) + _.toNumber(b)
     }, 0)
   return sumPriceItem
+}
+
+const openVariableEditModal = (id: string, price: string) => {
+  itemForEdit.value.id = id
+  itemForEdit.value.price = price
+  visibleEditModal.value = true
+}
+
+const confirmEditModal = () => {
+  console.log('configm')
+}
+
+const showDeleteModal = (id: string, price: string) => {
+  itemForDelete.value.id = id
+  itemForDelete.value.price = price
+  Modal.confirm({
+    title: 'حذف مرتبه',
+    icon: createVNode(ExclamationCircleOutlined),
+    content: `آیا از حذف مرتبه ${id} مطمئن هستید؟`,
+    onOk() {
+      varibleItem.value = varibleItem.value.filter((el) => el.id !== id)
+    },
+  })
 }
 </script>
 
@@ -78,18 +133,20 @@ const checkSumPriceInArray = (arr: { id: string; price: string }[]) => {
             style="max-width: 256px"
             v-model:value="discountPriceInput"
             class="mr-4"
+            :disabled="!!varibleItem.length"
           />
         </div>
       </div>
       <a-button
-        type="primary"
+        type="dashed"
         style="padding: 0 56px"
-        class="button-secondary mr-4"
+        class="mr-4"
         @click="openVaribaleModal"
         :disabled="btnVaribleDisable"
       >
         افزودن مرتبه
       </a-button>
+
       <a-modal
         v-model:visible="visibleeModal"
         title="افزودن مرتبه"
@@ -115,12 +172,88 @@ const checkSumPriceInArray = (arr: { id: string; price: string }[]) => {
             placeholder="مبلغ مرتبه"
           />
         </div>
+        <div class="mt-4">
+          <a-typography-text type="primary" class="varible-hint"
+            >{{ $filters.toPersianCurrency(remainingPrice, 'تومان') }} از مبلغ
+            تخفیف باقی مانده است.</a-typography-text
+          >
+        </div>
+      </a-modal>
+      <a-modal
+        v-model:visible="visibleEditModal"
+        title="ویرایش مرتبه"
+        ok-text="ویرایش"
+        cancel-text="بستن"
+        @ok="confirmEditModal"
+      >
+        <div class="flex flex-wrap items-center">
+          <input-with-headline-and-unit
+            headline="مبلغ تخفیف"
+            unit="تومان"
+            v-model:value="discountPriceInput"
+            :disabled="true"
+            style="width: 220px"
+            placeholder="مبلغ تخفیف را وارد کنید"
+          />
+          <input-with-headline-and-unit
+            :headline="`مبلغ مرتبه ${itemForEdit.id}`"
+            unit="تومان"
+            v-model:value="itemForEdit.price"
+            style="width: 220px"
+            class="mr-4"
+            placeholder="مبلغ مرتبه"
+          />
+        </div>
       </a-modal>
     </div>
     <div class="varibale-item-container mt-4 flex items-center">
-      <a-card v-for="item in varibleItem" :key="item.id" class="ml-4">
-        {{ item }}
+      <a-card
+        v-for="item in varibleItem"
+        :key="item.id"
+        class="item-card"
+        style="width: 280px"
+      >
+        <div class="title-container flex justify-between">
+          <div class="title">مرتبه {{ _.toNumber(item.id) }}</div>
+          <div class="actions flex">
+            <EditIcon
+              color="#1894FF"
+              class="ml-4"
+              @click="openVariableEditModal(item.id, item.price)"
+            />
+            <DeleteIcon
+              color="#F5222D"
+              @click="showDeleteModal(item.id, item.price)"
+            />
+          </div>
+        </div>
+        <div class="price-container mt-4">
+          {{ $filters.toPersianCurrency(_.toNumber(item.price), 'تومان') }}
+        </div>
+        <div class="hint-container mt-4">
+          <span v-if="_.toNumber(item.id) === varibleItem.length">
+            {{ $filters.toPersianCurrency(remainingPrice, 'تومان') }} باقی‌مانده
+          </span>
+        </div>
       </a-card>
     </div>
   </div>
 </template>
+
+<style lang="scss" scoped>
+.varible-hint {
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+  color: #1894ff;
+}
+.title {
+  color: #1894ff;
+}
+.hint-container {
+  height: 24px;
+}
+.item-card {
+  margin-left: 16px;
+}
+</style>

@@ -10,15 +10,17 @@ import { showErrorMessage } from '@/logics/shared/message.handler'
 import {
   checkCodeValidation,
   generateCode,
+  saveDiscountDataFirstStep,
 } from '../../../logics/specific/discount.handler'
+
+import { useDiscountStore } from '../../../resources/store/discount.store'
 
 const pickedStartDate = ref('')
 const pickedEndDate = ref('')
 const discountCode = ref('')
 const discountName = ref('')
-// const randomCode = ref({
-//   code: '',
-// })
+
+const discountStore = useDiscountStore()
 
 const btnDisabled = computed(() => {
   if (
@@ -35,15 +37,29 @@ const btnDisabled = computed(() => {
 const checkCode = async () => {
   const res = await checkCodeValidation(discountCode.value)
   if (res.isValid) {
-    console.log('inja add mikonim')
+    nextStep()
   } else {
     showErrorMessage(res.message)
   }
 }
 
+const nextStep = () => {
+  //saveDiscountDataFirstStep
+  saveDiscountDataFirstStep({
+    title: discountName.value,
+    code: discountCode.value,
+    startAt: pickedStartDate.value,
+    expireAt: pickedEndDate.value,
+  })
+}
+
 const generateRandomCode = async () => {
   const res = await generateCode()
   discountCode.value = res.code
+}
+
+if (discountStore.title) {
+  console.log('is store')
 }
 </script>
 

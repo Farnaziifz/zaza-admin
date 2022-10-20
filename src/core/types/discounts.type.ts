@@ -9,22 +9,22 @@ type promotionStep = {
   amount?: number
 }
 export type discounts = {
-  id: string
+  id?: string
   title: string
-  type: string
-  consumeType: string
-  stateType: string
-  amount: number
+  type?: string
+  consumeType?: string
+  stateType?: string
+  amount?: number
   code?: string
   consumeLimitation?: number
-  startAt: string
-  expireAt: string
+  startAt?: string
+  expireAt?: string
   notificationType?: string[]
-  customersCount: number
+  customersCount?: number
   promotionAssignedGroups?: group[]
   maximumAmount?: number
   promotionSteps?: promotionStep[]
-  isActive: boolean
+  isActive?: boolean
 }
 
 export type discountsList = {

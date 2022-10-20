@@ -3,13 +3,14 @@ import {
   discountsList,
   discountCustomerGroup,
   discountGroup,
+  discounts,
 } from '@/core/types/discounts.type'
 import {
   showErrorMessage,
   showLoadingMessage,
   showSuccessMessage,
 } from '@/logics/shared/message.handler'
-
+import { useDiscountStore } from '@/resources/store/discount.store'
 const api = discountApi()
 
 export const initPageHandler = async (
@@ -103,4 +104,9 @@ export const generateCode = async () => {
     showErrorMessage()
     throw 'errors'
   }
+}
+
+export const saveDiscountDataFirstStep = (discount: discounts) => {
+  const discountStore = useDiscountStore()
+  discountStore.changeDiscountSetting(discount)
 }

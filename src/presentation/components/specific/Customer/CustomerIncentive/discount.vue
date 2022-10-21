@@ -31,9 +31,15 @@ const columns: TableColumnType<customerDiscount>[] = [
 const props = defineProps({
   pagination: {
     type: Object,
+    default() {
+      return {}
+    },
   },
   discountData: {
     type: Object,
+    default() {
+      return {}
+    },
   },
 })
 
@@ -43,14 +49,14 @@ const onChange: TableProps<customerDiscountList>['onChange'] = (paginate) => {
 </script>
 <template>
   <a-card
-    :bodyStyle="{ 'box-shadow': '0px 4px 10px rgba(0, 0, 0, 0.1)' }"
+    v-if="props.discountData"
+    :body-style="{ 'box-shadow': '0px 4px 10px rgba(0, 0, 0, 0.1)' }"
     :bordered="false"
     class="info-card"
-    v-if="props.discountData"
   >
     <a-table
-      :columns="columns"
       v-if="props.discountData.items && props.discountData.items.length"
+      :columns="columns"
       :data-source="props.discountData.items"
       :pagination="props.pagination"
       @change="onChange"

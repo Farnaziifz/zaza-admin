@@ -31,9 +31,15 @@ const columns: TableColumnType<customerScore>[] = [
 const props = defineProps({
   pagination: {
     type: Object,
+    default() {
+      return {}
+    },
   },
   creditData: {
     type: Object,
+    default() {
+      return {}
+    },
   },
 })
 
@@ -44,14 +50,14 @@ const onChange: TableProps<customerScoreList>['onChange'] = (paginate) => {
 
 <template>
   <a-card
-    :bodyStyle="{ 'box-shadow': '0px 4px 10px rgba(0, 0, 0, 0.1)' }"
+    v-if="props.creditData"
+    :body-style="{ 'box-shadow': '0px 4px 10px rgba(0, 0, 0, 0.1)' }"
     :bordered="false"
     class="info-card"
-    v-if="props.creditData"
   >
     <a-table
-      :columns="columns"
       v-if="props.creditData.items && props.creditData.items.length"
+      :columns="columns"
       :data-source="props.creditData.items"
       :pagination="props.pagination"
       @change="onChange"

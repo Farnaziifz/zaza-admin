@@ -6,6 +6,7 @@ import {
   chnageDiscountStatus,
   getDiscoutGroupDetails,
 } from '../../../logics/specific/discount.handler'
+import _ from 'lodash'
 import { useRoute } from 'vue-router'
 import {
   serverData,
@@ -54,7 +55,14 @@ const onChangeStatus = async () => {
         <a-button
           type="primary"
           size="small"
-          @click="showModal(serverData.id, serverData.isActive)"
+          @click="
+            showModal(
+              _.toString(serverData.id),
+              typeof serverData.isActive === 'boolean'
+                ? serverData.isActive
+                : false
+            )
+          "
           >تغییر وضعیت</a-button
         >
       </div>

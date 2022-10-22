@@ -75,6 +75,10 @@ if (discountStore.title) {
             body: t('pages.DiscountAdd.hints.hintBody'),
             description: t('pages.DiscountAdd.hints.hintDescription'),
           },
+          {
+            body: t('pages.DiscountAdd.hints.hintBody'),
+            description: t('pages.DiscountAdd.hints.hintDescription'),
+          },
         ]"
       />
       <a-card style="margin: 8px 0; background-color: #f6f6f6">

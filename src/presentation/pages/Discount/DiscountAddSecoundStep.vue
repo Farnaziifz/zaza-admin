@@ -9,7 +9,6 @@ import {
 import InputWithHeadlineAndUnit from '/src/presentation/components/shared/molecules/InputWithHeadlineAndUnit.vue'
 import SevralTimeVariableCashField from '/src/presentation/components/specific/DiscountSecondStep/SevralTimeVariableCashFields.vue'
 import { ref, computed } from 'vue'
-import { t } from 'vui18n'
 import { returnToPreviousRoute } from '@/logics/shared/route.handler'
 
 const settingData = ref({
@@ -42,8 +41,14 @@ const goToPastStep = () => returnToPreviousRoute()
       <hint-collapse
         :hints="[
           {
-            body: t('pages.DiscountAdd.hints.hintBody'),
-            description: t('pages.DiscountAdd.hints.hintDescription'),
+            body: 'انتخاب مشتریان هدف',
+            description:
+              'با انتخاب مشتریان هدف، شما می‌توانید مشخص کنیدکد تخفیف شامل کدام  یک از دسته بندی های مشتریان شما شود.',
+          },
+          {
+            body: 'دسته‌بندی',
+            description:
+              'برای افزودن مشتریان هدف، ابتدا در بخش دسته بندی، دسته مورد نظر خود را بسازید. ',
           },
         ]"
       />
@@ -53,11 +58,9 @@ const goToPastStep = () => returnToPreviousRoute()
         </h3>
 
         <div class="flex flex-wrap items-center mt-4">
-          <!-- TODO => cashback type input <radio<cash | percentage>> disabled if serverData.isActive -->
-
           <div class="flex flex-col mb-4">
             <span style="font-weight: 500; font-size: 16px"> دفعات مصرف </span>
-            <a-radio-group size="large" v-model:value="settingData.consumeType">
+            <a-radio-group v-model:value="settingData.consumeType" size="large">
               <a-radio-button :value="DiscountConsumeType.ONCE">
                 <span class="px-12"> یکبار </span>
               </a-radio-button>
@@ -71,7 +74,7 @@ const goToPastStep = () => returnToPreviousRoute()
           </div>
           <div class="flex flex-col mx-4 mb-4">
             <span style="font-weight: 500; font-size: 16px"> مراتب تخفیف </span>
-            <a-radio-group size="large" v-model:value="settingData.stateType">
+            <a-radio-group v-model:value="settingData.stateType" size="large">
               <a-radio-button :value="DiscountStateType.CONSTANT">
                 <span class="px-12"> ثابت </span>
               </a-radio-button>
@@ -86,7 +89,7 @@ const goToPastStep = () => returnToPreviousRoute()
           </div>
           <div class="flex flex-col ml-4 mb-4">
             <span style="font-weight: 500; font-size: 16px"> نوع تخفیف </span>
-            <a-radio-group size="large" v-model:value="settingData.type">
+            <a-radio-group v-model:value="settingData.type" size="large">
               <a-radio-button :value="DiscountTypeType.CASH">
                 <span class="px-12"> تومانی </span>
               </a-radio-button>
@@ -117,8 +120,8 @@ const goToPastStep = () => returnToPreviousRoute()
         </div>
       </a-card>
       <a-card
-        style="margin: 8px 0; background-color: #f6f6f6"
         v-if="showFeilds.show"
+        style="margin: 8px 0; background-color: #f6f6f6"
       >
         <h3 style="font-weight: 700; font-size: 20px; line-height: 24px">
           فیلدها
@@ -250,8 +253,8 @@ const goToPastStep = () => returnToPreviousRoute()
         </a-button>
         <a-button
           type="primary"
-          @click="onAddDiscountSecondStep"
           class="button-secondary"
+          @click="onAddDiscountSecondStep"
         >
           <span>مرحله بعد</span>
         </a-button>

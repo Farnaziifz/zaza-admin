@@ -109,20 +109,20 @@ const onChangeProductList: TableProps<productsList>['onChange'] = async (
   )
 }
 
-const onSelectChange = (keys: string[]) => {
-  selectedProductKeyInPage.value = new Map()
-  for (const key of keys) {
-    const product = productListData.value.items.find((c) => c.id === key)
-    if (!product) {
-      throw new Error()
-    }
-    selectedProductKeyInPage.value.set(key, product)
-  }
-  allSelectedProductInPages.value.set(
-    currentPageNumber.value,
-    selectedProductKeyInPage.value
-  )
-}
+// const onSelectChange = (keys: string[]) => {
+//   selectedProductKeyInPage.value = new Map()
+//   for (const key of keys) {
+//     const product = productListData.value.items.find((c) => c.id === key)
+//     if (!product) {
+//       throw new Error()
+//     }
+//     selectedProductKeyInPage.value.set(key, product)
+//   }
+//   allSelectedProductInPages.value.set(
+//     currentPageNumber.value,
+//     selectedProductKeyInPage.value
+//   )
+// }
 
 const selectedOK: Ref<products[]> = ref([])
 

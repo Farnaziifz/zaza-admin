@@ -3,6 +3,17 @@ import {
   DegreeLabelType,
   transactionType,
 } from '../enums/customerType.enum'
+import { pagination } from '@/core/types/pagination.type'
+
+export type groupCustomerItem = {
+  fullName: string
+  phoneNumber: string
+  customerId: string
+}
+
+export type groupCustomer = {
+  items: groupCustomerItem[]
+} & pagination
 
 export type customer = {
   id: string

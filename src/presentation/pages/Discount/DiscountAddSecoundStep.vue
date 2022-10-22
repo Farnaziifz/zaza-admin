@@ -248,10 +248,23 @@ const goToPastStep = () => returnToPreviousRoute()
         <a-button class="ml-4" @click="goToPastStep">
           <span>مرحله قبل</span>
         </a-button>
-        <a-button type="primary" @click="onAddDiscountSecondStep">
-          <span>ثبت</span>
+        <a-button
+          type="primary"
+          @click="onAddDiscountSecondStep"
+          class="button-secondary"
+        >
+          <span>مرحله بعد</span>
         </a-button>
       </div>
     </template>
   </content-layout>
 </template>
+
+<style lang="scss" scoped>
+.line {
+  width: 100%;
+  height: 1px;
+  background-color: #e2e2e2;
+  margin: 32px 0;
+}
+</style>

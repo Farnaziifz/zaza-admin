@@ -1,12 +1,20 @@
 import { api } from './index'
-import { customerList } from '../../core/types/customer.type'
-import { error } from '../../core/types/error.type'
+import { customerList, groupCustomer } from '@/core/types/customer.type'
+import { error } from '@/core/types/error.type'
+import { makeARequest } from '@/logics/shared/apiResponse.handler'
 
 const pageUrl = 'customer'
+const group = '/group'
 type response = {
   data: customerList
   errors: error
 }
+
+const getCustomerListByGroupId = async (id: string, page: number) =>
+  await makeARequest<groupCustomer>(
+    api.get,
+    `${pageUrl}${group}?GroupIds=${id}&Page=${page}`
+  )
 
 const cusotmerListGet = async (
   page?: number,
@@ -158,5 +166,6 @@ export const customerApi = () => {
     customerCachBackListGet: customerCachBackList,
     customerIncentiveCreditGet: customerIncentiveCredit,
     customerIncentiveCouponGet: customerIncentiveCoupon,
+    getCustomersInGroup: getCustomerListByGroupId,
   }
 }

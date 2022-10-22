@@ -27,10 +27,6 @@ const openVaribaleModal = () => {
 }
 
 const btnVaribleDisable = computed(() => {
-  console.log(
-    _.toNumber(checkSumPriceInArray(varibleItem.value)) ===
-      _.toNumber(discountPriceInput.value)
-  )
   if (
     minPayPriceInput.value &&
     discountPriceInput.value &&
@@ -90,8 +86,10 @@ const checkSumPriceInArray = (arr: { id: string; price: string }[]) => {
   return sumPriceItem
 }
 
+const testKey = ref('')
 const openVariableEditModal = (id: string, price: string) => {
   itemForEdit.value.id = id
+  testKey.value = id
   itemForEdit.value.price = price
   visibleEditModal.value = true
 }
@@ -185,8 +183,10 @@ const showDeleteModal = (id: string, price: string) => {
         ok-text="ویرایش"
         cancel-text="بستن"
         @ok="confirmEditModal"
+        :key="testKey"
       >
         <div class="flex flex-wrap items-center">
+          {{ itemForEdit.price }}
           <input-with-headline-and-unit
             headline="مبلغ تخفیف"
             unit="تومان"
@@ -208,13 +208,13 @@ const showDeleteModal = (id: string, price: string) => {
     </div>
     <div class="varibale-item-container mt-4 flex items-center flex-wrap">
       <a-card
-        v-for="item in varibleItem"
+        v-for="(item, index) in varibleItem"
         :key="item.id"
         class="item-card"
         style="width: 280px"
       >
         <div class="title-container flex justify-between">
-          <div class="title">مرتبه {{ _.toNumber(item.id) }}</div>
+          <div class="title">مرتبه {{ index }}</div>
           <div class="actions flex">
             <EditIcon
               color="#1894FF"

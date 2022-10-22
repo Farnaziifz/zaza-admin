@@ -13,6 +13,13 @@ const props = defineProps<InputWithHeadlineAndUnit>()
 
 const inputValue = ref(props.value)
 watch(
+  props,
+  () => {
+    inputValue.value = props.value
+  },
+  { deep: true }
+)
+watch(
   inputValue,
   () => {
     emits('update:value', inputValue.value)
@@ -30,7 +37,7 @@ watch(
       v-model:value="inputValue"
       :placeholder="placeholder"
       type="number"
-      :disabled="disabled"
+      :disabled="props.disabled"
     >
       <template #addonAfter>
         <span class="px-3 py-2">

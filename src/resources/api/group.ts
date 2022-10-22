@@ -1,13 +1,23 @@
 import { api } from './index'
-import { group } from '@/core/types/group.type'
+import { group, groupTitle } from '@/core/types/group.type'
 import { AxiosError, AxiosResponse } from 'axios'
+import { makeARequest } from '@/logics/shared/apiResponse.handler'
+import { credit } from '@/core/types/credits.type'
 
 const pageUrl = 'group'
+const title = '/title'
+const titlePageQuery = '?Page=1&PageSize=10000000'
 
 type response<T> = {
   data?: AxiosResponse<T>
   error?: AxiosError<T>
 }
+
+const getGroupTitleById = async (groupIdsQuery: string) =>
+  await makeARequest<groupTitle>(api.get, `${pageUrl}${title}/${groupIdsQuery}`)
+
+const groupTitleGet = async () =>
+  await makeARequest<groupTitle>(api.get, pageUrl + title + titlePageQuery)
 
 const groupPost = async (
   groupData: group
@@ -67,4 +77,6 @@ const groupPreviewPost = async (
 export const groupApi = () => ({
   post: groupPost,
   postPreview: groupPreviewPost,
+  getTitle: groupTitleGet,
+  getGroupTitle: getGroupTitleById,
 })

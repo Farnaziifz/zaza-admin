@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import InputWithHeadlineAndUnit from '@/presentation/components/shared/molecules/InputWithHeadlineAndUnit.vue'
 import BDatePicker from '@/presentation/components/shared/Organisms/BDatePicker.vue'
-import { computed, ref, Ref } from 'vue'
+import { computed, onMounted, ref, Ref, watch } from 'vue'
 import { credit } from '@/core/types/credits.type'
 import _ from 'lodash'
 import { saveCreditToStore } from '@/logics/specific/creditAddFirstStep.handler'
+import { useCreditStore } from '@/resources/store/credit.store'
 
 const serverData: Ref<credit> = ref({
   amount: 0,
@@ -12,6 +13,12 @@ const serverData: Ref<credit> = ref({
   expireAt: '',
 })
 const creditHasExpirationDate = ref(false)
+watch(creditHasExpirationDate, () => {
+  if (creditHasExpirationDate.value === false) {
+    serverData.value.expireAt = undefined
+    serverData.value.startAt = undefined
+  }
+})
 
 const isBtnDisabled = computed(() => {
   if (!_.toNumber(serverData.value.amount)) return true
@@ -24,6 +31,19 @@ const isBtnDisabled = computed(() => {
     return true
 
   return false
+})
+
+onMounted(() => {
+  const store = useCreditStore()
+  if (store.startAt) {
+    serverData.value.startAt = store.startAt
+    creditHasExpirationDate.value = true
+  }
+  if (store.expireAt) {
+    serverData.value.expireAt = store.expireAt
+    creditHasExpirationDate.value = true
+  }
+  if (store.amount) serverData.value.amount = store.amount
 })
 
 const nextStep = () => saveCreditToStore(serverData.value)
@@ -70,6 +90,7 @@ const nextStep = () => saveCreditToStore(serverData.value)
         custom-id="start-date"
         class="ml-4"
         :range="false"
+        :date-type="false"
         place-holder="تاریخ و زمان شروع را انتخاب کنید"
       >
         <template #headline>
@@ -83,6 +104,7 @@ const nextStep = () => saveCreditToStore(serverData.value)
         v-model:value="serverData.expireAt"
         custom-id="end-date"
         :range="false"
+        :date-type="false"
         place-holder="تاریخ و زمان پایان را انتخاب کنید"
       >
         <template #headline>

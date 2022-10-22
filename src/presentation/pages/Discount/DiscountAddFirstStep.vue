@@ -16,7 +16,7 @@ import {
 import { useDiscountStore } from '../../../resources/store/discount.store'
 
 const pickedStartDate = ref('')
-const pickedEndDate = ref('hjgjh')
+const pickedEndDate = ref('')
 const discountCode = ref('')
 const discountName = ref('')
 

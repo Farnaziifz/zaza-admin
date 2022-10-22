@@ -2,7 +2,7 @@ import { api } from './index'
 import { group, groupTitle } from '@/core/types/group.type'
 import { AxiosError, AxiosResponse } from 'axios'
 import { makeARequest } from '@/logics/shared/apiResponse.handler'
-import {credit} from '@/core/types/credits.type'
+import { credit } from '@/core/types/credits.type'
 
 const pageUrl = 'group'
 const title = '/title'

@@ -72,6 +72,7 @@ const checkDiscountValidation = async (code: string) => {
   return res.data
 }
 const generateCode = async () => {
+  console.log(`${pageUrl}/generate-random-code`)
   const res = await api.get(`${pageUrl}/generate-random-code`)
   return res.data
 }

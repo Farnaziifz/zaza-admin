@@ -151,7 +151,12 @@ if (discountStore.title) {
       </a-card>
       <div class="line"></div>
       <div class="btn-container flex justify-end">
-        <a-button type="primary" @click="checkCode" :disabled="btnDisabled">
+        <a-button
+          type="primary"
+          @click="checkCode"
+          :disabled="btnDisabled"
+          class="button-secondary"
+        >
           <span>مرحله بعد</span>
         </a-button>
       </div>

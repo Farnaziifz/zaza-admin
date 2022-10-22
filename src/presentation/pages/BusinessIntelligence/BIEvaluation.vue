@@ -100,8 +100,7 @@ const options = ref({
             :chart-data="data"
             :chart-options="options"
             :height="200"
-            :
-            width="200"
+            :width="200"
           />
         </div>
       </a-card>

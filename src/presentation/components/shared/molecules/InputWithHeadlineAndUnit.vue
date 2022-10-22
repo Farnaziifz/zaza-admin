@@ -6,6 +6,7 @@ type InputWithHeadlineAndUnit = {
   headline?: string
   unit: string
   placeholder: string
+  disabled?: boolean
 }
 const emits = defineEmits(['update:value'])
 const props = defineProps<InputWithHeadlineAndUnit>()
@@ -36,6 +37,7 @@ watch(
       v-model:value="inputValue"
       :placeholder="placeholder"
       type="number"
+      :disabled="props.disabled"
     >
       <template #addonAfter>
         <span class="px-3 py-2">

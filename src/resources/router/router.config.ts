@@ -10,6 +10,7 @@ import { discountRouterConfig } from './DiscoutRouter.config'
 import { cashbackConfig } from '@/resources/router/cashback.config'
 import { scoreConfig } from '@/resources/router/score.config'
 import { businessIntelligenceConfig } from '@/resources/router/businessIntelligence.config'
+import { reportConfig } from '@/resources/router/report.config'
 
 const config: RouterOptions = {
   routes: [
@@ -27,6 +28,7 @@ const config: RouterOptions = {
         cashbackConfig,
         scoreConfig,
         businessIntelligenceConfig,
+        reportConfig,
       ],
     },
   ],

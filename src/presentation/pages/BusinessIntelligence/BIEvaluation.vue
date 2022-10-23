@@ -3,7 +3,58 @@ import IncentiveDetailLayout from '@/presentation/layouts/IncentiveDetailLayout.
 import { SettingOutlined } from '@ant-design/icons-vue'
 import BChart from '@/presentation/components/shared/Organisms/BChart.vue'
 import { chartVariant } from '@/core/enums/chartType.enum'
-import { ref } from 'vue'
+import { computed, onMounted, Ref, ref } from 'vue'
+import {
+  getRetentionCustomerListHandler,
+  initHandler,
+} from '@/logics/specific/biEvaluation'
+import {
+  retentionRateCustomerList,
+  retentionRateOverallStatistics,
+} from '@/core/types/businessIntelligence'
+import { TablePaginationConfig } from 'ant-design-vue'
+
+const selectedCustomerType = ref('')
+const retentionRateCustomerData: Ref<retentionRateCustomerList | undefined> =
+  ref(undefined)
+
+const overallStatisticsData: Ref<retentionRateOverallStatistics | undefined> =
+  ref(undefined)
+
+onMounted(async () => {
+  const data = await initHandler()
+  overallStatisticsData.value = data.overallStatistics.data
+  retentionRateCustomerData.value = data.retentionRateCustomer.data
+})
+
+const retentionRateCustomersPagination = computed(() => ({
+  total: retentionRateCustomerData.value?.totalCount,
+  current: retentionRateCustomerData.value?.page,
+  pageSize: 10,
+}))
+
+const onChangePage = async (paginate: TablePaginationConfig) =>
+  (retentionRateCustomerData.value = await getRetentionCustomerListHandler(
+    paginate.current
+  ))
+
+const customerRetentionColumn = [
+  {
+    title: 'نام مشتری',
+    key: 'fullName',
+    dataIndex: 'fullName',
+  },
+  {
+    title: 'تعداد سفارش',
+    key: 'numberOfOrder',
+    dataIndex: 'numberOfOrder',
+  },
+  {
+    title: 'مبلغ پرداختی',
+    key: 'totalExpenses',
+    dataIndex: 'totalExpenses',
+  },
+]
 const data = ref({
   labels: ['Red', 'Blue', 'Yellow'],
   datasets: [
@@ -63,7 +114,9 @@ const options = ref({
             <span style="font-weight: 500; font-size: 16px">
               نرخ ریزش مشتریان
             </span>
-            <span style="font-weight: 700; font-size: 32px">0 درصد</span>
+            <span style="font-weight: 700; font-size: 32px">
+              {{ overallStatisticsData?.attentionNeedCustomerPercentage }} درصد
+            </span>
           </div>
 
           <div style="height: 100px; width: 1px; background-color: #e2e2e2" />
@@ -72,7 +125,10 @@ const options = ref({
             <span style="font-weight: 500; font-size: 16px">
               مشتریان از دست رفته
             </span>
-            <span style="font-weight: 700; font-size: 32px">0 درصد</span>
+            <span style="font-weight: 700; font-size: 32px">
+              {{ overallStatisticsData?.attentionNeedCustomerPercentage }}
+              درصد
+            </span>
           </div>
 
           <div style="height: 100px; width: 1px; background-color: #e2e2e2" />
@@ -99,11 +155,29 @@ const options = ref({
             :chart-type="chartVariant.Pie"
             :chart-data="data"
             :chart-options="options"
-            :height="200"
-            :width="200"
+            :height="300"
+            :width="300"
           />
         </div>
       </a-card>
+
+      <div class="mt-10">
+        <div style="font-weight: 700; font-size: 20px">لیست مشتریان</div>
+        <a-radio-group v-model:value="selectedCustomerType">
+          <a-radio-button value="top"> مشتریان عادی</a-radio-button>
+          <a-radio-button value="bottom"> مشتریان وفادار</a-radio-button>
+          <a-radio-button value="right"> مشتریان امیدوار کننده</a-radio-button>
+        </a-radio-group>
+
+        <a-table
+          :columns="customerRetentionColumn"
+          :data-source="retentionRateCustomerData?.items"
+          :pagination="retentionRateCustomersPagination"
+          class="mt-2"
+          @change="onChangePage"
+        >
+        </a-table>
+      </div>
     </template>
   </IncentiveDetailLayout>
 </template>

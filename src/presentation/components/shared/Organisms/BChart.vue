@@ -56,5 +56,6 @@ const chartType = computed(() => charts[props.chartType])
     :is="chartType"
     :chart-options="props.chartOptions"
     :chart-data="props.chartData"
+    v-bind="props"
   ></component>
 </template>

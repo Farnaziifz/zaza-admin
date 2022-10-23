@@ -16,3 +16,9 @@ export enum transactionType {
   CASHBACK = 'CASHBACK',
   COUPON = 'COUPON',
 }
+
+export enum customerType {
+  HERO = 'HERO',
+  LOYAL = 'LOYAL',
+  ATTENTION_NEED = 'ATTENTION_NEED',
+}

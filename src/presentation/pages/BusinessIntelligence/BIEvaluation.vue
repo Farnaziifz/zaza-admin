@@ -144,7 +144,7 @@ watch(
             </span>
             <span style="font-weight: 700; font-size: 32px">
               {{ overallStatisticsData?.lostCustomer }}
-              درصد
+              مشتری
             </span>
           </div>
 

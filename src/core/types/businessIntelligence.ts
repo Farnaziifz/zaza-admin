@@ -1,6 +1,6 @@
 import { customerType } from '@/core/enums/customerType.enum'
 import { pagination } from '@/core/types/pagination.type'
-import {fluxityType} from "@/core/enums/fluxityType.enum";
+import { fluxityType } from '@/core/enums/fluxityType.enum'
 
 export type retentionRateOverallStatistics = {
   customerRetentionRate: number

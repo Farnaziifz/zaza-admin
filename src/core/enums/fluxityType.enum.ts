@@ -1,5 +1,5 @@
 export enum fluxityType {
-    CHURN = 'CHURN',
-    LAZY = 'LAZY',
-    NORMAL = 'NORMAL',
+  CHURN = 'CHURN',
+  LAZY = 'LAZY',
+  NORMAL = 'NORMAL',
 }

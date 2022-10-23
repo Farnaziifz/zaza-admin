@@ -14,6 +14,7 @@ import {
 } from '@/core/types/businessIntelligence'
 import { TablePaginationConfig } from 'ant-design-vue'
 import { fluxityType } from '@/core/enums/fluxityType.enum'
+import { goToPath } from '@/logics/shared/route.handler'
 
 const selectedCustomerType = ref(fluxityType.NORMAL)
 const churnRateCustomerData: Ref<churnRateCustomerList | undefined> =
@@ -21,6 +22,10 @@ const churnRateCustomerData: Ref<churnRateCustomerList | undefined> =
 
 const overallStatisticsData: Ref<churnRateOverallStatistics | undefined> =
   ref(undefined)
+
+const chnagePathTO = () => {
+  goToPath('/business-intelligence')
+}
 
 const churnRateCustomerListPagination = computed(() => ({
   total: churnRateCustomerData.value?.totalCount,
@@ -106,6 +111,7 @@ watch(
         type="primary"
         class="button-secondary items-center"
         size="large"
+        @click="chnagePathTO"
       >
         <template #icon>
           <setting-outlined />

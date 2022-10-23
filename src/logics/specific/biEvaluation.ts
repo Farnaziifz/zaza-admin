@@ -24,4 +24,3 @@ export const churnCustomerListGETHandler = async (
   const res = await api.getChurnRateCustomer(page, query)
   return res.data
 }
-

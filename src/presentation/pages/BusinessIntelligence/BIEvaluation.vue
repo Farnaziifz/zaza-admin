@@ -35,7 +35,7 @@ const churnRateCustomerListPagination = computed(() => ({
 
 const customerRetentionColumn = [
   {
-    title: 'نام مشتری',
+    title: 'مشتری',
     key: 'fullName',
     dataIndex: 'fullName',
   },
@@ -182,8 +182,8 @@ watch(
             :chart-type="chartVariant.Pie"
             :chart-data="dataCh"
             :chart-options="options"
-            :height="300"
-            :width="300"
+            :height="400"
+            :width="400"
           />
         </div>
       </a-card>
@@ -209,6 +209,11 @@ watch(
           class="mt-2"
           @change="onChangePage"
         >
+          <template #bodyCell="{ column, record }">
+            <template v-if="column.key === 'totalExpenses'">
+              {{ record.totalExpenses }} تومان
+            </template>
+          </template>
         </a-table>
       </div>
     </template>

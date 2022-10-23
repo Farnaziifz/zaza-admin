@@ -48,14 +48,10 @@ const charts = {
   Line,
 }
 const props = defineProps<chartProps>()
+
 const chartType = computed(() => charts[props.chartType])
 </script>
 
 <template>
-  <component
-    :is="chartType"
-    :chart-options="props.chartOptions"
-    :chart-data="props.chartData"
-    v-bind="props"
-  ></component>
+  <component :is="chartType" v-bind="props"></component>
 </template>

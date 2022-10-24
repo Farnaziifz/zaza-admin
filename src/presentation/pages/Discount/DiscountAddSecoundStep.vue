@@ -10,6 +10,7 @@ import InputWithHeadlineAndUnit from '/src/presentation/components/shared/molecu
 import SevralTimeVariableCashField from '/src/presentation/components/specific/DiscountSecondStep/SevralTimeVariableCashFields.vue'
 import { ref, computed } from 'vue'
 import { returnToPreviousRoute } from '@/logics/shared/route.handler'
+import { showErrorMessage } from '@/logics/shared/message.handler'
 
 const settingData = ref({
   consumeType: '',
@@ -18,6 +19,9 @@ const settingData = ref({
 })
 
 const showFeilds = ref({ show: false })
+const isCreatedFileds = ref({ create: false })
+const remainingPrice = ref()
+const minimumPayPriceInput = ref('')
 const btnDisabled = computed(() => {
   if (
     settingData.value.consumeType &&
@@ -31,9 +35,20 @@ const btnDisabled = computed(() => {
 
 const onAddDiscountSecondStep = () => {
   console.log('add')
+  if (remainingPrice.value !== 0) {
+    showErrorMessage('مجموع مبلع مرتبه کامل نشده است.')
+  }
+}
+const goToPastStep = () => returnToPreviousRoute()
+
+const onRemainingPrice = (value: number) => {
+  remainingPrice.value = value
 }
 
-const goToPastStep = () => returnToPreviousRoute()
+const onChangeItem = () => {
+  showFeilds.value.show = false
+  isCreatedFileds.value.create = false
+}
 </script>
 <template>
   <content-layout>
@@ -41,14 +56,24 @@ const goToPastStep = () => returnToPreviousRoute()
       <hint-collapse
         :hints="[
           {
-            body: 'انتخاب مشتریان هدف',
+            body: 'ساخت سبک تخفیف دهی',
             description:
-              'با انتخاب مشتریان هدف، شما می‌توانید مشخص کنیدکد تخفیف شامل کدام  یک از دسته بندی های مشتریان شما شود.',
+              'پس از مشخص کردن دفعات مصرف، مراتب تخفیف و نوع تخفیف، شما کد تخفیف سفارشی ایجاد کرده‌اید این کد تخفیف قابل تخصیص به هر یک از دسته‌بندی‌های دلخواه است.',
           },
           {
-            body: 'دسته‌بندی',
+            body: 'مراتب تخفیف',
             description:
-              'برای افزودن مشتریان هدف، ابتدا در بخش دسته بندی، دسته مورد نظر خود را بسازید. ',
+              'شما با مشخص کردن مراتب تخفیف می‌توانید تخفیف خود را به صورت ثابت و یا به متغیر (به صورتی که در هر مرتبه چه مقداری مشخص از کد تخفیف مصرف شود) را مدیریت کنید. ',
+          },
+          {
+            body: 'دفعات مصرف',
+            description:
+              'با مشخص کردن  دفعات مصرف کد تخفیف می‌توانید به مشتری اجازه دهید یکبار یا چندین بار از کد تخفیف استفاده کنند.',
+          },
+          {
+            body: 'نوع تخفیف',
+            description:
+              'با مشخص کردن  نوع تخفیف می‌توانید تخفیف را به صورت تومانی و یا درصدی  به مشتری نشان دهید.',
           },
         ]"
       />
@@ -60,7 +85,11 @@ const goToPastStep = () => returnToPreviousRoute()
         <div class="flex flex-wrap items-center mt-4">
           <div class="flex flex-col mb-4">
             <span style="font-weight: 500; font-size: 16px"> دفعات مصرف </span>
-            <a-radio-group v-model:value="settingData.consumeType" size="large">
+            <a-radio-group
+              v-model:value="settingData.consumeType"
+              size="large"
+              @change="onChangeItem"
+            >
               <a-radio-button :value="DiscountConsumeType.ONCE">
                 <span class="px-12"> یکبار </span>
               </a-radio-button>
@@ -74,7 +103,11 @@ const goToPastStep = () => returnToPreviousRoute()
           </div>
           <div class="flex flex-col mx-4 mb-4">
             <span style="font-weight: 500; font-size: 16px"> مراتب تخفیف </span>
-            <a-radio-group v-model:value="settingData.stateType" size="large">
+            <a-radio-group
+              v-model:value="settingData.stateType"
+              size="large"
+              @change="onChangeItem"
+            >
               <a-radio-button :value="DiscountStateType.CONSTANT">
                 <span class="px-12"> ثابت </span>
               </a-radio-button>
@@ -89,7 +122,11 @@ const goToPastStep = () => returnToPreviousRoute()
           </div>
           <div class="flex flex-col ml-4 mb-4">
             <span style="font-weight: 500; font-size: 16px"> نوع تخفیف </span>
-            <a-radio-group v-model:value="settingData.type" size="large">
+            <a-radio-group
+              v-model:value="settingData.type"
+              size="large"
+              @change="onChangeItem"
+            >
               <a-radio-button :value="DiscountTypeType.CASH">
                 <span class="px-12"> تومانی </span>
               </a-radio-button>
@@ -107,10 +144,11 @@ const goToPastStep = () => returnToPreviousRoute()
               type="primary"
               class="button-secondary mt-2"
               style="height: 38px"
-              :disabled="btnDisabled"
+              :disabled="btnDisabled || isCreatedFileds.create"
               @click="
                 () => {
                   showFeilds.show = true
+                  isCreatedFileds.create = true
                 }
               "
             >
@@ -141,6 +179,7 @@ const goToPastStep = () => returnToPreviousRoute()
                 placeholder="مبلغ مورد نظر را وارد کنید"
                 unit="تومان"
                 style="max-width: 256px"
+                v-model:value="minimumPayPriceInput"
               />
               <input-with-headline-and-unit
                 headline="مبلغ تخفیف"
@@ -242,7 +281,7 @@ const goToPastStep = () => returnToPreviousRoute()
               settingData.type === DiscountTypeType.CASH
             "
           >
-            <SevralTimeVariableCashField />
+            <SevralTimeVariableCashField @onRemainingPrice="onRemainingPrice" />
           </div>
         </div>
       </a-card>

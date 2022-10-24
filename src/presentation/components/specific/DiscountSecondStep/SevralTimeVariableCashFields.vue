@@ -13,6 +13,8 @@ type varibelItem = {
   id: string
   price: string
 }
+const emits = defineEmits(['onChangeRemainingPrice'])
+
 const minPayPriceInput = ref('')
 const discountPriceInput = ref('')
 const visibleeModal = ref<boolean>(false)
@@ -53,6 +55,8 @@ const confirmModal = async () => {
       id: _.toString(varibleCount.value + 1),
       price: varibalePrice.value,
     })
+    emits('onRemainingPrice', remainingPrice.value)
+
     varibleCount.value++
     varibalePrice.value = ''
   } else {
@@ -67,6 +71,7 @@ const confirmModal = async () => {
         id: _.toString(varibleCount.value + 1),
         price: varibalePrice.value,
       })
+      emits('onRemainingPrice', remainingPrice.value)
       varibleCount.value++
       varibalePrice.value = ''
     }
@@ -95,7 +100,12 @@ const openVariableEditModal = (id: string, price: string) => {
 }
 
 const confirmEditModal = () => {
-  console.log('configm')
+  varibleItem.value.find((el) => {
+    if (el.id === itemForEdit.value.id) {
+      el.price = itemForEdit.value.price
+      visibleEditModal.value = false
+    }
+  })
 }
 
 const showDeleteModal = (id: string, price: string) => {
@@ -186,7 +196,6 @@ const showDeleteModal = (id: string, price: string) => {
         :key="testKey"
       >
         <div class="flex flex-wrap items-center">
-          {{ itemForEdit.price }}
           <input-with-headline-and-unit
             headline="مبلغ تخفیف"
             unit="تومان"
@@ -214,7 +223,7 @@ const showDeleteModal = (id: string, price: string) => {
         style="width: 280px"
       >
         <div class="title-container flex justify-between">
-          <div class="title">مرتبه {{ index }}</div>
+          <div class="title">مرتبه {{ index + 1 }}</div>
           <div class="actions flex">
             <EditIcon
               color="#1894FF"

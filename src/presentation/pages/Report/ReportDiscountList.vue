@@ -8,13 +8,13 @@ const chartData = {
   labels: ['daskldj', 'dasl', 'dsa', '123', 'test', 'test1', 'test2'],
   datasets: [
     {
-      label: 'Fully Rounded',
+      label: 'هزینه',
       data: [1, 2, 3, 4, 5, 6, 7],
       borderWidth: 2,
       backgroundColor: '#434348',
     },
     {
-      label: 'Small Radius',
+      label: 'درآمد',
       data: [5, 6, 7, 8, 9, 10, 11],
       borderWidth: 2,
       backgroundColor: '#7CB5EC',
@@ -24,6 +24,35 @@ const chartData = {
 
 const chartOptions = {
   responsive: true,
+  plugins: {
+    title: {
+      display: true,
+      text: 'آمار کد تخفیف',
+      align: 'end',
+      padding: {
+        bottom: 24,
+      },
+      font: {
+        size: 16,
+        family: 'YekanBakh',
+        weight: 500,
+      },
+    },
+    legend: {
+      display: true,
+      position: 'bottom',
+      labels: {
+        padding: 40,
+        pointStyle: 'circle',
+        usePointStyle: true,
+        font: {
+          size: 12,
+          family: 'YekanBakh',
+          weight: 700,
+        },
+      },
+    },
+  },
   scales: {
     y: {
       ticks: {

@@ -1,6 +1,7 @@
 import BI from '@/presentation/pages/BusinessIntelligence/BI.vue'
 import BIChurnRateSettings from '@/presentation/pages/BusinessIntelligence/BIChurnRateSettings.vue'
 import BIEvaluation from '@/presentation/pages/BusinessIntelligence/BIEvaluation.vue'
+import BILoyaltyEvaluation from '/src/presentation/pages/BusinessIntelligence/BILoyaltyEvaluation.vue'
 
 export const businessIntelligenceConfig = {
   name: 'business-intelligence',
@@ -17,6 +18,11 @@ export const businessIntelligenceConfig = {
       name: 'churn-evaluation',
       path: 'churn-evaluation',
       component: BIEvaluation,
+    },
+    {
+      name: 'loyalty-evaluation',
+      path: 'loyalty-evaluation',
+      component: BILoyaltyEvaluation,
     },
   ],
 }

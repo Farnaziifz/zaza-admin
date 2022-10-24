@@ -12,8 +12,9 @@ import {
   initHandler,
 } from '@/logics/specific/reportDiscountList.handler'
 import { reportDiscountUsageColumn } from '@/core/constants/report.options'
+import EmptyLayout from '@/presentation/layouts/EmptyLayout.vue'
+import { goToPath } from '@/logics/shared/route.handler'
 
-//BOOMS 132 Start
 const chartData = {
   labels: ['daskldj', 'dasl', 'dsa', '123', 'test', 'test1', 'test2'],
   datasets: [
@@ -102,7 +103,7 @@ const getGroupTitles = (groupsTitle?: string[]) => {
 
 onMounted(async () => {
   const res = await initHandler()
-  serverData.value = res.data
+  if (!_.isEmpty(res.data)) serverData.value = res.data
 })
 </script>
 <template>
@@ -111,7 +112,7 @@ onMounted(async () => {
       <span style="font-weight: 700; font-size: 24px"> گزارش کد تخفیف </span>
     </template>
 
-    <template #content-body>
+    <template v-if="serverData" #content-body>
       <a-card
         :body-style="{ boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)' }"
         :bordered="false"
@@ -148,32 +149,28 @@ onMounted(async () => {
           </template>
         </template>
       </a-table>
-
-      <!-- DONE     -->
-      <!-- add pagination -->
-      <!-- add toman to cost and income -->
-      <!-- add darsad to rate cost and income -->
-      <!-- add group title to the table -->
-
       <!-- InProgress -->
-
-      <!-- Backlog -->
-      <!--TODO => add empty page -->
       <!--TODO => add modal of the customers in the application (we already have it)-->
+    </template>
 
-      <!--      <a-table-->
-      <!--          :columns="customerRetentionColumn"-->
-      <!--          :data-source="churnRateCustomerData?.items"-->
-      <!--          :pagination="churnRateCustomerListPagination"-->
-      <!--          class="mt-2"-->
-      <!--          @change="onChangePage"-->
-      <!--      >-->
-      <!--        <template #bodyCell="{ column, record }">-->
-      <!--          <template v-if="column.key === 'totalExpenses'">-->
-      <!--            {{ record.totalExpenses }} تومان-->
-      <!--          </template>-->
-      <!--        </template>-->
-      <!--      </a-table>-->
+    <template v-else #content-body>
+      <empty-layout>
+        <template #empty-text>
+          زمانی گزارش کد تخفیف قابل نمایش است که مشتریان از کد تخفیف‌های ساخته
+          شده استفاده کنند. ( خط بعدی) کافی‌ست با توجه به راهبرد تجارت خود یک کد
+          تخفیف بسازید و به دسته‌ای از مشتریان تخصیص دهید.
+        </template>
+        <template #empty-action>
+          <a-button
+            class="button-secondary"
+            type="primary"
+            block
+            @click="goToPath('/coupons/add')"
+          >
+            افزودن کد تخفیف
+          </a-button>
+        </template>
+      </empty-layout>
     </template>
   </ContentLayout>
 </template>

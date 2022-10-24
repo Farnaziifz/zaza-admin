@@ -239,14 +239,9 @@ const showDeleteModal = (id: string, price: string) => {
         <div class="price-container mt-4">
           {{ $filters.toPersianCurrency(_.toNumber(item.price), 'تومان') }}
         </div>
-        <div class="hint-container mt-4">
+        <div class="hint-container mt-4" v-if="remainingPrice !== 0">
           <a-typography-text type="danger"
-            ><span
-              v-if="
-                _.toNumber(item.id) === varibleItem.length &&
-                varibleItem.length > 1
-              "
-            >
+            ><span v-if="_.toNumber(item.id) === varibleItem.length">
               {{ $filters.toPersianCurrency(remainingPrice, 'تومان') }}
               باقی‌مانده
             </span></a-typography-text

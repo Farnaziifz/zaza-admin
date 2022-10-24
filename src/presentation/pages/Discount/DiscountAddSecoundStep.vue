@@ -65,6 +65,13 @@ const onChangeItem = () => {
   ) {
     settingData.value.type = DiscountTypeType.CASH
   }
+
+  if (
+    settingData.value.consumeType === DiscountConsumeType.ONCE &&
+    settingData.value.type === DiscountTypeType.CASH
+  ) {
+    settingData.value.stateType = DiscountStateType.CONSTANT
+  }
   showFeilds.value.show = false
   isCreatedFileds.value.create = false
 }

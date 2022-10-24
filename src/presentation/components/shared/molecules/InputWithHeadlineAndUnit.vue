@@ -38,6 +38,7 @@ watch(
       :placeholder="placeholder"
       type="number"
       :disabled="props.disabled"
+      min="1"
     >
       <template #addonAfter>
         <span class="px-3 py-2">

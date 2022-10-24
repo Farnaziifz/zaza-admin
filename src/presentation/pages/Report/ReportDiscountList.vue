@@ -73,7 +73,6 @@ const chartOptions = {
     },
   },
 }
-//BOOMS 132 End
 const serverData: Ref<promotionUsageReport | undefined> = ref(undefined)
 
 const pagination = composePaginationData<promotionUsageReport>(serverData)
@@ -82,10 +81,28 @@ const onChangePage = async (paginate: TablePaginationConfig) => {
   serverData.value = res.data
 }
 
+const getGroupTitles = (groupsTitle?: string[]) => {
+  if (!_.isEqual(groupsTitle, [])) {
+    const res = groupsTitle?.reduce(
+      (
+        acc: string | undefined,
+        cur: string | undefined,
+        index: number | undefined
+      ) => {
+        if (index === 0) return cur
+        if (index === 1) return acc + ',' + cur + '...'
+      },
+      ''
+    )
+    if (res) return res
+  } else {
+    return 'فاقد دسته بندی'
+  }
+}
+
 onMounted(async () => {
   const res = await initHandler()
   serverData.value = res.data
-  console.log(res)
 })
 </script>
 <template>
@@ -116,22 +133,31 @@ onMounted(async () => {
         :pagination="pagination"
         @change="onChangePage"
       >
-        <!--        <template #bodyCell="{column, record}"> -->
-        <!--          <template v-if="column.key === ''"> -->
-        <!--            -->
-        <!--          </template>-->
-        <!--        </template>-->
+        <template #bodyCell="{ column, record }">
+          <template v-if="column.key === 'income'">
+            {{ record.income }} تومان
+          </template>
+          <template v-if="column.key === 'cost'">
+            {{ record.cost }} تومان
+          </template>
+          <template v-if="column.key === 'successRate'">
+            {{ record.successRate }} درصد
+          </template>
+          <template v-if="column.key === 'groupsTitle'">
+            {{ getGroupTitles(record.groupsTitle) }}
+          </template>
+        </template>
       </a-table>
 
       <!-- DONE     -->
       <!-- add pagination -->
+      <!-- add toman to cost and income -->
+      <!-- add darsad to rate cost and income -->
+      <!-- add group title to the table -->
 
       <!-- InProgress -->
-      <!--TODO => add group title to the table -->
 
       <!-- Backlog -->
-      <!--TODO => add toman to cost and income -->
-      <!--TODO => add darsad to rate cost and income -->
       <!--TODO => add empty page -->
       <!--TODO => add modal of the customers in the application (we already have it)-->
 

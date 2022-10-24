@@ -3,6 +3,8 @@ import ContentLayout from '@/presentation/layouts/ContentLayout.vue'
 import BChart from '@/presentation/components/shared/Organisms/BChart.vue'
 import { chartVariant } from '@/core/enums/chartType.enum'
 import _ from 'lodash'
+import { ref, Ref } from 'vue'
+import { promotionUsageReport } from '@/core/types/discounts.type'
 
 //BOOMS 132 Start
 const chartData = {
@@ -65,6 +67,45 @@ const chartOptions = {
   },
 }
 //BOOMS 132 End
+
+const discountUsageColumn = [
+  {
+    title: 'عنوان تخفیف',
+    key: 'title',
+    dataIndex: 'title',
+  },
+  {
+    title: 'کد تخفیف',
+    key: 'code',
+    dataIndex: 'code',
+  },
+  {
+    title: 'دسته‌بندی مشتریان هدف',
+    key: 'groupsTitle',
+    dataIndex: 'groupsTitle',
+  },
+  {
+    title: 'تعداد مشتریان هدف',
+    key: 'customersCount',
+    dataIndex: 'customersCount',
+  },
+  {
+    title: 'نرخ موفقیت',
+    key: 'successRate',
+    dataIndex: 'successRate',
+  },
+  {
+    title: 'هزینه',
+    key: 'cost',
+    dataIndex: 'cost',
+  },
+  {
+    title: 'درآمد',
+    key: 'income',
+    dataIndex: 'income',
+  },
+]
+const serverData: Ref<promotionUsageReport | undefined> = ref(undefined)
 </script>
 <template>
   <ContentLayout>
@@ -88,6 +129,32 @@ const chartOptions = {
         />
       </a-card>
       <!--  BOOMS-132 End -->
+
+      <a-table
+        class="mt-10"
+        :data-source="serverData"
+        :columns="discountUsageColumn"
+      ></a-table>
+
+      <!--      const onChangePage = async (paginate: TablePaginationConfig) =>-->
+      <!--      (churnRateCustomerData.value = await churnCustomerListGETHandler(-->
+      <!--      paginate.current,-->
+      <!--      [{ field: 'fluxity', operand: '==', value: selectedCustomerType.value }]-->
+      <!--      ))-->
+
+      <!--      <a-table-->
+      <!--          :columns="customerRetentionColumn"-->
+      <!--          :data-source="churnRateCustomerData?.items"-->
+      <!--          :pagination="churnRateCustomerListPagination"-->
+      <!--          class="mt-2"-->
+      <!--          @change="onChangePage"-->
+      <!--      >-->
+      <!--        <template #bodyCell="{ column, record }">-->
+      <!--          <template v-if="column.key === 'totalExpenses'">-->
+      <!--            {{ record.totalExpenses }} تومان-->
+      <!--          </template>-->
+      <!--        </template>-->
+      <!--      </a-table>-->
     </template>
   </ContentLayout>
 </template>

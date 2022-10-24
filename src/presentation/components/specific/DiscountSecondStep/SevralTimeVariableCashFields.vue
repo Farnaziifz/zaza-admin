@@ -55,7 +55,7 @@ const confirmModal = async () => {
       id: _.toString(varibleCount.value + 1),
       price: varibalePrice.value,
     })
-    emits('onRemainingPrice', remainingPrice.value)
+    emits('onChangeRemainingPrice', remainingPrice.value)
 
     varibleCount.value++
     varibalePrice.value = ''
@@ -71,7 +71,7 @@ const confirmModal = async () => {
         id: _.toString(varibleCount.value + 1),
         price: varibalePrice.value,
       })
-      emits('onRemainingPrice', remainingPrice.value)
+      emits('onChangeRemainingPrice', remainingPrice.value)
       varibleCount.value++
       varibalePrice.value = ''
     }

@@ -3,7 +3,8 @@ import {
   discountsList,
   discountCustomerGroup,
   discountGroup,
-  discounts,
+  discountFirstStep,
+  discountSecondStep,
 } from '@/core/types/discounts.type'
 import {
   showErrorMessage,
@@ -108,14 +109,15 @@ export const generateCode = async () => {
   }
 }
 
-export const saveDiscountDataFirstStep = (discount: discounts) => {
+export const saveDiscountDataFirstStep = (discountData: discountFirstStep) => {
   const discountStore = useDiscountStore()
-  discountStore.changeDiscountSetting(discount)
+  discountStore.changeDiscountSetting(discountData)
   goToPath('/discount/add/second-step')
 }
 
-export const saveDiscountDataSecondStep = (discont: discounts) => {
+export const saveDiscountDataSecondStep = (
+  discountData: discountSecondStep
+) => {
   const discountStore = useDiscountStore()
-  discountStore.changeDiscoundSecondStep(discont)
-
+  discountStore.changeDiscoundSecondStep(discountData)
 }

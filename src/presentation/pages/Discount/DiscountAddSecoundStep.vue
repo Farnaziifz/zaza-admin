@@ -45,7 +45,6 @@ const onAddDiscountSecondStep = () => {
   ) {
     showErrorMessage('مجموع مبلع مرتبه کامل نشده است.')
   } else {
-    console.log(settingData.value.type)
     saveDiscountDataSecondStep({
       type: settingData.value.type,
       consumeType: settingData.value.consumeType,
@@ -60,6 +59,12 @@ const onRemainingPrice = (value: number) => {
 }
 
 const onChangeItem = () => {
+  if (
+    settingData.value.consumeType === DiscountConsumeType.SEVERAL_TIMES &&
+    settingData.value.stateType === DiscountStateType.VARIABLE
+  ) {
+    settingData.value.type = DiscountTypeType.CASH
+  }
   showFeilds.value.show = false
   isCreatedFileds.value.create = false
 }
@@ -296,7 +301,9 @@ const onChangeItem = () => {
               settingData.type === DiscountTypeType.CASH
             "
           >
-            <SevralTimeVariableCashField @onRemainingPrice="onRemainingPrice" />
+            <SevralTimeVariableCashField
+              @onChangeRemainingPrice="onRemainingPrice"
+            />
           </div>
         </div>
       </a-card>

@@ -27,6 +27,19 @@ export type discounts = {
   isActive?: boolean
 }
 
+export type discountSecondStep = {
+  type: string
+  consumeType: string
+  stateType: string
+}
+
+export type discountFirstStep = {
+  title: string
+  code: string
+  startAt: string
+  expireAt: string
+}
+
 export type discountsList = {
   items: discounts[]
   hasNextPage: boolean

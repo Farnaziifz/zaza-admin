@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { discounts } from '../../core/types/discounts.type'
+import { discounts, discountSecondStep } from '../../core/types/discounts.type'
 export const useDiscountStore = defineStore('discount-store', {
   state: (): discounts => ({
     title: '',
@@ -20,7 +20,7 @@ export const useDiscountStore = defineStore('discount-store', {
       this.startAt = discountData.startAt
       this.expireAt = discountData.expireAt
     },
-    changeDiscoundSecondStep(discountData: discounts) {
+    changeDiscoundSecondStep(discountData: discountSecondStep) {
       this.type = discountData.type
       this.consumeType = discountData.consumeType
       this.stateType = discountData.stateType

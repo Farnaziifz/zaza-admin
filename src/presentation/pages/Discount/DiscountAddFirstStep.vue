@@ -23,12 +23,7 @@ const discountName = ref('')
 const discountStore = useDiscountStore()
 
 const btnDisabled = computed(() => {
-  if (
-    discountName.value &&
-    discountCode.value &&
-    pickedStartDate.value &&
-    pickedEndDate.value
-  ) {
+  if (discountName.value && discountCode.value) {
     return false
   }
   return true
@@ -44,7 +39,6 @@ const checkCode = async () => {
 }
 
 const nextStep = () => {
-  //saveDiscountDataFirstStep
   saveDiscountDataFirstStep({
     title: discountName.value,
     code: discountCode.value,

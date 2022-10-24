@@ -3,8 +3,15 @@ import ContentLayout from '@/presentation/layouts/ContentLayout.vue'
 import BChart from '@/presentation/components/shared/Organisms/BChart.vue'
 import { chartVariant } from '@/core/enums/chartType.enum'
 import _ from 'lodash'
-import { ref, Ref } from 'vue'
+import { onMounted, ref, Ref } from 'vue'
 import { promotionUsageReport } from '@/core/types/discounts.type'
+import { composePaginationData } from '@/presentation/factory/shared/paginationComputedProp.factory'
+import { TablePaginationConfig } from 'ant-design-vue'
+import {
+  getPromotionReport,
+  initHandler,
+} from '@/logics/specific/reportDiscountList.handler'
+import { reportDiscountUsageColumn } from '@/core/constants/report.options'
 
 //BOOMS 132 Start
 const chartData = {
@@ -67,49 +74,22 @@ const chartOptions = {
   },
 }
 //BOOMS 132 End
-
-const discountUsageColumn = [
-  {
-    title: 'عنوان تخفیف',
-    key: 'title',
-    dataIndex: 'title',
-  },
-  {
-    title: 'کد تخفیف',
-    key: 'code',
-    dataIndex: 'code',
-  },
-  {
-    title: 'دسته‌بندی مشتریان هدف',
-    key: 'groupsTitle',
-    dataIndex: 'groupsTitle',
-  },
-  {
-    title: 'تعداد مشتریان هدف',
-    key: 'customersCount',
-    dataIndex: 'customersCount',
-  },
-  {
-    title: 'نرخ موفقیت',
-    key: 'successRate',
-    dataIndex: 'successRate',
-  },
-  {
-    title: 'هزینه',
-    key: 'cost',
-    dataIndex: 'cost',
-  },
-  {
-    title: 'درآمد',
-    key: 'income',
-    dataIndex: 'income',
-  },
-]
 const serverData: Ref<promotionUsageReport | undefined> = ref(undefined)
+
+const pagination = composePaginationData<promotionUsageReport>(serverData)
+const onChangePage = async (paginate: TablePaginationConfig) => {
+  const res = await getPromotionReport(paginate.current ?? 1)
+  serverData.value = res.data
+}
+
+onMounted(async () => {
+  const res = await initHandler()
+  serverData.value = res.data
+  console.log(res)
+})
 </script>
 <template>
   <ContentLayout>
-    <!--  BOOMS-132 Start -->
     <template #content-title>
       <span style="font-weight: 700; font-size: 24px"> گزارش کد تخفیف </span>
     </template>
@@ -128,19 +108,32 @@ const serverData: Ref<promotionUsageReport | undefined> = ref(undefined)
           :width="1184"
         />
       </a-card>
-      <!--  BOOMS-132 End -->
 
       <a-table
         class="mt-10"
-        :data-source="serverData"
-        :columns="discountUsageColumn"
-      ></a-table>
+        :data-source="serverData?.items"
+        :columns="reportDiscountUsageColumn"
+        :pagination="pagination"
+        @change="onChangePage"
+      >
+        <!--        <template #bodyCell="{column, record}"> -->
+        <!--          <template v-if="column.key === ''"> -->
+        <!--            -->
+        <!--          </template>-->
+        <!--        </template>-->
+      </a-table>
 
-      <!--      const onChangePage = async (paginate: TablePaginationConfig) =>-->
-      <!--      (churnRateCustomerData.value = await churnCustomerListGETHandler(-->
-      <!--      paginate.current,-->
-      <!--      [{ field: 'fluxity', operand: '==', value: selectedCustomerType.value }]-->
-      <!--      ))-->
+      <!-- DONE     -->
+      <!-- add pagination -->
+
+      <!-- InProgress -->
+      <!--TODO => add group title to the table -->
+
+      <!-- Backlog -->
+      <!--TODO => add toman to cost and income -->
+      <!--TODO => add darsad to rate cost and income -->
+      <!--TODO => add empty page -->
+      <!--TODO => add modal of the customers in the application (we already have it)-->
 
       <!--      <a-table-->
       <!--          :columns="customerRetentionColumn"-->

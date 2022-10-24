@@ -172,7 +172,7 @@ const showDeleteModal = (id: string, price: string) => {
             placeholder="مبلغ تخفیف را وارد کنید"
           />
           <input-with-headline-and-unit
-            :headline="`مبلغ مرتبه ${varibleCount + 1}`"
+            :headline="`مبلغ مرتبه ${varibleItem.length + 1}`"
             unit="تومان"
             v-model:value="varibalePrice"
             style="width: 220px"
@@ -241,7 +241,7 @@ const showDeleteModal = (id: string, price: string) => {
         </div>
         <div class="hint-container mt-4" v-if="remainingPrice !== 0">
           <a-typography-text type="danger"
-            ><span v-if="_.toNumber(item.id) === varibleItem.length">
+            ><span v-if="_.toNumber(index) + 1 === varibleItem.length">
               {{ $filters.toPersianCurrency(remainingPrice, 'تومان') }}
               باقی‌مانده
             </span></a-typography-text

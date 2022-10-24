@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import ContentLayout from '@/presentation/layouts/ContentLayout.vue'
 import BChart from '@/presentation/components/shared/Organisms/BChart.vue'
+import { chartVariant } from '@/core/enums/chartType.enum'
 import _ from 'lodash'
 
 //BOOMS 132 Start
@@ -79,7 +80,7 @@ const chartOptions = {
         class="coupon-info-card"
       >
         <BChart
-          chart-type="Bar"
+          :chart-type="chartVariant.Bar"
           :chart-data="chartData"
           :chart-options="chartOptions"
           :height="484"

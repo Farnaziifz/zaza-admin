@@ -1,7 +1,6 @@
 <script lang="ts" async setup>
 import IncentiveDetailLayout from '/src/presentation/layouts/IncentiveDetailLayout.vue'
 import { onBeforeMount, ref, reactive } from 'vue'
-import _ from 'lodash'
 import {
   getDiscountDetails,
   chnageDiscountStatus,

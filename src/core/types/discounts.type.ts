@@ -23,14 +23,9 @@ export type discounts = {
   customersCount?: number
   promotionAssignedGroups?: group[]
   maximumAmount?: number
+  minimumAmount?: number
   promotionSteps?: promotionStep[]
   isActive?: boolean
-}
-
-export type discountSecondStep = {
-  type: string
-  consumeType: string
-  stateType: string
 }
 
 export type discountFirstStep = {
@@ -38,6 +33,16 @@ export type discountFirstStep = {
   code: string
   startAt: string
   expireAt: string
+}
+
+export type discountSecondStep = {
+  type: string
+  consumeType: string
+  stateType: string
+  amount: number
+  minimumAmount: number
+  maximumAmount: number
+  consumeLimitation: number
 }
 
 export type discountsList = {

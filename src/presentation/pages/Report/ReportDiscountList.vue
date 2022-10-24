@@ -14,6 +14,7 @@ import {
 import { reportDiscountUsageColumn } from '@/core/constants/report.options'
 import EmptyLayout from '@/presentation/layouts/EmptyLayout.vue'
 import { goToPath } from '@/logics/shared/route.handler'
+import TargetCustomerListModal from '@/presentation/components/shared/Organisms/TargetCustomerListModal.vue'
 
 const chartData = {
   labels: ['daskldj', 'dasl', 'dsa', '123', 'test', 'test1', 'test2'],
@@ -101,6 +102,8 @@ const getGroupTitles = (groupsTitle?: string[]) => {
   }
 }
 
+const targetCustomerListModalVisibility = ref(false)
+
 onMounted(async () => {
   const res = await initHandler()
   if (!_.isEmpty(res.data)) serverData.value = res.data
@@ -147,10 +150,18 @@ onMounted(async () => {
           <template v-if="column.key === 'groupsTitle'">
             {{ getGroupTitles(record.groupsTitle) }}
           </template>
+          <template v-if="column.key === 'customersCount'">
+            <a-button>
+              {{ record.customersCount }}
+            </a-button>
+          </template>
         </template>
       </a-table>
       <!-- InProgress -->
       <!--TODO => add modal of the customers in the application (we already have it)-->
+      <target-customer-list-modal
+        v-model:visibility="targetCustomerListModalVisibility"
+      />
     </template>
 
     <template v-else #content-body>

@@ -11,12 +11,15 @@ import SevralTimeVariableCashField from '/src/presentation/components/specific/D
 import { ref, computed } from 'vue'
 import { returnToPreviousRoute } from '@/logics/shared/route.handler'
 import { showErrorMessage } from '@/logics/shared/message.handler'
-
+// import { useDiscountStore } from '../../../resources/store/discount.store'
+import { saveDiscountDataSecondStep } from '../../../logics/specific/discount.handler'
 const settingData = ref({
   consumeType: '',
   stateType: '',
   type: '',
 })
+
+// const discountStore = useDiscountStore()
 
 const showFeilds = ref({ show: false })
 const isCreatedFileds = ref({ create: false })
@@ -34,9 +37,20 @@ const btnDisabled = computed(() => {
 })
 
 const onAddDiscountSecondStep = () => {
-  console.log('add')
-  if (remainingPrice.value !== 0) {
+  if (
+    remainingPrice.value !== 0 &&
+    settingData.value.consumeType === DiscountConsumeType.SEVERAL_TIMES &&
+    settingData.value.stateType === DiscountStateType.VARIABLE &&
+    settingData.value.type === DiscountTypeType.CASH
+  ) {
     showErrorMessage('مجموع مبلع مرتبه کامل نشده است.')
+  } else {
+    console.log(settingData.value.type)
+    saveDiscountDataSecondStep({
+      type: settingData.value.type,
+      consumeType: settingData.value.consumeType,
+      stateType: settingData.value.stateType,
+    })
   }
 }
 const goToPastStep = () => returnToPreviousRoute()
@@ -93,6 +107,7 @@ const onChangeItem = () => {
               <a-radio-button :value="DiscountConsumeType.ONCE">
                 <span class="px-12"> یکبار </span>
               </a-radio-button>
+              {{ DiscountConsumeType.SEVERAL_TIMES }}
               <a-radio-button
                 :value="DiscountConsumeType.SEVERAL_TIMES"
                 class="px-12"

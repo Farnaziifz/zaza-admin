@@ -1,6 +1,6 @@
 export enum DiscountConsumeType {
   ONCE = 'ONCE',
-  SEVERAL_TIMES = 'BUY_SPECISEVERAL_TIMESFIC_PRODUCT',
+  SEVERAL_TIMES = 'SEVERAL_TIMES',
 }
 
 export enum DiscountStateType {

@@ -15,13 +15,15 @@ export const useDiscountStore = defineStore('discount-store', {
   actions: {
     changeDiscountSetting(discountData: discounts) {
       this.title = discountData.title
-      this.type = discountData.type
-      this.consumeType = discountData.consumeType
-      this.stateType = discountData.stateType
       this.amount = discountData.amount
       this.code = discountData.code
       this.startAt = discountData.startAt
       this.expireAt = discountData.expireAt
+    },
+    changeDiscoundSecondStep(discountData: discounts) {
+      this.type = discountData.type
+      this.consumeType = discountData.consumeType
+      this.stateType = discountData.stateType
     },
   },
 })

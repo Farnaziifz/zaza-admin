@@ -113,3 +113,9 @@ export const saveDiscountDataFirstStep = (discount: discounts) => {
   discountStore.changeDiscountSetting(discount)
   goToPath('/discount/add/second-step')
 }
+
+export const saveDiscountDataSecondStep = (discont: discounts) => {
+  const discountStore = useDiscountStore()
+  discountStore.changeDiscoundSecondStep(discont)
+
+}

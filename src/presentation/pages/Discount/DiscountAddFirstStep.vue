@@ -10,23 +10,20 @@ import { showErrorMessage } from '@/logics/shared/message.handler'
 import {
   checkCodeValidation,
   generateCode,
+  saveDiscountDataFirstStep,
 } from '../../../logics/specific/discount.handler'
+
+import { useDiscountStore } from '../../../resources/store/discount.store'
 
 const pickedStartDate = ref('')
 const pickedEndDate = ref('')
 const discountCode = ref('')
 const discountName = ref('')
-// const randomCode = ref({
-//   code: '',
-// })
+
+const discountStore = useDiscountStore()
 
 const btnDisabled = computed(() => {
-  if (
-    discountName.value &&
-    discountCode.value &&
-    pickedStartDate.value &&
-    pickedEndDate.value
-  ) {
+  if (discountName.value && discountCode.value) {
     return false
   }
   return true
@@ -35,15 +32,31 @@ const btnDisabled = computed(() => {
 const checkCode = async () => {
   const res = await checkCodeValidation(discountCode.value)
   if (res.isValid) {
-    console.log('inja add mikonim')
+    nextStep()
   } else {
     showErrorMessage(res.message)
   }
 }
 
+const nextStep = () => {
+  saveDiscountDataFirstStep({
+    title: discountName.value,
+    code: discountCode.value,
+    startAt: pickedStartDate.value,
+    expireAt: pickedEndDate.value,
+  })
+}
+
 const generateRandomCode = async () => {
   const res = await generateCode()
   discountCode.value = res.code
+}
+
+if (discountStore.title) {
+  discountName.value = discountStore.title
+  discountStore.code ? (discountCode.value = discountStore.code) : ''
+  discountStore.startAt ? (pickedStartDate.value = discountStore.startAt) : ''
+  discountStore.expireAt ? (pickedEndDate.value = discountStore.expireAt) : ''
 }
 </script>
 
@@ -52,6 +65,10 @@ const generateRandomCode = async () => {
     <template #content-body>
       <hint-collapse
         :hints="[
+          {
+            body: t('pages.DiscountAdd.hints.hintBody'),
+            description: t('pages.DiscountAdd.hints.hintDescription'),
+          },
           {
             body: t('pages.DiscountAdd.hints.hintBody'),
             description: t('pages.DiscountAdd.hints.hintDescription'),
@@ -132,7 +149,12 @@ const generateRandomCode = async () => {
       </a-card>
       <div class="line"></div>
       <div class="btn-container flex justify-end">
-        <a-button type="primary" @click="checkCode" :disabled="btnDisabled">
+        <a-button
+          type="primary"
+          @click="checkCode"
+          :disabled="btnDisabled"
+          class="button-secondary"
+        >
           <span>مرحله بعد</span>
         </a-button>
       </div>

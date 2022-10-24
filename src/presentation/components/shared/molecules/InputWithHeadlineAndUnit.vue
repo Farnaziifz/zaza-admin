@@ -33,18 +33,19 @@ watch(
     <slot name="headline">
       {{ props.headline }}
     </slot>
-    <a-input
+    <a-input-number
       v-model:value="inputValue"
       :placeholder="placeholder"
       type="number"
       :disabled="props.disabled"
+      :min="1"
     >
       <template #addonAfter>
         <span class="px-3 py-2">
           {{ props.unit }}
         </span>
       </template>
-    </a-input>
+    </a-input-number>
   </div>
 </template>
 

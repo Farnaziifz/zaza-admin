@@ -36,6 +36,8 @@ watch(
 const pickedComputed = computed(() => {
   if (pickedDate.value && typeof pickedDate.value !== 'string')
     return new pd(pickedDate.value).toLocale('en').format('YYYY/MM/DD')
+  if(pickedDate.value && typeof pickedDate.value === 'string')
+    return pickedDate.value
   else return undefined
 })
 </script>

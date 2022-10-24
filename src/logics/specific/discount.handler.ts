@@ -3,12 +3,16 @@ import {
   discountsList,
   discountCustomerGroup,
   discountGroup,
+  discountFirstStep,
+  discountSecondStep,
 } from '@/core/types/discounts.type'
 import {
   showErrorMessage,
   showLoadingMessage,
   showSuccessMessage,
 } from '@/logics/shared/message.handler'
+import { useDiscountStore } from '@/resources/store/discount.store'
+import { goToPath } from '@/logics/shared/route.handler'
 
 const api = discountApi()
 
@@ -103,4 +107,17 @@ export const generateCode = async () => {
     showErrorMessage()
     throw 'errors'
   }
+}
+
+export const saveDiscountDataFirstStep = (discountData: discountFirstStep) => {
+  const discountStore = useDiscountStore()
+  discountStore.changeDiscountSetting(discountData)
+  goToPath('/discount/add/second-step')
+}
+
+export const saveDiscountDataSecondStep = (
+  discountData: discountSecondStep
+) => {
+  const discountStore = useDiscountStore()
+  discountStore.changeDiscoundSecondStep(discountData)
 }

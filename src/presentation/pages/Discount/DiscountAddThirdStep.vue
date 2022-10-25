@@ -4,7 +4,6 @@ import HintCollapse from '/src/presentation/components/shared/Organisms/HintColl
 import BSelect from '/src/presentation/components/shared/atoms/BSelect.vue'
 import BConfirmModal from '/src/presentation/components/shared/atoms/BConfirmModal.vue'
 import { onMounted, ref, Ref, computed } from 'vue'
-import { t } from 'vui18n'
 import _ from 'lodash'
 import { groupItemTitle } from '@/core/types/group.type'
 import {
@@ -57,7 +56,7 @@ const groupTableColumn: TableColumnType<{
     dataIndex: 'title',
   },
   {
-    title: 'مشتریان هدف',
+    title: 'تعداد مشتریان',
     key: 'customersCount',
     dataIndex: 'customersCount',
   },

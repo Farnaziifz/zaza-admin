@@ -36,12 +36,6 @@ export const discountRouterConfig = {
           component: DiscountAddFirstStep,
         },
         {
-          path: 'fourth-step',
-          name: 'discount-add-fourth-step',
-          meta: { step: 3 },
-          component: DiscountFourthStep,
-        },
-        {
           path: 'second-step',
           name: 'discount-add-second-step',
           meta: { step: 1 },
@@ -52,6 +46,12 @@ export const discountRouterConfig = {
           name: 'discount-add-third-step',
           meta: { step: 2 },
           component: DiscountAddThirdStep,
+        },
+        {
+          path: 'fourth-step',
+          name: 'discount-add-fourth-step',
+          meta: { step: 3 },
+          component: DiscountFourthStep,
         },
       ],
     },

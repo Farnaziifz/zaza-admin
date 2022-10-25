@@ -1,5 +1,9 @@
 import { defineStore } from 'pinia'
-import { discounts, discountSecondStep } from '../../core/types/discounts.type'
+import {
+  discounts,
+  discountSecondStep,
+  discountThirdStep,
+} from '../../core/types/discounts.type'
 export const useDiscountStore = defineStore('discount-store', {
   state: (): discounts => ({
     title: '',
@@ -14,6 +18,7 @@ export const useDiscountStore = defineStore('discount-store', {
     maximumAmount: 0,
     consumeLimitation: 0,
     promotionSteps: [],
+    promotionAssignedGroups: [],
   }),
 
   actions: {
@@ -32,6 +37,9 @@ export const useDiscountStore = defineStore('discount-store', {
       this.minimumAmount = discountData.minimumAmount
       this.consumeLimitation = discountData.consumeLimitation
       this.promotionSteps = discountData.promotionSteps
+    },
+    changeDiscountThirdStep(discountData: discountThirdStep) {
+      this.promotionAssignedGroups = discountData.promotionAssignedGroups
     },
   },
 })

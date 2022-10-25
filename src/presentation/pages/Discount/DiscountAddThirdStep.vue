@@ -9,6 +9,7 @@ import { groupItemTitle } from '@/core/types/group.type'
 import {
   getGroupTitle,
   getCustomersInGroup,
+  saveDiscountThirdStep,
 } from '../../../logics/specific/discount.handler'
 import { showErrorMessage } from '@/logics/shared/message.handler'
 import { TableColumnType } from 'ant-design-vue'
@@ -110,7 +111,6 @@ const targetCustomerListPagination = computed(() => ({
 }))
 
 const sumOfCustomerTargetGroupSelected = computed(() => {
-  console.log(selectedGroups)
   const sumTargetCustomer = selectedGroups.value
     .map((el) => {
       return el.customersCount
@@ -166,7 +166,13 @@ const deleteRowFromSelectedGroups = () => {
 }
 
 const onSendThirdData = () => {
-  console.log('add third step data')
+  const filterdSelectedGroups = selectedGroups.value.map((el) => {
+    return { groupId: el.groupId }
+  })
+  saveDiscountThirdStep({
+    promotionAssignedGroups: filterdSelectedGroups,
+  })
+  goToPath('/discount/add/fourth-step')
 }
 </script>
 <template>

@@ -9,12 +9,14 @@ import { composePaginationData } from '@/presentation/factory/shared/paginationC
 import { TablePaginationConfig } from 'ant-design-vue'
 import {
   getPromotionReport,
+  getTargetCustomerList,
   initHandler,
 } from '@/logics/specific/reportDiscountList.handler'
 import { reportDiscountUsageColumn } from '@/core/constants/report.options'
 import EmptyLayout from '@/presentation/layouts/EmptyLayout.vue'
 import { goToPath } from '@/logics/shared/route.handler'
 import TargetCustomerListModal from '@/presentation/components/shared/Organisms/TargetCustomerListModal.vue'
+import { groupCustomer } from '@/core/types/customer.type'
 
 const chartData = {
   labels: ['daskldj', 'dasl', 'dsa', '123', 'test', 'test1', 'test2'],
@@ -102,12 +104,33 @@ const getGroupTitles = (groupsTitle?: string[]) => {
   }
 }
 
-const targetCustomerListModalVisibility = ref(false)
-
 onMounted(async () => {
   const res = await initHandler()
   if (!_.isEmpty(res.data)) serverData.value = res.data
 })
+
+const customerGroupsIds: Ref<string[]> = ref([])
+const targetCustomerListModalVisibility = ref(false)
+const targetCustomerServerData: Ref<groupCustomer | undefined> = ref()
+const targetCustomerPaginationData = composePaginationData(
+  targetCustomerServerData
+)
+const changeTargetCustomerModalPage = async (paginationData: {
+  current: number
+}) => {
+  const res = await getTargetCustomerList(
+    customerGroupsIds.value,
+    paginationData.current
+  )
+  targetCustomerServerData.value = res.data
+}
+const openTargetCustomerModal = async (groupIds: string[]) => {
+  customerGroupsIds.value = groupIds
+  const res = await getTargetCustomerList(groupIds, 1)
+
+  targetCustomerServerData.value = res.data
+  targetCustomerListModalVisibility.value = true
+}
 </script>
 <template>
   <ContentLayout>
@@ -151,17 +174,17 @@ onMounted(async () => {
             {{ getGroupTitles(record.groupsTitle) }}
           </template>
           <template v-if="column.key === 'customersCount'">
-            <a-button>
-              {{ record.customersCount }}
+            <a-button
+              type="text"
+              @click="openTargetCustomerModal(record?.groupsId)"
+            >
+              <span style="color: #1894ff">
+                {{ record.customersCount }}
+              </span>
             </a-button>
           </template>
         </template>
       </a-table>
-      <!-- InProgress -->
-      <!--TODO => add modal of the customers in the application (we already have it)-->
-      <target-customer-list-modal
-        v-model:visibility="targetCustomerListModalVisibility"
-      />
     </template>
 
     <template v-else #content-body>
@@ -184,4 +207,12 @@ onMounted(async () => {
       </empty-layout>
     </template>
   </ContentLayout>
+
+  <target-customer-list-modal
+    v-model:visibility="targetCustomerListModalVisibility"
+    :target-customer-list="targetCustomerServerData"
+    :pagination-data="targetCustomerPaginationData"
+    title="لیست مشتریان هدف"
+    @change-page="changeTargetCustomerModalPage"
+  />
 </template>

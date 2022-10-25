@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { computed, defineProps, ref, watch } from 'vue'
+import { defineProps, ref, watch } from 'vue'
+import { groupCustomer } from '@/core/types/customer.type'
 
 const columns = [
   {
@@ -14,32 +15,29 @@ const columns = [
   },
 ]
 
-const serverData = ref()
+const props = defineProps<{
+  title: string
+  visibility: boolean
+  targetCustomerList?: groupCustomer
+  paginationData: {
+    total: number
+    current: number
+    pageSize: number
+  }
+}>()
+const emit = defineEmits(['update:visibility', 'changePage'])
 
-const pagination = computed(() => ({
-  total: serverData.value?.totalCount ?? 0,
-  current: serverData.value?.page ?? 1,
-  pageSize: serverData.value?.pageSize,
-  showSizeChanger: true,
-}))
+const onChange = async (paginate: { current: number; pageSize: number }) =>
+  emit('changePage', paginate)
 
-const onChange = async (paginate: { current: number; pageSize: number }) => {
-  // TODO => change it to getGroup
-  // serverData.value = await postGroupPreview(
-  //   {
-  //     from: groupStore.from,
-  //     to: groupStore.to,
-  //     queries: groupStore.queries,
-  //     title: groupStore.title,
-  //   },
-  //   paginate
-  // )
-  return paginate
-}
-
-const props = defineProps<{ visibility: boolean }>()
 const visibility = ref(props.visibility)
-const emit = defineEmits(['update:visibility'])
+watch(
+  props,
+  () => {
+    visibility.value = props.visibility
+  },
+  { deep: true }
+)
 watch(
   visibility,
   () => {
@@ -49,12 +47,18 @@ watch(
 )
 </script>
 <template>
-  <a-modal v-model:visible="visibility">
-    <a-table
-      :columns="columns"
-      :pagination="pagination"
-      :data-source="serverData?.items"
-      @change="onChange"
-    />
-  </a-modal>
+  <div>
+    <a-modal
+      v-model:visible="visibility"
+      :title="props.title"
+      @ok="visibility = false"
+    >
+      <a-table
+        :columns="columns"
+        :pagination="props.paginationData"
+        :data-source="props.targetCustomerList?.items"
+        @change="onChange"
+      />
+    </a-modal>
+  </div>
 </template>

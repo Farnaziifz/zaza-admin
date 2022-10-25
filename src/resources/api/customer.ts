@@ -10,6 +10,15 @@ type response = {
   errors: error
 }
 
+const getCustomerListByMultipleGroupIds = async (
+  queryId: string,
+  page: number
+) =>
+  await makeARequest<groupCustomer>(
+    api.get,
+    `${pageUrl}${group}?${queryId}&Page=${page}`
+  )
+
 const getCustomerListByGroupId = async (id: string, page: number) =>
   await makeARequest<groupCustomer>(
     api.get,
@@ -26,8 +35,7 @@ const cusotmerListGet = async (
 
 const customerChangeSatatus = async (data: string) => {
   const path = '/status'
-  const res = await api.put(pageUrl + path + '/' + data)
-  return res
+  return await api.put(pageUrl + path + '/' + data)
 }
 
 const customerProfileGet = async (id: string) => {
@@ -167,5 +175,6 @@ export const customerApi = () => {
     customerIncentiveCreditGet: customerIncentiveCredit,
     customerIncentiveCouponGet: customerIncentiveCoupon,
     getCustomersInGroup: getCustomerListByGroupId,
+    getCustomerListByMultipleGroupIds,
   }
 }

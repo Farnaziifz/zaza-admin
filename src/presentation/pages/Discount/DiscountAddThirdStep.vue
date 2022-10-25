@@ -176,8 +176,14 @@ const onSendThirdData = () => {
       <hint-collapse
         :hints="[
           {
-            body: t('pages.DiscountAdd.hints.hintBody'),
-            description: t('pages.DiscountAdd.hints.hintDescription'),
+            body: 'انتخاب مشتریان هدف',
+            description:
+              'با انتخاب مشتریان هدف، شما می‌توانید مشخص کنیدکد تخفیف شامل کدام  یک از دسته بندی های مشتریان شما شود.',
+          },
+          {
+            body: 'دسته‌بندی',
+            description:
+              'برای افزودن مشتریان هدف، ابتدا در بخش دسته بندی، دسته مورد نظر خود را بسازید.',
           },
         ]"
       />

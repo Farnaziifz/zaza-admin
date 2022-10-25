@@ -4,7 +4,7 @@ export type group = {
   title: string
   customersCount: number
 }
-type promotionStep = {
+export type promotionStep = {
   order?: number
   amount?: number
 }
@@ -40,9 +40,10 @@ export type discountSecondStep = {
   consumeType: string
   stateType: string
   amount: number
-  minimumAmount: number
-  maximumAmount: number
-  consumeLimitation: number
+  minimumAmount?: number
+  maximumAmount?: number
+  consumeLimitation?: number
+  promotionSteps?: promotionStep[]
 }
 
 export type discountsList = {

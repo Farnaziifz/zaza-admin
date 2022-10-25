@@ -25,7 +25,6 @@ const pagination = computed(() => ({
   total: data.value.totalCount,
   current: data.value.page,
   pageSize: 10,
-  // showSizeChanger: true,
 }))
 
 const itemForChangeStatus = reactive({ isActive: false, id: '' })

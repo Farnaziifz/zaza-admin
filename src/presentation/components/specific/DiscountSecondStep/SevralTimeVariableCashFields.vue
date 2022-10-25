@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ref, computed, Ref } from 'vue'
+import { ref, computed, Ref, onBeforeMount } from 'vue'
 import InputWithHeadlineAndUnit from '/src/presentation/components/shared/molecules/InputWithHeadlineAndUnit.vue'
 import _ from 'lodash'
 import { showErrorMessage } from '@/logics/shared/message.handler'
@@ -8,52 +8,87 @@ import DeleteIcon from '/src/presentation/components/shared/atoms/DeleteIcon.vue
 import { Modal } from 'ant-design-vue'
 import { ExclamationCircleOutlined } from '@ant-design/icons-vue'
 import { createVNode } from 'vue'
+import { promotionStep } from '../../../../core/types/discounts.type'
 
-type varibelItem = {
-  id: string
-  price: string
-}
-const emits = defineEmits(['onChangeRemainingPrice'])
+// TODO: must refactor with v-model (Farnaz Farzipour)
+const props = defineProps({
+  defaultSteps: {
+    default() {
+      return []
+    },
+    type: Array,
+  },
+  amount: Number,
+  minimumAmount: Number,
+})
 
-const minPayPriceInput = ref('')
-const discountPriceInput = ref('')
+const emits = defineEmits([
+  'onChangeRemainingPrice',
+  'onUpdatePromotionStep',
+  'onChangeMinAmount',
+  'onChangeAmount',
+])
+
+const minimumAmount = ref()
+const amount = ref()
 const visibleeModal = ref<boolean>(false)
 const visibleEditModal = ref<boolean>(false)
 const varibalePrice = ref('')
 const varibleCount = ref(0)
-const varibleItem: Ref<varibelItem[]> = ref([])
-const itemForEdit = ref({ id: '', price: '' })
-const itemForDelete = ref({ id: '', price: '' })
+const promotionSteps: Ref<promotionStep[]> = ref([])
+const itemForEdit = ref({ order: 0, amount: 0 })
+const itemForDelete = ref({ order: 0, amount: 0 })
+const testKey = ref('')
+
 const openVaribaleModal = () => {
   visibleeModal.value = true
 }
 
+onBeforeMount(async () => {
+  if (props.defaultSteps.length) {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    //@ts-ignore
+    promotionSteps.value = props.defaultSteps
+  }
+  if (props.amount) {
+    amount.value = props.amount
+  }
+  if (props.minimumAmount) {
+    minimumAmount.value = props.minimumAmount
+  }
+})
+
 const btnVaribleDisable = computed(() => {
   if (
-    minPayPriceInput.value &&
-    discountPriceInput.value &&
-    _.toNumber(checkSumPriceInArray(varibleItem.value)) !==
-      _.toNumber(discountPriceInput.value)
+    minimumAmount.value &&
+    amount.value &&
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    //@ts-ignore
+    _.toNumber(checkSumPriceInArray(promotionSteps.value)) !==
+      _.toNumber(amount.value)
   ) {
     return false
   }
   return true
 })
+
 const remainingPrice = computed(() => {
   const remain =
-    _.toNumber(discountPriceInput.value) -
-    _.toNumber(checkSumPriceInArray(varibleItem.value))
+    _.toNumber(amount.value) -
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    //@ts-ignore
+    _.toNumber(checkSumPriceInArray(promotionSteps.value))
   return remain
 })
 
 const confirmModal = async () => {
   if (
-    varibleItem.value.length === 0 &&
-    varibalePrice.value <= discountPriceInput.value
+    promotionSteps.value.length === 0 &&
+    varibalePrice.value <= amount.value
   ) {
-    varibleItem.value.push({
-      id: _.toString(varibleCount.value + 1),
-      price: varibalePrice.value,
+    promotionSteps.value.push({
+      order: _.toNumber(varibleCount.value + 1),
+      amount: _.toNumber(varibalePrice.value),
     })
     emits('onChangeRemainingPrice', remainingPrice.value)
 
@@ -62,28 +97,30 @@ const confirmModal = async () => {
   } else {
     if (
       _.toNumber(varibalePrice.value) +
-        _.toNumber(checkSumPriceInArray(varibleItem.value)) >
-      _.toNumber(discountPriceInput.value)
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        //@ts-ignore
+        _.toNumber(checkSumPriceInArray(promotionSteps.value)) >
+      _.toNumber(amount.value)
     ) {
       showErrorMessage('مبلغ مرتبه بیش از مبلغ تخفیف تعیین شده است.')
     } else {
-      varibleItem.value.push({
-        id: _.toString(varibleCount.value + 1),
-        price: varibalePrice.value,
+      promotionSteps.value.push({
+        order: _.toNumber(varibleCount.value + 1),
+        amount: _.toNumber(varibalePrice.value),
       })
       emits('onChangeRemainingPrice', remainingPrice.value)
       varibleCount.value++
       varibalePrice.value = ''
     }
   }
-
+  emits('onUpdatePromotionStep', promotionSteps.value)
   visibleeModal.value = false
 }
 
-const checkSumPriceInArray = (arr: { id: string; price: string }[]) => {
+const checkSumPriceInArray = (arr: { order: number; amount: number }[]) => {
   const sumPriceItem = arr
     .map((a) => {
-      return a.price
+      return a.amount
     })
     .reduce((a, b) => {
       return _.toNumber(a) + _.toNumber(b)
@@ -91,34 +128,44 @@ const checkSumPriceInArray = (arr: { id: string; price: string }[]) => {
   return sumPriceItem
 }
 
-const testKey = ref('')
-const openVariableEditModal = (id: string, price: string) => {
-  itemForEdit.value.id = id
-  testKey.value = id
-  itemForEdit.value.price = price
+const openVariableEditModal = (order: number, amount: number) => {
+  itemForEdit.value.order = order
+  testKey.value = _.toString(order)
+  itemForEdit.value.amount = amount
   visibleEditModal.value = true
 }
 
 const confirmEditModal = () => {
-  varibleItem.value.find((el) => {
-    if (el.id === itemForEdit.value.id) {
-      el.price = itemForEdit.value.price
+  promotionSteps.value.find((el) => {
+    if (el.order === _.toNumber(itemForEdit.value.order)) {
+      el.amount = _.toNumber(itemForEdit.value.amount)
       visibleEditModal.value = false
     }
   })
+  emits('onUpdatePromotionStep', promotionSteps.value)
 }
 
-const showDeleteModal = (id: string, price: string) => {
-  itemForDelete.value.id = id
-  itemForDelete.value.price = price
+const showDeleteModal = (order: number, amount: number) => {
+  itemForDelete.value.order = order
+  itemForDelete.value.amount = amount
   Modal.confirm({
     title: 'حذف مرتبه',
     icon: createVNode(ExclamationCircleOutlined),
-    content: `آیا از حذف مرتبه ${id} مطمئن هستید؟`,
+    content: `آیا از حذف مرتبه ${order} مطمئن هستید؟`,
     onOk() {
-      varibleItem.value = varibleItem.value.filter((el) => el.id !== id)
+      promotionSteps.value = promotionSteps.value.filter(
+        (el) => el.order !== order
+      )
+      emits('onUpdatePromotionStep', promotionSteps.value)
     },
   })
+}
+const onChangeMimAmount = () => {
+  emits('onChangeMinAmount', minimumAmount.value)
+}
+
+const onChangeAmount = () => {
+  emits('onChangeAmount', amount.value)
 }
 </script>
 
@@ -132,16 +179,18 @@ const showDeleteModal = (id: string, price: string) => {
             placeholder="حداقل مبلغ پرداختی را وارد کنید"
             unit="تومان"
             style="max-width: 256px"
-            v-model:value="minPayPriceInput"
+            v-model:value="minimumAmount"
+            @input="onChangeMimAmount"
           />
           <input-with-headline-and-unit
             headline="مبلغ تخفیف"
             placeholder="مبلغ تخفیف را وارد کنید"
             unit="تومان"
             style="max-width: 256px"
-            v-model:value="discountPriceInput"
+            v-model:value="amount"
             class="mr-4"
-            :disabled="!!varibleItem.length"
+            :disabled="!!promotionSteps.length"
+            @input="onChangeAmount"
           />
         </div>
       </div>
@@ -166,13 +215,13 @@ const showDeleteModal = (id: string, price: string) => {
           <input-with-headline-and-unit
             headline="مبلغ تخفیف"
             unit="تومان"
-            v-model:value="discountPriceInput"
+            v-model:value="amount"
             :disabled="true"
             style="width: 220px"
             placeholder="مبلغ تخفیف را وارد کنید"
           />
           <input-with-headline-and-unit
-            :headline="`مبلغ مرتبه ${varibleItem.length + 1}`"
+            :headline="`مبلغ مرتبه ${promotionSteps.length + 1}`"
             unit="تومان"
             v-model:value="varibalePrice"
             style="width: 220px"
@@ -199,15 +248,15 @@ const showDeleteModal = (id: string, price: string) => {
           <input-with-headline-and-unit
             headline="مبلغ تخفیف"
             unit="تومان"
-            v-model:value="discountPriceInput"
+            v-model:value="amount"
             :disabled="true"
             style="width: 220px"
             placeholder="مبلغ تخفیف را وارد کنید"
           />
           <input-with-headline-and-unit
-            :headline="`مبلغ مرتبه ${itemForEdit.id}`"
+            :headline="`مبلغ مرتبه ${itemForEdit.order}`"
             unit="تومان"
-            v-model:value="itemForEdit.price"
+            v-model:value="itemForEdit.amount"
             style="width: 220px"
             class="mr-4"
             placeholder="مبلغ مرتبه"
@@ -217,8 +266,8 @@ const showDeleteModal = (id: string, price: string) => {
     </div>
     <div class="varibale-item-container mt-4 flex items-center flex-wrap">
       <a-card
-        v-for="(item, index) in varibleItem"
-        :key="item.id"
+        v-for="(item, index) in promotionSteps"
+        :key="item.order"
         class="item-card"
         style="width: 280px"
       >
@@ -228,20 +277,27 @@ const showDeleteModal = (id: string, price: string) => {
             <EditIcon
               color="#1894FF"
               class="ml-4"
-              @click="openVariableEditModal(item.id, item.price)"
+              @click="
+                openVariableEditModal(
+                  _.toNumber(item.order),
+                  _.toNumber(item.amount)
+                )
+              "
             />
             <DeleteIcon
               color="#F5222D"
-              @click="showDeleteModal(item.id, item.price)"
+              @click="
+                showDeleteModal(_.toNumber(item.order), _.toNumber(item.amount))
+              "
             />
           </div>
         </div>
         <div class="price-container mt-4">
-          {{ $filters.toPersianCurrency(_.toNumber(item.price), 'تومان') }}
+          {{ $filters.toPersianCurrency(_.toNumber(item.amount), 'تومان') }}
         </div>
         <div class="hint-container mt-4" v-if="remainingPrice !== 0">
           <a-typography-text type="danger"
-            ><span v-if="_.toNumber(index) + 1 === varibleItem.length">
+            ><span v-if="_.toNumber(index) + 1 === promotionSteps.length">
               {{ $filters.toPersianCurrency(remainingPrice, 'تومان') }}
               باقی‌مانده
             </span></a-typography-text

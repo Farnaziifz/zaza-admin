@@ -13,6 +13,7 @@ export const useDiscountStore = defineStore('discount-store', {
     minimumAmount: 0,
     maximumAmount: 0,
     consumeLimitation: 0,
+    promotionSteps: [],
   }),
 
   actions: {
@@ -30,6 +31,7 @@ export const useDiscountStore = defineStore('discount-store', {
       this.maximumAmount = discountData.maximumAmount
       this.minimumAmount = discountData.minimumAmount
       this.consumeLimitation = discountData.consumeLimitation
+      this.promotionSteps = discountData.promotionSteps
     },
   },
 })

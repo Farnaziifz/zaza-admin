@@ -125,6 +125,7 @@ export const saveDiscountDataSecondStep = (
 ) => {
   const discountStore = useDiscountStore()
   discountStore.changeDiscoundSecondStep(discountData)
+  goToPath('/discount/add/third-step')
 }
 
 export const getGroupTitle = async () => await apiGroup.getTitle()

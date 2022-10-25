@@ -6,13 +6,16 @@ import {
   DiscountStateType,
   DiscountTypeType,
 } from '../../../core/enums/discount.enum'
+import { promotionStep } from '../../../core/types/discounts.type'
 import InputWithHeadlineAndUnit from '/src/presentation/components/shared/molecules/InputWithHeadlineAndUnit.vue'
 import SevralTimeVariableCashField from '/src/presentation/components/specific/DiscountSecondStep/SevralTimeVariableCashFields.vue'
-import { ref, computed } from 'vue'
-import { returnToPreviousRoute } from '@/logics/shared/route.handler'
+import { ref, computed, Ref } from 'vue'
+import { goToPath } from '@/logics/shared/route.handler'
 import { showErrorMessage } from '@/logics/shared/message.handler'
 import { saveDiscountDataSecondStep } from '../../../logics/specific/discount.handler'
+import { useDiscountStore } from '@/resources/store/discount.store'
 
+const discountStore = useDiscountStore()
 const settingData = ref({
   consumeType: '',
   stateType: '',
@@ -22,7 +25,7 @@ const settingData = ref({
 const showFeilds = ref({ show: false })
 const isCreatedFileds = ref({ create: false })
 const remainingPrice = ref()
-
+const confirmPromotionStep: Ref<promotionStep[]> = ref([])
 const amount = ref()
 const minimumAmount = ref()
 const maximumAmount = ref()
@@ -41,6 +44,7 @@ const btnDisabled = computed(() => {
 })
 
 const onAddDiscountSecondStep = () => {
+  console.log(remainingPrice.value)
   if (
     remainingPrice.value !== 0 &&
     settingData.value.consumeType === DiscountConsumeType.SEVERAL_TIMES &&
@@ -57,10 +61,11 @@ const onAddDiscountSecondStep = () => {
       minimumAmount: minimumAmount.value,
       maximumAmount: maximumAmount.value,
       consumeLimitation: consumeLimitation.value,
+      promotionSteps: confirmPromotionStep.value,
     })
   }
 }
-const goToPastStep = () => returnToPreviousRoute()
+const goToPastStep = () => goToPath('/discount/add/first-step')
 
 const onRemainingPrice = (value: number) => {
   remainingPrice.value = value
@@ -86,6 +91,31 @@ const onChangeItem = () => {
   maximumAmount.value = undefined
   minimumAmount.value = undefined
   consumeLimitation.value = undefined
+}
+
+if (discountStore.type) {
+  settingData.value.type = discountStore.type
+  settingData.value.consumeType = discountStore.consumeType
+    ? discountStore.consumeType
+    : ''
+
+  settingData.value.stateType = discountStore.stateType
+    ? discountStore.stateType
+    : ''
+  amount.value = discountStore.amount
+  minimumAmount.value = discountStore.minimumAmount
+  maximumAmount.value = discountStore.maximumAmount
+  consumeLimitation.value = discountStore.consumeLimitation
+  showFeilds.value.show = true
+}
+const onUpdatePromotionStep = (steps: promotionStep[]) => {
+  confirmPromotionStep.value = steps
+}
+const onChangeMinAmount = (value: string) => {
+  minimumAmount.value = value
+}
+const onChangeAmount = (value: string) => {
+  amount.value = value
 }
 </script>
 <template>
@@ -330,7 +360,15 @@ const onChangeItem = () => {
             "
           >
             <SevralTimeVariableCashField
-              @onChangeRemainingPrice="onRemainingPrice"
+              @on-change-remainingPrice="onRemainingPrice"
+              @on-update-promotionStep="onUpdatePromotionStep"
+              :defaultSteps="
+                discountStore.promotionSteps ? discountStore.promotionSteps : []
+              "
+              @on-change-min-amount="onChangeMinAmount"
+              @onChangeAmount="onChangeAmount"
+              :amount="amount"
+              :minimumAmount="minimumAmount"
             />
           </div>
         </div>
@@ -340,6 +378,7 @@ const onChangeItem = () => {
         <a-button class="ml-4" @click="goToPastStep">
           <span>مرحله قبل</span>
         </a-button>
+        {{ remainingPrice }}
         <a-button
           type="primary"
           class="button-secondary"

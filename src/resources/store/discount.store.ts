@@ -6,16 +6,19 @@ export const useDiscountStore = defineStore('discount-store', {
     type: '',
     consumeType: '',
     stateType: '',
-    amount: 0,
     code: '',
     startAt: '',
     expireAt: '',
+    amount: 0,
+    minimumAmount: 0,
+    maximumAmount: 0,
+    consumeLimitation: 0,
+    promotionSteps: [],
   }),
 
   actions: {
     changeDiscountSetting(discountData: discounts) {
       this.title = discountData.title
-      this.amount = discountData.amount
       this.code = discountData.code
       this.startAt = discountData.startAt
       this.expireAt = discountData.expireAt
@@ -24,6 +27,11 @@ export const useDiscountStore = defineStore('discount-store', {
       this.type = discountData.type
       this.consumeType = discountData.consumeType
       this.stateType = discountData.stateType
+      this.amount = discountData.amount
+      this.maximumAmount = discountData.maximumAmount
+      this.minimumAmount = discountData.minimumAmount
+      this.consumeLimitation = discountData.consumeLimitation
+      this.promotionSteps = discountData.promotionSteps
     },
   },
 })

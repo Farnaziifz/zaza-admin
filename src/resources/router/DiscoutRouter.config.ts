@@ -4,6 +4,7 @@ import DiscountDetails from '/src/presentation/pages/Discount/DiscountDetails.vu
 import DiscountAdd from '/src/presentation/pages/Discount/DiscountAdd.vue'
 import DiscountAddFirstStep from '/src/presentation/pages/Discount/DiscountAddFirstStep.vue'
 import DiscountAddSecondStep from '/src/presentation/pages/Discount/DiscountAddSecoundStep.vue'
+import DiscountAddThirdStep from '/src/presentation/pages/Discount/DiscountAddThirdStep.vue'
 
 export const discountRouterConfig = {
   path: 'discount',
@@ -38,6 +39,12 @@ export const discountRouterConfig = {
           name: 'discount-add-second-step',
           meta: { step: 1 },
           component: DiscountAddSecondStep,
+        },
+        {
+          path: 'third-step',
+          name: 'discount-add-third-step',
+          meta: { step: 2 },
+          component: DiscountAddThirdStep,
         },
       ],
     },

@@ -1,4 +1,7 @@
 import { discountApi } from '@/resources/api/discount'
+import { groupApi } from '@/resources/api/group'
+import { customerApi } from '@/resources/api/customer'
+
 import {
   discountsList,
   discountCustomerGroup,
@@ -15,6 +18,8 @@ import { useDiscountStore } from '@/resources/store/discount.store'
 import { goToPath } from '@/logics/shared/route.handler'
 
 const api = discountApi()
+const customersApi = customerApi()
+const apiGroup = groupApi()
 
 export const initPageHandler = async (
   page?: number,
@@ -120,4 +125,10 @@ export const saveDiscountDataSecondStep = (
 ) => {
   const discountStore = useDiscountStore()
   discountStore.changeDiscoundSecondStep(discountData)
+  goToPath('/discount/add/third-step')
 }
+
+export const getGroupTitle = async () => await apiGroup.getTitle()
+
+export const getCustomersInGroup = async (groupId: string, page = 1) =>
+  await customersApi.getCustomersInGroup(groupId, page)

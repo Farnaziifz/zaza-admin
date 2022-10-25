@@ -18,3 +18,9 @@
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
 }
+
+.ant-steps-item-icon {
+  display: inline-flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+}

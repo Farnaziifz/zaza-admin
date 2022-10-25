@@ -36,9 +36,15 @@ const columns: TableColumnType<customerScore>[] = [
 const props = defineProps({
   pagination: {
     type: Object,
+    default() {
+      return {}
+    },
   },
   cachbackData: {
     type: Object,
+    default() {
+      return {}
+    },
   },
 })
 
@@ -49,14 +55,14 @@ const onChange: TableProps<customerScoreList>['onChange'] = (paginate) => {
 
 <template>
   <a-card
-    :bodyStyle="{ 'box-shadow': '0px 4px 10px rgba(0, 0, 0, 0.1)' }"
+    v-if="props.cachbackData"
+    :body-style="{ 'box-shadow': '0px 4px 10px rgba(0, 0, 0, 0.1)' }"
     :bordered="false"
     class="info-card"
-    v-if="props.cachbackData"
   >
     <a-table
-      :columns="columns"
       v-if="props.cachbackData.items && props.cachbackData.items.length"
+      :columns="columns"
       :data-source="props.cachbackData.items"
       :pagination="props.pagination"
       @change="onChange"

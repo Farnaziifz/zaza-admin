@@ -8,7 +8,7 @@ export const reportConfig = {
   redirect: '/report/discount-list',
   children: [
     {
-      name: 'discount-list',
+      name: 'report-discount-list',
       path: 'discount-list',
       component: ReportDiscountList,
     },

@@ -48,3 +48,13 @@ export type churnRate = {
   loseWeekCount: number
   lazyWeekCount: number
 }
+
+export type retentionLoyalityRateOverallStatistics = {
+  customerRetentionRate: number
+  heroCustomer: number
+  loyalCustomer: number
+  attentionNeedCustomer: number
+  heroCustomerPercentage: number
+  loyalCustomerPercentage: number
+  attentionNeedCustomerPercentage: number
+}

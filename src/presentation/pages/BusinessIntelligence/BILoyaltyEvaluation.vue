@@ -1,35 +1,20 @@
 <script setup lang="ts">
 import IncentiveDetailLayout from '/src/presentation/layouts/IncentiveDetailLayout.vue'
 import { SettingOutlined } from '@ant-design/icons-vue'
+import { retentionLoyalityRateOverallStatistics } from '../../../core/types/businessIntelligence'
+import { ref, Ref, onMounted } from 'vue'
+import { initHandler } from '../../../logics/specific/retationLoyality.handler'
 import { chartVariant } from '@/core/enums/chartType.enum'
 import BChart from '@/presentation/components/shared/Organisms/BChart.vue'
 
-import { ref } from 'vue'
+const overallStatisticsData: Ref<
+  retentionLoyalityRateOverallStatistics | undefined
+> = ref(undefined)
 
 const dataCh = ref({
   labels: ['مشتریان قهرمان', 'مشتریان وفادار', 'نیازمند تعجب'],
   datasets: [{}],
 })
-
-const customerRetentionColumn = [
-  {
-    title: 'مشتری',
-    key: 'fullName',
-    dataIndex: 'fullName',
-  },
-  {
-    title: 'تعداد سفارش',
-    key: 'numberOfOrder',
-    dataIndex: 'numberOfOrder',
-  },
-  {
-    title: 'مبلغ پرداختی',
-    key: 'totalExpenses',
-    dataIndex: 'totalExpenses',
-  },
-]
-
-const selectedCustomerType = ref(fluxityType.NORMAL)
 
 const options = ref({
   responsive: true,
@@ -40,11 +25,23 @@ const options = ref({
     },
   },
 })
-const onChangePage = async (paginate: TablePaginationConfig) =>
-  (churnRateCustomerData.value = await churnCustomerListGETHandler(
-    paginate.current,
-    [{ field: 'fluxity', operand: '==', value: selectedCustomerType.value }]
-  ))
+
+onMounted(async () => {
+  const data = await initHandler()
+  overallStatisticsData.value = data.data
+  dataCh.value.datasets = [
+    {
+      label: 'test',
+      data: [
+        overallStatisticsData.value?.heroCustomerPercentage ?? 0,
+        overallStatisticsData.value?.loyalCustomerPercentage ?? 0,
+        overallStatisticsData.value?.attentionNeedCustomerPercentage ?? 0,
+      ],
+      backgroundColor: ['#A155B9', '#16BFD6', '#F765A3'],
+      hoverOffset: 4,
+    },
+  ]
+})
 </script>
 
 <template>
@@ -77,10 +74,10 @@ const onChangePage = async (paginate: TablePaginationConfig) =>
         <div class="flex flex-row items-center justify-around relative mt-4">
           <div class="flex flex-col items-center">
             <span style="font-weight: 500; font-size: 16px">
-              نرخ ریزش مشتریان
+              نرخ وفادارسازی مشتریان
             </span>
             <span style="font-weight: 700; font-size: 32px">
-              <!-- {{ overallStatisticsData?.lostCustomerPercentage }} درصد -->
+              {{ overallStatisticsData?.customerRetentionRate }} درصد
             </span>
           </div>
 
@@ -88,10 +85,10 @@ const onChangePage = async (paginate: TablePaginationConfig) =>
 
           <div class="flex flex-col items-center">
             <span style="font-weight: 500; font-size: 16px">
-              مشتریان از دست رفته
+              مشتریان قهرمان
             </span>
             <span style="font-weight: 700; font-size: 32px">
-              <!-- {{ overallStatisticsData?.lostCustomer }} -->
+              {{ overallStatisticsData?.heroCustomer }}
               مشتری
             </span>
           </div>
@@ -100,10 +97,10 @@ const onChangePage = async (paginate: TablePaginationConfig) =>
 
           <div class="flex flex-col items-center">
             <span style="font-weight: 500; font-size: 16px">
-              مشتریان خواب آلود
+              مشتریان وفادار
             </span>
             <span style="font-weight: 700; font-size: 32px">
-              <!-- {{ overallStatisticsData?.lazyCustomer }} مشتری -->
+              {{ overallStatisticsData?.loyalCustomer }} مشتری
             </span>
           </div>
 
@@ -111,10 +108,10 @@ const onChangePage = async (paginate: TablePaginationConfig) =>
 
           <div class="flex flex-col items-center">
             <span style="font-weight: 500; font-size: 16px">
-              مشتریان معمولی
+              مشتریان نیازمند تعجب
             </span>
             <span style="font-weight: 700; font-size: 32px">
-              <!-- {{ overallStatisticsData?.normalCustomer }} مشتری -->
+              {{ overallStatisticsData?.attentionNeedCustomer }} مشتری
             </span>
           </div>
         </div>
@@ -128,35 +125,6 @@ const onChangePage = async (paginate: TablePaginationConfig) =>
           />
         </div>
       </a-card>
-
-      <div class="mt-10">
-        <div style="font-weight: 700; font-size: 20px">لیست مشتریان</div>
-        <a-radio-group v-model:value="selectedCustomerType">
-          <a-radio-button :value="fluxityType.NORMAL">
-            مشتریان معمولی
-          </a-radio-button>
-          <a-radio-button :value="fluxityType.CHURN">
-            مشتریان از دست رفته
-          </a-radio-button>
-          <a-radio-button :value="fluxityType.LAZY">
-            مشتریان خواب آلود
-          </a-radio-button>
-        </a-radio-group>
-
-        <a-table
-          :columns="customerRetentionColumn"
-          :data-source="churnRateCustomerData?.items"
-          :pagination="churnRateCustomerListPagination"
-          class="mt-2"
-          @change="onChangePage"
-        >
-          <template #bodyCell="{ column, record }">
-            <template v-if="column.key === 'totalExpenses'">
-              {{ record.totalExpenses }} تومان
-            </template>
-          </template>
-        </a-table>
-      </div>
     </template>
   </IncentiveDetailLayout>
 </template>

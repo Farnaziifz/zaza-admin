@@ -1,8 +1,8 @@
 // import { CouponsTypesType, CouponsRewardsType } from '../enums/couponsType.enum'
 export type group = {
   groupId: string
-  title: string
-  customersCount: number
+  title?: string
+  customersCount?: number
 }
 export type promotionStep = {
   order?: number
@@ -44,6 +44,9 @@ export type discountSecondStep = {
   maximumAmount?: number
   consumeLimitation?: number
   promotionSteps?: promotionStep[]
+}
+export type discountThirdStep = {
+  promotionAssignedGroups: group[]
 }
 
 export type discountsList = {

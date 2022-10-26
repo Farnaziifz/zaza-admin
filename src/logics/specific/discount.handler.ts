@@ -8,6 +8,7 @@ import {
   discountGroup,
   discountFirstStep,
   discountSecondStep,
+  discountThirdStep,
 } from '@/core/types/discounts.type'
 import {
   showErrorMessage,
@@ -126,6 +127,11 @@ export const saveDiscountDataSecondStep = (
   const discountStore = useDiscountStore()
   discountStore.changeDiscoundSecondStep(discountData)
   goToPath('/discount/add/third-step')
+}
+
+export const saveDiscountThirdStep = (discountData: discountThirdStep) => {
+  const discountStore = useDiscountStore()
+  discountStore.changeDiscountThirdStep(discountData)
 }
 
 export const getGroupTitle = async () => await apiGroup.getTitle()

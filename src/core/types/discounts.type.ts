@@ -1,4 +1,21 @@
 // import { CouponsTypesType, CouponsRewardsType } from '../enums/couponsType.enum'
+import { pagination } from '@/core/types/pagination.type'
+
+export type discountReport = {
+  title?: string
+  code?: string
+  successRate?: number
+  cost?: number
+  income?: number
+  customerCount?: number
+  groupsTitle?: string[]
+  groupsId?: string[]
+}
+
+export type promotionUsageReport = {
+  items: discountReport[]
+} & pagination
+
 export type group = {
   groupId: string
   title?: string

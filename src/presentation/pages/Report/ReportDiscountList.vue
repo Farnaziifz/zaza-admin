@@ -3,8 +3,21 @@ import ContentLayout from '@/presentation/layouts/ContentLayout.vue'
 import BChart from '@/presentation/components/shared/Organisms/BChart.vue'
 import { chartVariant } from '@/core/enums/chartType.enum'
 import _ from 'lodash'
+import { onMounted, ref, Ref } from 'vue'
+import { promotionUsageReport } from '@/core/types/discounts.type'
+import { composePaginationData } from '@/presentation/factory/shared/paginationComputedProp.factory'
+import { TablePaginationConfig } from 'ant-design-vue'
+import {
+  getPromotionReport,
+  getTargetCustomerList,
+  initHandler,
+} from '@/logics/specific/reportDiscountList.handler'
+import { reportDiscountUsageColumn } from '@/core/constants/report.options'
+import EmptyLayout from '@/presentation/layouts/EmptyLayout.vue'
+import { goToPath } from '@/logics/shared/route.handler'
+import TargetCustomerListModal from '@/presentation/components/shared/Organisms/TargetCustomerListModal.vue'
+import { groupCustomer } from '@/core/types/customer.type'
 
-//BOOMS 132 Start
 const chartData = {
   labels: ['daskldj', 'dasl', 'dsa', '123', 'test', 'test1', 'test2'],
   datasets: [
@@ -64,16 +77,68 @@ const chartOptions = {
     },
   },
 }
-//BOOMS 132 End
+const serverData: Ref<promotionUsageReport | undefined> = ref(undefined)
+
+const pagination = composePaginationData<promotionUsageReport>(serverData)
+const onChangePage = async (paginate: TablePaginationConfig) => {
+  const res = await getPromotionReport(paginate.current ?? 1)
+  serverData.value = res.data
+}
+
+const getGroupTitles = (groupsTitle?: string[]) => {
+  if (!_.isEqual(groupsTitle, [])) {
+    const res = groupsTitle?.reduce(
+      (
+        acc: string | undefined,
+        cur: string | undefined,
+        index: number | undefined
+      ) => {
+        if (index === 0) return cur
+        if (index === 1) return acc + ',' + cur + '...'
+      },
+      ''
+    )
+    if (res) return res
+  } else {
+    return 'فاقد دسته بندی'
+  }
+}
+
+onMounted(async () => {
+  const res = await initHandler()
+  if (!_.isEmpty(res.data)) serverData.value = res.data
+})
+
+const customerGroupsIds: Ref<string[]> = ref([])
+const targetCustomerListModalVisibility = ref(false)
+const targetCustomerServerData: Ref<groupCustomer | undefined> = ref()
+const targetCustomerPaginationData = composePaginationData(
+  targetCustomerServerData
+)
+const changeTargetCustomerModalPage = async (paginationData: {
+  current: number
+}) => {
+  const res = await getTargetCustomerList(
+    customerGroupsIds.value,
+    paginationData.current
+  )
+  targetCustomerServerData.value = res.data
+}
+const openTargetCustomerModal = async (groupIds: string[]) => {
+  customerGroupsIds.value = groupIds
+  const res = await getTargetCustomerList(groupIds, 1)
+
+  targetCustomerServerData.value = res.data
+  targetCustomerListModalVisibility.value = true
+}
 </script>
 <template>
   <ContentLayout>
-    <!--  BOOMS-132 Start -->
     <template #content-title>
       <span style="font-weight: 700; font-size: 24px"> گزارش کد تخفیف </span>
     </template>
 
-    <template #content-body>
+    <template v-if="serverData" #content-body>
       <a-card
         :body-style="{ boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)' }"
         :bordered="false"
@@ -87,7 +152,67 @@ const chartOptions = {
           :width="1184"
         />
       </a-card>
-      <!--  BOOMS-132 End -->
+
+      <a-table
+        class="mt-10"
+        :data-source="serverData?.items"
+        :columns="reportDiscountUsageColumn"
+        :pagination="pagination"
+        @change="onChangePage"
+      >
+        <template #bodyCell="{ column, record }">
+          <template v-if="column.key === 'income'">
+            {{ record.income }} تومان
+          </template>
+          <template v-if="column.key === 'cost'">
+            {{ record.cost }} تومان
+          </template>
+          <template v-if="column.key === 'successRate'">
+            {{ record.successRate }} درصد
+          </template>
+          <template v-if="column.key === 'groupsTitle'">
+            {{ getGroupTitles(record.groupsTitle) }}
+          </template>
+          <template v-if="column.key === 'customersCount'">
+            <a-button
+              type="text"
+              @click="openTargetCustomerModal(record?.groupsId)"
+            >
+              <span style="color: #1894ff">
+                {{ record.customersCount }} مشتری
+              </span>
+            </a-button>
+          </template>
+        </template>
+      </a-table>
+    </template>
+
+    <template v-else #content-body>
+      <empty-layout>
+        <template #empty-text>
+          زمانی گزارش کد تخفیف قابل نمایش است که مشتریان از کد تخفیف‌های ساخته
+          شده استفاده کنند. ( خط بعدی) کافی‌ست با توجه به راهبرد تجارت خود یک کد
+          تخفیف بسازید و به دسته‌ای از مشتریان تخصیص دهید.
+        </template>
+        <template #empty-action>
+          <a-button
+            class="button-secondary"
+            type="primary"
+            block
+            @click="goToPath('/coupons/add')"
+          >
+            افزودن کد تخفیف
+          </a-button>
+        </template>
+      </empty-layout>
     </template>
   </ContentLayout>
+
+  <target-customer-list-modal
+    v-model:visibility="targetCustomerListModalVisibility"
+    :target-customer-list="targetCustomerServerData"
+    :pagination-data="targetCustomerPaginationData"
+    title="لیست مشتریان هدف"
+    @change-page="changeTargetCustomerModalPage"
+  />
 </template>

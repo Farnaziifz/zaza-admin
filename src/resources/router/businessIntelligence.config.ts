@@ -14,8 +14,8 @@ export const businessIntelligenceConfig = {
       component: BIChurnRateSettings,
     },
     {
-      name: 'evaluation',
-      path: 'evaluation',
+      name: 'churn-evaluation',
+      path: 'churn-evaluation',
       component: BIEvaluation,
     },
   ],

@@ -44,7 +44,6 @@ const btnDisabled = computed(() => {
 })
 
 const onAddDiscountSecondStep = () => {
-  console.log(remainingPrice.value)
   if (
     remainingPrice.value !== 0 &&
     settingData.value.consumeType === DiscountConsumeType.SEVERAL_TIMES &&

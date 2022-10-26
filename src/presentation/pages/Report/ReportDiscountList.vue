@@ -179,7 +179,7 @@ const openTargetCustomerModal = async (groupIds: string[]) => {
               @click="openTargetCustomerModal(record?.groupsId)"
             >
               <span style="color: #1894ff">
-                {{ record.customersCount }}
+                {{ record.customersCount }} مشتری
               </span>
             </a-button>
           </template>

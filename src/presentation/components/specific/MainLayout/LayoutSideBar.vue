@@ -2,7 +2,11 @@
 import LogoIcon from '/src/presentation/components/shared/atoms/logoIcon.vue'
 import { ref, watch, computed } from 'vue'
 // import LabelsIcon from '../../shared/atoms/LabelsIcon.vue';
-import { TagsOutlined } from '@ant-design/icons-vue'
+import {
+  TagsOutlined,
+  ApiOutlined,
+  BarChartOutlined,
+} from '@ant-design/icons-vue'
 import router from '../../../../resources/router'
 
 const props = defineProps({
@@ -49,6 +53,7 @@ const changeRoute = (to: string) => {
     collapsed-width="0"
     theme="light"
     class="shadow-[0px_2px_8px_rgba(0,0,0,0.15)]"
+    width="256"
   >
     <a-menu
       id="side-bar-menu"
@@ -97,6 +102,39 @@ const changeRoute = (to: string) => {
         </a-menu-item>
         <a-menu-item key="8" @click="changeRoute('/score')">
           امتیاز
+        </a-menu-item>
+      </a-sub-menu>
+
+      <a-sub-menu key="sub4">
+        <template #icon>
+          <bar-chart-outlined />
+        </template>
+        <template #title> گزارش ها</template>
+
+        <a-menu-item key="9" @click="changeRoute('/report/discount-list')">
+          کدهای تخفیف
+        </a-menu-item>
+      </a-sub-menu>
+
+      <a-sub-menu key="sub5">
+        <template #icon>
+          <ApiOutlined />
+        </template>
+        <template #title>
+          <span>هوش تجاری</span>
+        </template>
+
+        <a-menu-item
+          key="10"
+          @click="changeRoute('/business-intelligence/churn-rate-settings')"
+        >
+          نرخ از دست دادن مشتریان
+        </a-menu-item>
+        <a-menu-item
+          key="11"
+          @click="changeRoute('/business-intelligence/churn-evaluation')"
+        >
+          ارزیابی از دست رفتن مشتریان
         </a-menu-item>
       </a-sub-menu>
     </a-menu>

@@ -125,12 +125,6 @@ const changeRoute = (to: string) => {
         </template>
 
         <a-menu-item
-          key="10"
-          @click="changeRoute('/business-intelligence/churn-rate-settings')"
-        >
-          نرخ از دست دادن مشتریان
-        </a-menu-item>
-        <a-menu-item
           key="11"
           @click="changeRoute('/business-intelligence/churn-evaluation')"
         >

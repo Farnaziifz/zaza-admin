@@ -55,7 +55,11 @@ const generateRandomCode = async () => {
 if (discountStore.title) {
   discountName.value = discountStore.title
   discountStore.code ? (discountCode.value = discountStore.code) : ''
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  //@ts-ignore
   discountStore.startAt ? (pickedStartDate.value = discountStore.startAt) : ''
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  //@ts-ignore
   discountStore.expireAt ? (pickedEndDate.value = discountStore.expireAt) : ''
 }
 </script>

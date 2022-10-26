@@ -178,6 +178,8 @@ if (
   discountStore.promotionAssignedGroups &&
   discountStore.promotionAssignedGroups.length
 ) {
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  //@ts-ignore
   selectedGroups.value = discountStore.promotionAssignedGroups
 }
 </script>

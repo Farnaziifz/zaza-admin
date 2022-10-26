@@ -119,11 +119,15 @@ export const generateCode = async () => {
 export const newDiscountAdd = async (data: discounts) => {
   const res = await api.post(data)
   showLoadingMessage()
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  //@ts-ignore
   if (res.data?.status === 204) {
     showSuccessMessage()
     goToPath('/discount/list')
     const discountStore = useDiscountStore()
     discountStore.emptyDiscountStore()
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    //@ts-ignore
   } else showErrorMessage(res.error?.response?.statusText)
 }
 

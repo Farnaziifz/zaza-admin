@@ -1,9 +1,10 @@
 import { api } from './index'
 import { discountsList, discounts } from '../../core/types/discounts.type'
 import { error } from '../../core/types/error.type'
+import { AxiosError, AxiosResponse } from 'axios'
 
 const pageUrl = 'promotion'
-type response = {
+type responses = {
   data: discountsList
   errors: error
 }
@@ -12,11 +13,15 @@ type detaislRes = {
   data: discounts
   errors: error
 }
+type response<T> = {
+  data?: AxiosResponse<T>
+  error?: AxiosError<T>
+}
 
 const discountListGet = async (
   page?: number,
   pageSize?: number
-): Promise<response> => {
+): Promise<responses> => {
   const res = await api.get(`${pageUrl}?Page=${page}&PageSize=${pageSize}`)
   return res.data
 }
@@ -27,7 +32,7 @@ const chnageDiscountStatus = async (data: string) => {
   return res
 }
 
-const deleteDiscount = async (data: string): Promise<response> => {
+const deleteDiscount = async (data: string): Promise<responses> => {
   const res = await api.delete(`${pageUrl}/${data}`)
   return res.data
 }
@@ -72,15 +77,36 @@ const checkDiscountValidation = async (code: string) => {
   return res.data
 }
 const generateCode = async () => {
-  console.log(`${pageUrl}/generate-random-code`)
   const res = await api.get(`${pageUrl}/generate-random-code`)
   return res.data
+}
+
+const discountAdd = async (
+  discountData: discounts
+): Promise<{
+  data?: {
+    title: string
+    code: string
+    type: string
+  }
+  error?: { message: string }
+}> => {
+  try {
+    return {
+      data: await api.post(pageUrl, discountData),
+    }
+  } catch (e) {
+    return {
+      error: e as AxiosError<{ data: undefined; error?: AxiosError }>,
+    }
+  }
 }
 export const discountApi = () => {
   return {
     get: discountListGet,
     put: chnageDiscountStatus,
     delete: deleteDiscount,
+    post: discountAdd,
     getDetails: getDiscountDetails,
     getGroup: getDiscountGroup,
     getGroupDetails: getDiscountGroupDetails,

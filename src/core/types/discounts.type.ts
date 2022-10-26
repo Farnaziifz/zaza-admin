@@ -34,8 +34,8 @@ export type discounts = {
   amount?: number
   code?: string
   consumeLimitation?: number
-  startAt?: string
-  expireAt?: string
+  startAt?: string | Date | undefined
+  expireAt?: string | Date | undefined
   notificationType?: string[]
   customersCount?: number
   promotionAssignedGroups?: group[]

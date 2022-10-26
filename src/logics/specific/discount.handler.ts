@@ -9,6 +9,7 @@ import {
   discountFirstStep,
   discountSecondStep,
   discountThirdStep,
+  discounts,
 } from '@/core/types/discounts.type'
 import {
   showErrorMessage,
@@ -113,6 +114,17 @@ export const generateCode = async () => {
     showErrorMessage()
     throw 'errors'
   }
+}
+
+export const newDiscountAdd = async (data: discounts) => {
+  const res = await api.post(data)
+  showLoadingMessage()
+  if (res.data?.status === 204) {
+    showSuccessMessage()
+    goToPath('/discount/list')
+    const discountStore = useDiscountStore()
+    discountStore.emptyDiscountStore()
+  } else showErrorMessage(res.error?.response?.statusText)
 }
 
 export const saveDiscountDataFirstStep = (discountData: discountFirstStep) => {

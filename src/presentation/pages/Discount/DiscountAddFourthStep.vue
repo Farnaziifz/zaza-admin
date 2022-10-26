@@ -2,14 +2,40 @@
 import ContentLayout from '/src/presentation/layouts/ContentLayout.vue'
 import HintCollapse from '/src/presentation/components/shared/Organisms/HintCollapse.vue'
 import { ref } from 'vue'
-const notificationWay = ref()
+import { newDiscountAdd } from '../../../logics/specific/discount.handler'
+import { useDiscountStore } from '../../../resources/store/discount.store'
+import { convertDateFromPersianToGeorgian } from '@/logics/shared/date.handler'
 
+const discountStore = useDiscountStore()
+const notificationWay = ref()
 const optionNotificationGroup = [
   { label: 'پیامک', value: 'SMS' },
   { label: 'ایمیل ( به زودی )', value: 'EMAIL', disabled: true },
   { label: ' پوش ناتفیکیشن (به زودی)', value: 'PUSH', disabled: true },
   { label: ' واتس اپ (به زودی)', value: 'WA', disabled: true },
 ]
+
+const onSubmitDiscountCode = async () => {
+  await newDiscountAdd({
+    title: discountStore.title,
+    code: discountStore.code,
+    consumeType: discountStore.consumeType,
+    stateType: discountStore.stateType,
+    type: discountStore.type,
+    startAt: discountStore.startAt
+      ? convertDateFromPersianToGeorgian(discountStore.startAt.toString())
+      : '',
+    expireAt: discountStore.expireAt
+      ? convertDateFromPersianToGeorgian(discountStore.expireAt.toString())
+      : '',
+    amount: discountStore.amount,
+    minimumAmount: discountStore.minimumAmount,
+    maximumAmount: discountStore.maximumAmount,
+    consumeLimitation: discountStore.consumeLimitation,
+    promotionSteps: discountStore.promotionSteps,
+    promotionAssignedGroups: discountStore.promotionAssignedGroups,
+  })
+}
 </script>
 
 <template>
@@ -41,7 +67,11 @@ const optionNotificationGroup = [
         <a-button class="ml-4">
           <span>مرحله قبل</span>
         </a-button>
-        <a-button type="primary" class="button-secondary">
+        <a-button
+          type="primary"
+          class="button-secondary"
+          @click="onSubmitDiscountCode"
+        >
           <span>ثبت</span>
         </a-button>
       </div>

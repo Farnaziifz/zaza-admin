@@ -11,10 +11,17 @@ type responses = {
 const getRetentionLoyalityRateOverallStatistics =
   async (): Promise<responses> => {
     const res = await api.get(`${pageUrl}/retention-rate/overall-statistics`)
-    console.log(res)
     return res.data
   }
 
+const getRetantionLoyalCustomerList = async (
+  type: string
+): Promise<responses> => {
+  const res = await api.get(`${pageUrl}/`)
+  return res.data
+}
+
 export const retaitionLoyalityApi = () => ({
   getRetentionLoyalityRateOverallStatistics,
+  getRetantionLoyalCustomerList,
 })

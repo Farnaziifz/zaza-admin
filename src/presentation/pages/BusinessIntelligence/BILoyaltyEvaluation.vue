@@ -7,10 +7,12 @@ import { initHandler } from '../../../logics/specific/retationLoyality.handler'
 import { chartVariant } from '@/core/enums/chartType.enum'
 import BChart from '@/presentation/components/shared/Organisms/BChart.vue'
 
+import { loyalityType } from '../../../core/enums/fluxityType.enum'
+
 const overallStatisticsData: Ref<
   retentionLoyalityRateOverallStatistics | undefined
 > = ref(undefined)
-
+const selectedCustomerType = ref(loyalityType.HERO)
 const dataCh = ref({
   labels: ['مشتریان قهرمان', 'مشتریان وفادار', 'نیازمند تعجب'],
   datasets: [{}],
@@ -31,7 +33,7 @@ onMounted(async () => {
   overallStatisticsData.value = data.data
   dataCh.value.datasets = [
     {
-      label: 'test',
+      label: 'evaluation loyality chart',
       data: [
         overallStatisticsData.value?.heroCustomerPercentage ?? 0,
         overallStatisticsData.value?.loyalCustomerPercentage ?? 0,
@@ -125,6 +127,20 @@ onMounted(async () => {
           />
         </div>
       </a-card>
+      <div class="mt-10">
+        <div style="font-weight: 700; font-size: 20px">لیست مشتریان</div>
+        <a-radio-group v-model:value="selectedCustomerType" class="mt-4">
+          <a-radio-button :value="loyalityType.HERO">
+            مشتریان عادی
+          </a-radio-button>
+          <a-radio-button :value="loyalityType.LOYAL">
+            مشتریان وفادار
+          </a-radio-button>
+          <a-radio-button :value="loyalityType.ATTENTION_NEED">
+            مشتریان امیدوار کننده
+          </a-radio-button>
+        </a-radio-group>
+      </div>
     </template>
   </IncentiveDetailLayout>
 </template>

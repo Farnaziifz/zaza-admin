@@ -11,7 +11,7 @@ import { cashbackConfig } from '@/resources/router/cashback.config'
 import { scoreConfig } from '@/resources/router/score.config'
 import { businessIntelligenceConfig } from '@/resources/router/businessIntelligence.config'
 import { reportConfig } from '@/resources/router/report.config'
-
+import { commentConfig } from '../../resources/router/commentsRouter.config'
 const config: RouterOptions = {
   routes: [
     {
@@ -29,10 +29,12 @@ const config: RouterOptions = {
         scoreConfig,
         businessIntelligenceConfig,
         reportConfig,
+        commentConfig,
       ],
     },
   ],
   history: createWebHistory(import.meta.env.BASE_URL),
 }
 
+console.log(config)
 export default config

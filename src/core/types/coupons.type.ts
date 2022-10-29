@@ -1,4 +1,5 @@
 import { CouponsTypesType, CouponsRewardsType } from '../enums/couponsType.enum'
+import { pagination } from '@/core/types/pagination.type'
 
 export type coupons = {
   id?: string
@@ -23,13 +24,11 @@ export type coupons = {
     title?: string
     value?: string
   }
+  visit?: number
+  numberOfUsed?: number
+  selectionRate?: number
 }
 
 export type couponsList = {
   items: coupons[]
-  hasNextPage: boolean
-  hasPreviousPage: boolean
-  page: number
-  totalCount: number
-  totalPages: number
-}
+} & pagination

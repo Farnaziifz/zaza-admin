@@ -210,7 +210,6 @@ const onChangePage = async (paginate: TablePaginationConfig) =>
               {{
                 $filters.toPersianCurrency(record.totalExpenses / 10, 'تومان')
               }}
-              تومان
             </template>
           </template>
         </a-table>

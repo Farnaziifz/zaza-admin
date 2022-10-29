@@ -1,5 +1,6 @@
 import Report from '@/presentation/pages/Report/Report.vue'
 import ReportDiscountList from '@/presentation/pages/Report/ReportDiscountList.vue'
+import ReportCouponList from '@/presentation/pages/Report/ReportCouponList.vue'
 
 export const reportConfig = {
   name: 'report',
@@ -11,6 +12,11 @@ export const reportConfig = {
       name: 'report-discount-list',
       path: 'discount-list',
       component: ReportDiscountList,
+    },
+    {
+      name: 'coupon-list',
+      path: 'coupon-list',
+      component: ReportCouponList,
     },
   ],
 }

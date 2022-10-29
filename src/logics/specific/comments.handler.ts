@@ -1,5 +1,5 @@
 import { commentApi } from '@/resources/api/comments'
-import { commentList } from '@/core/types/comments.type'
+import { commentList, comments } from '@/core/types/comments.type'
 import {
   showErrorMessage,
   showLoadingMessage,
@@ -21,3 +21,20 @@ export const initPageHandler = async (
     throw 'errors'
   }
 }
+
+export const commentMainInfo = async (id: string, orderId: string) => {
+  const res = await api.getFeedbackMainInfo(id, orderId)
+  const info = res.data
+  const errors = res.errors
+  if (Object.is(errors, null)) return info
+  else {
+    // TODO: error handling
+    throw 'errors'
+  }
+}
+
+export const commentMainInfoRefactor = async (id: string, orderId: string) =>
+  await api.getFeedbackMainInfo(id, orderId)
+
+export const getCommentDetails = async (id: string) =>
+  await api.getDetailsComment(id)

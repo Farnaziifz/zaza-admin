@@ -8,7 +8,6 @@ import EmptyLayout from '/src/presentation/layouts/EmptyLayout.vue'
 
 import { initPageHandler } from '@/logics/specific/comments.handler'
 import router from '@/resources/router'
-import { useRoute } from 'vue-router'
 
 const serverData: Ref<commentList> = ref({
   items: [],
@@ -18,8 +17,6 @@ const serverData: Ref<commentList> = ref({
   totalCount: 0,
   totalPages: 0,
 })
-const route = useRoute()
-const routeId = String(route.params.id)
 
 const columns: TableColumnType<comments>[] = [
   {
@@ -69,13 +66,11 @@ const onChange: TableProps<commentList>['onChange'] = async (
   console.log('params', paginate, sorter)
   serverData.value = await initPageHandler(paginate.current, paginate.pageSize)
 }
-const gotoDetails = (fId: string, oId: string, orderName: string) => {
+const gotoDetails = (id: string, oId: string) => {
   router.push({
-    name: 'comment-details',
+    name: 'comment-detail',
     params: {
-      orderName,
-      cId: routeId,
-      fId,
+      id,
       oId,
     },
   })
@@ -96,9 +91,7 @@ const gotoDetails = (fId: string, oId: string, orderName: string) => {
             <template v-if="column.key === 'actions'">
               <div
                 class="customer-action-button"
-                @click="
-                  gotoDetails(record.id, record.orderId, record.trackingCode)
-                "
+                @click="gotoDetails(record.id, record.orderId)"
               >
                 <a>جزئیات</a>
               </div>
@@ -146,7 +139,7 @@ const gotoDetails = (fId: string, oId: string, orderName: string) => {
   color: #1894ff;
 }
 .text-guid {
-  margin-right: 16px;;
+  margin-right: 16px;
   li {
     list-style: disc;
   }

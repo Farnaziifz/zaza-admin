@@ -4,7 +4,7 @@ import { onBeforeMount, Ref, ref, computed } from 'vue'
 import { commentList, comments } from '@/core/types/comments.type'
 import { TableProps, TableColumnType } from 'ant-design-vue'
 
-// import EmptyLayout from '/src/presentation/layouts/EmptyLayout.vue'
+import EmptyLayout from '/src/presentation/layouts/EmptyLayout.vue'
 
 import { initPageHandler } from '@/logics/specific/comments.handler'
 import router from '@/resources/router'
@@ -109,6 +109,27 @@ const gotoDetails = (fId: string, oId: string, orderName: string) => {
           </template>
         </a-table>
       </div>
+      <div v-else>
+        <EmptyLayout>
+          <template #empty-text> نظری یافت نشد. </template>
+          <template #empty-action>
+            <a-card
+              style="margin: 8px 0; background-color: #f6f6f6; width: 700px"
+            >
+              <a-typography-title :level="4" class="title-empty"
+                >راهنما</a-typography-title
+              >
+              <ul class="text-guid">
+                <li>نظرات</li>
+              </ul>
+              <p class="guid-value">
+                شما در این بخش میتوانید لیست نظرات مشتریان روی محصول و سفارش ها
+                را مشاهده کنید.
+              </p>
+            </a-card>
+          </template>
+        </EmptyLayout>
+      </div>
     </template>
   </content-layout>
 </template>
@@ -120,5 +141,22 @@ const gotoDetails = (fId: string, oId: string, orderName: string) => {
   overflow: hidden;
   text-overflow: ellipsis;
   margin: 0 auto;
+}
+.title-empty {
+  color: #1894ff;
+}
+.text-guid {
+  margin-right: 16px;;
+  li {
+    list-style: disc;
+  }
+}
+
+.guid-value {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 22px;
+  color: #888888;
+  margin-right: 16px;
 }
 </style>

@@ -6,3 +6,9 @@ export type degree = {
   amount: number
   isActive: boolean
 }
+
+export type degreeLabelOverallStatistics = {
+  goldPercentage: number
+  silverPercentage: number
+  bronzePercentage: number
+}

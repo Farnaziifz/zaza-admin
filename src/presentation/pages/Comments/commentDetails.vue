@@ -114,7 +114,7 @@ onBeforeMount(async () => {
             v-for="(item, index) in commentList"
             :key="item.id"
           >
-            <div class="comment-order-title flex">
+            <div class="comment-order-title flex" v-if="item.productTitle">
               <div class="coment-order-item ml-10">
                 <div class="key">محصول</div>
                 <div class="value">{{ item.productTitle }}</div>
@@ -130,7 +130,10 @@ onBeforeMount(async () => {
                 {{ item.comment }}
               </div>
             </div>
-            <div class="line" v-if="index + 1 !== commentList.length"></div>
+            <div
+              class="line"
+              v-if="index + 1 !== commentList.length && item.productTitle"
+            ></div>
           </div>
         </div>
         <div v-else>

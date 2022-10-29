@@ -3,3 +3,9 @@ export enum fluxityType {
   LAZY = 'LAZY',
   NORMAL = 'NORMAL',
 }
+
+export enum loyalityType {
+  HERO = 'HERO',
+  LOYAL = 'LOYAL',
+  ATTENTION_NEED = 'ATTENTION_NEED',
+}

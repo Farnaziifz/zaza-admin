@@ -9,7 +9,7 @@ export const initHandler = async () => {
   const orderOverallStatistics = await api.getCustomerOrderOverallStatistics()
 
   return {
-    degreeLabelOverallStatistics: degreeLabelOverallStatistics.data,
+    degreeLabelOverallStatisticsData: degreeLabelOverallStatistics.data,
     orderOverallStatistics: orderOverallStatistics.data,
   }
 }

@@ -2,21 +2,45 @@
 import IncentiveDetailLayout from '/src/presentation/layouts/IncentiveDetailLayout.vue'
 import { SettingOutlined } from '@ant-design/icons-vue'
 import { retentionLoyalityRateOverallStatistics } from '../../../core/types/businessIntelligence'
-import { ref, Ref, onMounted } from 'vue'
-import { initHandler } from '../../../logics/specific/retationLoyality.handler'
+import { ref, Ref, onMounted, watch, computed } from 'vue'
+import {
+  initHandler,
+  retantionLoyalCustomerList,
+} from '../../../logics/specific/retationLoyality.handler'
 import { chartVariant } from '@/core/enums/chartType.enum'
 import BChart from '@/presentation/components/shared/Organisms/BChart.vue'
-
+import { TablePaginationConfig } from 'ant-design-vue'
 import { loyalityType } from '../../../core/enums/fluxityType.enum'
-
+import { retantionRateCustomerList } from '@/core/types/retantionRate.type'
+import _ from 'lodash'
 const overallStatisticsData: Ref<
   retentionLoyalityRateOverallStatistics | undefined
 > = ref(undefined)
 const selectedCustomerType = ref(loyalityType.HERO)
 const dataCh = ref({
-  labels: ['مشتریان قهرمان', 'مشتریان وفادار', 'نیازمند تعجب'],
+  labels: ['مشتریان قهرمان', 'مشتریان وفادار', 'نیازمند توجه'],
   datasets: [{}],
 })
+const retantionRateData: Ref<retantionRateCustomerList | undefined> =
+  ref(undefined)
+
+const customerRetentionColumn = [
+  {
+    title: 'مشتری',
+    key: 'fullName',
+    dataIndex: 'fullName',
+  },
+  {
+    title: 'تعداد سفارش',
+    key: 'numberOfOrder',
+    dataIndex: 'numberOfOrder',
+  },
+  {
+    title: 'مبلغ پرداختی',
+    key: 'totalExpenses',
+    dataIndex: 'totalExpenses',
+  },
+]
 
 const options = ref({
   responsive: true,
@@ -43,7 +67,41 @@ onMounted(async () => {
       hoverOffset: 4,
     },
   ]
+  const customerData = await retantionLoyalCustomerList(1, [
+    { field: 'CustomerType', operand: '==', value: loyalityType.HERO },
+  ])
+  retantionRateData.value = customerData
 })
+
+watch(
+  selectedCustomerType,
+  async () => {
+    retantionRateData.value = await retantionLoyalCustomerList(1, [
+      {
+        field: 'CustomerType',
+        operand: '==',
+        value: selectedCustomerType.value,
+      },
+    ])
+  },
+  { deep: true }
+)
+const retantionateCustomerListPagination = computed(() => ({
+  total: retantionRateData.value?.totalCount,
+  current: retantionRateData.value?.page,
+  pageSize: 10,
+}))
+const onChangePage = async (paginate: TablePaginationConfig) =>
+  (retantionRateData.value = await retantionLoyalCustomerList(
+    _.toNumber(paginate.current),
+    [
+      {
+        field: 'CustomerType',
+        operand: '==',
+        value: selectedCustomerType.value,
+      },
+    ]
+  ))
 </script>
 
 <template>
@@ -110,7 +168,7 @@ onMounted(async () => {
 
           <div class="flex flex-col items-center">
             <span style="font-weight: 500; font-size: 16px">
-              مشتریان نیازمند تعجب
+              مشتریان نیازمند توجه
             </span>
             <span style="font-weight: 700; font-size: 32px">
               {{ overallStatisticsData?.attentionNeedCustomer }} مشتری
@@ -131,15 +189,31 @@ onMounted(async () => {
         <div style="font-weight: 700; font-size: 20px">لیست مشتریان</div>
         <a-radio-group v-model:value="selectedCustomerType" class="mt-4">
           <a-radio-button :value="loyalityType.HERO">
-            مشتریان عادی
+            مشتریان قهرمان
           </a-radio-button>
           <a-radio-button :value="loyalityType.LOYAL">
             مشتریان وفادار
           </a-radio-button>
           <a-radio-button :value="loyalityType.ATTENTION_NEED">
-            مشتریان امیدوار کننده
+            نیازمند توجه
           </a-radio-button>
         </a-radio-group>
+        <a-table
+          :columns="customerRetentionColumn"
+          class="mt-2"
+          :data-source="retantionRateData?.items"
+          :pagination="retantionateCustomerListPagination"
+          @change="onChangePage"
+        >
+          <template #bodyCell="{ column, record }">
+            <template v-if="column.key === 'totalExpenses'">
+              {{
+                $filters.toPersianCurrency(record.totalExpenses / 10, 'تومان')
+              }}
+              تومان
+            </template>
+          </template>
+        </a-table>
       </div>
     </template>
   </IncentiveDetailLayout>

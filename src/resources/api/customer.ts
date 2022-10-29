@@ -193,6 +193,6 @@ export const customerApi = () => {
     getCustomersInGroup: getCustomerListByGroupId,
     getCustomerListByMultipleGroupIds,
     getCustomerDegreeLabelOverallStatistics,
-    getCustomerStatisticsOverallStatistics: getCustomerOrderOverallStatistics,
+    getCustomerOrderOverallStatistics,
   }
 }

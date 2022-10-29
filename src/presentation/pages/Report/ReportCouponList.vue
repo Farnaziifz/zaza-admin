@@ -1,12 +1,17 @@
 <script lang="ts" setup>
 import ContentLayout from '@/presentation/layouts/ContentLayout.vue'
-import { onMounted, ref } from 'vue'
+import { onMounted, Ref, ref } from 'vue'
 import {
   getCoupons,
   initHandler,
 } from '@/logics/specific/reportCouponList.handler'
 import { t } from 'vui18n'
 import { composePaginationData } from '@/presentation/factory/shared/paginationComputedProp.factory'
+import { goToPath } from '@/logics/shared/route.handler'
+import EmptyLayout from '@/presentation/layouts/EmptyLayout.vue'
+import { couponsList } from '@/core/types/coupons.type'
+import { CouponsRewardsType } from '@/core/enums/couponsType.enum'
+import _ from 'lodash'
 
 const couponListColumn = [
   {
@@ -41,7 +46,8 @@ const couponListColumn = [
   },
 ]
 
-const serverData = ref()
+const serverData: Ref<couponsList | undefined> = ref()
+
 onMounted(async () => {
   const res = await initHandler()
   serverData.value = res.data
@@ -56,7 +62,7 @@ const onChangePagination = async (paginationData: { current: number }) => {
 <template>
   <content-layout>
     <template #content-title> گزارش کوپن‌ها</template>
-    <template #content-body>
+    <template v-if="serverData" #content-body>
       <a-table
         :columns="couponListColumn"
         :data-source="serverData?.items"
@@ -68,7 +74,31 @@ const onChangePagination = async (paginationData: { current: number }) => {
             {{ t(`types.couponTypeEnum.${record.type}`) }}
           </span>
           <span v-if="column.key === 'reward'">
-            {{ t(`types.couponRewardEnum.${record.reward}`) }}
+            <template v-if="record.reward === CouponsRewardsType.FREE_SHIPPING">
+              {{ t(`types.couponRewardEnum.${record.reward}`) }}
+            </template>
+            <template v-if="record.reward === CouponsRewardsType.DISCOUNT">
+              {{
+                `${t('types.couponRewardEnum.' + record.reward)}
+                 ${record.rewardValue.discountPercentage} درصدی`
+              }}
+              <template v-if="record.rewardValue.discountMaximumPrice">
+                {{
+                  `تا سقف
+                  ${_.floor(record.rewardValue.discountMaximumPrice / 10)}
+                  تومان`
+                }}
+              </template>
+            </template>
+            <template v-if="record.reward === CouponsRewardsType.CREDIT">
+              {{ `${_.floor(record.rewardValue.amount / 10)} تومان اعتبار` }}
+            </template>
+            <template v-if="record.reward === CouponsRewardsType.PRODUCT">
+              {{ `${record.rewardValue.title}` }}
+            </template>
+            <template v-if="record.reward === CouponsRewardsType.SCORE">
+              {{ `${record.rewardValue.amount} امتیاز` }}
+            </template>
           </span>
           <span v-if="column.key === 'visit'">
             {{ `${record.visit} مشتری` }}
@@ -81,6 +111,22 @@ const onChangePagination = async (paginationData: { current: number }) => {
           </span>
         </template>
       </a-table>
+    </template>
+
+    <template v-else #content-body>
+      <empty-layout>
+        <template #empty-text> کوپنی یافت نشد.</template>
+        <template #empty-action>
+          <a-button
+            class="button-secondary"
+            type="primary"
+            block
+            @click="goToPath('/coupons/add')"
+          >
+            ساخت کوپن
+          </a-button>
+        </template>
+      </empty-layout>
     </template>
   </content-layout>
 </template>

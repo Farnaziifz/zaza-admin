@@ -20,6 +20,7 @@ const config: RouterOptions = {
       path: '/',
       name: 'Main',
       component: Main,
+      redirect: '/dashboard',
       children: [
         labelSettingsRouterConfig,
         categoryRouterConfig,

@@ -19,4 +19,3 @@ export const getTargetCustomerList = async (
 
   return await csApi.getCustomerListByMultipleGroupIds(q ?? '', page)
 }
-    

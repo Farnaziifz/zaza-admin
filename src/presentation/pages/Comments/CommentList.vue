@@ -146,7 +146,7 @@ const gotoDetails = (fId: string, oId: string, orderName: string) => {
   color: #1894ff;
 }
 .text-guid {
-  margin-right: 16px;;
+  margin-right: 16px;
   li {
     list-style: disc;
   }

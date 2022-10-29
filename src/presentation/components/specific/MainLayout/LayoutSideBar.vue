@@ -6,6 +6,7 @@ import {
   TagsOutlined,
   ApiOutlined,
   BarChartOutlined,
+  AppstoreOutlined,
 } from '@ant-design/icons-vue'
 import router from '../../../../resources/router'
 
@@ -62,6 +63,12 @@ const changeRoute = (to: string) => {
       mode="inline"
     >
       <logo-icon class="mt-4" />
+      <a-menu-item key="20" @click="changeRoute('/')">
+        <template #icon>
+          <appstore-outlined />
+        </template>
+        <span> داشبورد</span>
+      </a-menu-item>
       <a-sub-menu key="sub2">
         <template #icon>
           <tags-outlined />

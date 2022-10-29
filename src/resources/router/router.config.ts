@@ -11,7 +11,9 @@ import { cashbackConfig } from '@/resources/router/cashback.config'
 import { scoreConfig } from '@/resources/router/score.config'
 import { businessIntelligenceConfig } from '@/resources/router/businessIntelligence.config'
 import { reportConfig } from '@/resources/router/report.config'
-import { commentConfig } from '../../resources/router/commentsRouter.config'
+import { commentConfig } from '@/resources/router/commentsRouter.config'
+import { dashboardConfig } from '@/resources/router/dashboard.config'
+
 const config: RouterOptions = {
   routes: [
     {
@@ -30,6 +32,7 @@ const config: RouterOptions = {
         businessIntelligenceConfig,
         reportConfig,
         commentConfig,
+        dashboardConfig,
       ],
     },
   ],

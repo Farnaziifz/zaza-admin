@@ -2,13 +2,29 @@ import { api } from './index'
 import { customerList, groupCustomer } from '@/core/types/customer.type'
 import { error } from '@/core/types/error.type'
 import { makeARequest } from '@/logics/shared/apiResponse.handler'
+import { orderLabelOverallStatistics } from '@/core/types/order.type'
+import { degreeLabelOverallStatistics } from '@/core/types/degree.type'
 
 const pageUrl = 'customer'
+const degreeLabelOverallStatisticsUrl = '/degree-label-overall-statistics'
+const orderOverallStatisticsUrl = '/statistics-overall-statistics'
 const group = '/group'
 type response = {
   data: customerList
   errors: error
 }
+
+const getCustomerDegreeLabelOverallStatistics = async () =>
+  await makeARequest<degreeLabelOverallStatistics>(
+    api.get,
+    `${pageUrl}${degreeLabelOverallStatisticsUrl}`
+  )
+
+const getCustomerOrderOverallStatistics = async () =>
+  await makeARequest<orderLabelOverallStatistics>(
+    api.get,
+    `${pageUrl}${orderOverallStatisticsUrl}`
+  )
 
 const getCustomerListByMultipleGroupIds = async (
   queryId: string,
@@ -176,5 +192,7 @@ export const customerApi = () => {
     customerIncentiveCouponGet: customerIncentiveCoupon,
     getCustomersInGroup: getCustomerListByGroupId,
     getCustomerListByMultipleGroupIds,
+    getCustomerDegreeLabelOverallStatistics,
+    getCustomerOrderOverallStatistics,
   }
 }

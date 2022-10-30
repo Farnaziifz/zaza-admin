@@ -124,6 +124,9 @@ const changeRoute = (to: string) => {
         <a-menu-item key="10" @click="changeRoute('/report/coupon-list')">
           کوپن ها
         </a-menu-item>
+        <a-menu-item key="11" @click="changeRoute('/report/cashback-list')">
+          کش بک
+        </a-menu-item>
       </a-sub-menu>
 
       <a-sub-menu key="sub5">
@@ -135,16 +138,16 @@ const changeRoute = (to: string) => {
         </template>
 
         <a-menu-item
-          key="11"
+          key="12"
           @click="changeRoute('/business-intelligence/churn-evaluation')"
         >
           ارزیابی از دست رفتن مشتریان
         </a-menu-item>
-        <a-menu-item key="12" @click="changeRoute('/loyalty-evaluation')"
+        <a-menu-item key="13" @click="changeRoute('/loyalty-evaluation')"
           >ارزیابی وفاداری مشتریان</a-menu-item
         >
       </a-sub-menu>
-      <a-menu-item key="10" @click="changeRoute('/comments/list')">
+      <a-menu-item key="14" @click="changeRoute('/comments/list')">
         <span>نظرات</span>
       </a-menu-item>
     </a-menu>

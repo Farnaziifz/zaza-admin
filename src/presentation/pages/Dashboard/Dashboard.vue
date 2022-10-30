@@ -11,6 +11,7 @@ import {
   degreeChartOptions,
   orderChartOptions,
 } from '@/core/constants/dashboard.options'
+import { reportApi } from '@/resources/api/report'
 
 const serverData: Ref<
   | {
@@ -64,6 +65,10 @@ onMounted(async () => {
 })
 
 const selectedReportPeriod: Ref<reportPeriodType> = ref(reportPeriodType.WEEKLY)
+
+reportApi().getCreditFinancialEvaluation(reportPeriodType.WEEKLY)
+reportApi().getCreditFinancialEvaluation(reportPeriodType.MONTHLY)
+reportApi().getCreditFinancialEvaluation(reportPeriodType.ANNUAL)
 </script>
 <template>
   <content-layout>

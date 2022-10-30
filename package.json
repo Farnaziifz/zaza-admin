@@ -16,10 +16,12 @@
     "add-lint-staged": "husky add .husky/pre-commit 'yarn lint-staged'"
   },
   "dependencies": {
+    "@types/moment-jalaali": "^0.7.5",
     "ant-design-vue": "^3.2.12",
     "axios": "^0.27.2",
     "chart.js": "^3.9.1",
     "eslint-config-prettier": "^8.5.0",
+    "jalali-moment": "^3.3.11",
     "lodash": "^4.17.21",
     "moment": "^2.29.4",
     "moment-jalaali": "^0.9.6",

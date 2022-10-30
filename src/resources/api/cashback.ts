@@ -13,9 +13,12 @@ const putCashbackStatus = async () => {
   const status = '/status'
   return await api.put(pageUrl + status)
 }
+const getCashbackCustomer = async (type: string, page: number) =>
+  await makeARequest(api.get, `${pageUrl}/customer?Type=${type}&Page=${page}`)
 
 export const cashbackApi = () => ({
   get: getCashback,
   put: putCashback,
   putStatus: putCashbackStatus,
+  getCashbackCustomer,
 })

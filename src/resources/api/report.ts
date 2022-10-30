@@ -2,7 +2,7 @@ import { makeARequest } from '@/logics/shared/apiResponse.handler'
 import { api } from '@/resources/api/index'
 import { promotionUsageReport } from '@/core/types/discounts.type'
 import { couponsList } from '@/core/types/coupons.type'
-
+import { cashbackStatics } from '../../core/types/cashback.type'
 const baseUrl = 'report'
 const promotionUsage = '/promotion-usage'
 const couponUsage = '/coupon-usage'
@@ -18,7 +18,14 @@ const getReportCouponUsage = async (page = 1) =>
     `${baseUrl}${couponUsage}?Page=${page}`
   )
 
+const getReportCachbackStatistic = async () =>
+  await makeARequest<cashbackStatics>(
+    api.get,
+    `${baseUrl}/cashback-statistics-overall`
+  )
+
 export const reportApi = () => ({
   getReportPromotionUsage,
   getReportCouponUsage,
+  getReportCachbackStatistic,
 })

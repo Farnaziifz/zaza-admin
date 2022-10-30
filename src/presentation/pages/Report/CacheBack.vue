@@ -2,15 +2,59 @@
 import ContentLayout from '@/presentation/layouts/ContentLayout.vue'
 import EmptyLayout from '@/presentation/layouts/EmptyLayout.vue'
 import { getReportCachbackStatisticOverall } from '../../../logics/specific/reportCachback.handler'
-import { onBeforeMount, Ref, ref } from 'vue'
+import { onBeforeMount, Ref, ref, computed } from 'vue'
 import { cashbackStatics } from '../../../core/types/cashback.type'
-
+import { getCashbackCustomer } from '../../../logics/specific/cashback.handler'
+import { TableColumnType } from 'ant-design-vue'
+import { discountCustomerGroup } from '@/core/types/discounts.type'
+import { customerData } from '../../../core/constants/discount.options'
+import { TableProps } from 'ant-design-vue'
+import _ from 'lodash'
 const cachbackStatistic: Ref<cashbackStatics | undefined> = ref(undefined)
-
+const visibleReciverModal = ref<boolean>(false)
+const customerGroupColumns: TableColumnType<discountCustomerGroup>[] = [
+  {
+    title: 'نام مشتری',
+    key: 'fullName',
+    dataIndex: 'fullName',
+  },
+  {
+    title: 'شماره همراه',
+    key: 'mobileNumber',
+    dataIndex: 'mobileNumber',
+  },
+]
+const activeModalItem = ref('')
 onBeforeMount(async () => {
   const staticRes = await getReportCachbackStatisticOverall()
   cachbackStatistic.value = staticRes.data
 })
+const handleRceiveCancel = () => {
+  visibleReciverModal.value = false
+}
+const openModal = async (type: string) => {
+  visibleReciverModal.value = true
+  const res = await getCashbackCustomer(type, 1)
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  customerData.value = res.data
+  activeModalItem.value = type
+}
+const customerpagination = computed(() => ({
+  total: customerData.value.totalCount,
+  current: customerData.value.page,
+  pageSize: 10,
+}))
+const onChangeCustomerGroup: TableProps<discountCustomerGroup>['onChange'] =
+  async (paginate) => {
+    const res = await getCashbackCustomer(
+      activeModalItem.value,
+      _.toNumber(paginate.current)
+    )
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    customerData.value = res.data
+  }
 </script>
 <template>
   <ContentLayout>
@@ -40,7 +84,10 @@ onBeforeMount(async () => {
           <a-typography-title :level="5" class="text-center"
             >تعداد مشتریان دریافت کننده کش ‌بک</a-typography-title
           >
-          <a-typography-title :level="3" class="text-center mt-6 header-color"
+          <a-typography-title
+            :level="3"
+            class="text-center mt-6 header-color cursor-pointer"
+            @click="openModal('RECEIVER')"
             >{{
               cachbackStatistic?.customerCashbackCount
             }}
@@ -58,7 +105,10 @@ onBeforeMount(async () => {
           <a-typography-title :level="5" class="text-center"
             >تعداد نفرات استفاده‌کننده از کش‌بک
           </a-typography-title>
-          <a-typography-title :level="3" class="text-center mt-6 header-color"
+          <a-typography-title
+            :level="3"
+            class="text-center mt-6 header-color cursor-pointer"
+            @click="openModal('USED')"
             >{{
               cachbackStatistic?.customerUsedCashbackCount
             }}
@@ -170,6 +220,25 @@ onBeforeMount(async () => {
           </div>
         </a-card>
       </div>
+      <a-modal
+        v-model:visible="visibleReciverModal"
+        :title="
+          activeModalItem == 'RECEIVER'
+            ? 'مشتریان دریافت کننده کش‌بک'
+            : 'مشتریان استفاده کننده از کش‌بک'
+        "
+      >
+        <template #footer>
+          <a-button key="back" @click="handleRceiveCancel">بستن</a-button>
+        </template>
+        <a-table
+          :columns="customerGroupColumns"
+          :pagination="customerpagination"
+          :data-source="customerData.items"
+          @change="onChangeCustomerGroup"
+        >
+        </a-table>
+      </a-modal>
     </template>
     <template v-else #content-body>
       <empty-layout>

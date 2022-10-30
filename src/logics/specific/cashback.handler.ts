@@ -24,3 +24,9 @@ export const sendCashbackDataToServer = async (cashbackData: cashback) => {
   const res = await api.put(cashbackData)
   if (!res.errors) showSuccessMessage()
 }
+
+export const getCashbackCustomer = async (type: string, page: number) => {
+  showLoadingMessage()
+  const res = await api.getCashbackCustomer(type, page)
+  return res
+}

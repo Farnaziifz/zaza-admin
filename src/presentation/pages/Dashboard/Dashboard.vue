@@ -16,6 +16,11 @@ const serverData: Ref<
   | {
       degreeLabelOverallStatisticsData?: degreeLabelOverallStatistics
       orderOverallStatistics?: orderLabelOverallStatistics
+      reportOverallStatistics?: {
+        numberOfCustomers: number
+        numberOfFeedbacks: number
+        customerWithRepurchase: number
+      }
     }
   | undefined
 > = ref()
@@ -105,7 +110,8 @@ const selectedReportPeriod: Ref<reportPeriodType> = ref(reportPeriodType.WEEKLY)
             تعداد مشتریان تا به امروز
           </div>
           <div class="text-center" style="font-weight: 500; font-size: 32px">
-            9620 مشتری
+            {{ serverData?.reportOverallStatistics.numberOfCustomers ?? 0 }}
+            مشتری
           </div>
         </a-card>
 
@@ -119,7 +125,8 @@ const selectedReportPeriod: Ref<reportPeriodType> = ref(reportPeriodType.WEEKLY)
             تعداد نظرات تا به امروز
           </div>
           <div class="text-center" style="font-weight: 500; font-size: 32px">
-            650 نظر
+            {{ serverData?.reportOverallStatistics.numberOfFeedbacks ?? 0 }}
+            نظر
           </div>
         </a-card>
 
@@ -133,7 +140,10 @@ const selectedReportPeriod: Ref<reportPeriodType> = ref(reportPeriodType.WEEKLY)
             تعداد مشتریان با خرید مجدد
           </div>
           <div class="text-center" style="font-weight: 500; font-size: 32px">
-            9620 مشتری
+            {{
+              serverData?.reportOverallStatistics.customerWithRepurchase ?? 0
+            }}
+            مشتری
           </div>
         </a-card>
       </div>

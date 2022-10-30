@@ -36,5 +36,4 @@ const config: RouterOptions = {
   history: createWebHistory(import.meta.env.BASE_URL),
 }
 
-console.log(config)
 export default config

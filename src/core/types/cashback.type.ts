@@ -9,3 +9,8 @@ export type cashback = {
   duration: number
   isActive: boolean
 }
+
+
+export type cachbackReport = {
+  
+}

@@ -6,6 +6,11 @@ import { onMounted, Ref, ref } from 'vue'
 import { initHandler } from '@/logics/specific/dashboard.handler'
 import { orderLabelOverallStatistics } from '@/core/types/order.type'
 import { degreeLabelOverallStatistics } from '@/core/types/degree.type'
+import { reportPeriodType } from '@/core/enums/reportType.enum'
+import {
+  degreeChartOptions,
+  orderChartOptions,
+} from '@/core/constants/dashboard.options'
 
 const serverData: Ref<
   | {
@@ -25,71 +30,6 @@ const orderOverallStatisticsData = ref({
   datasets: [{}],
 })
 
-const degreeChartOptions = {
-  responsive: true,
-  plugins: {
-    title: {
-      display: true,
-      text: 'ارزیابی جایگاه مشتریان',
-      align: 'end',
-      padding: {
-        bottom: 24,
-      },
-      font: {
-        size: 16,
-        family: 'YekanBakh',
-        weight: 500,
-      },
-    },
-    legend: {
-      display: true,
-      position: 'right',
-      labels: {
-        pointStyle: 'circle',
-        usePointStyle: true,
-        textAlign: 'right',
-        font: {
-          size: 14,
-          family: 'YekanBakh',
-          weight: 500,
-        },
-      },
-    },
-  },
-}
-
-const orderChartOptions = {
-  responsive: true,
-  plugins: {
-    title: {
-      display: true,
-      text: 'ارزیابی رضایتمندی مشتریان',
-      align: 'end',
-      padding: {
-        bottom: 24,
-      },
-      font: {
-        size: 16,
-        family: 'YekanBakh',
-        weight: 500,
-      },
-    },
-    legend: {
-      display: true,
-      position: 'right',
-      labels: {
-        pointStyle: 'circle',
-        usePointStyle: true,
-        textAlign: 'right',
-        font: {
-          size: 14,
-          family: 'YekanBakh',
-          weight: 500,
-        },
-      },
-    },
-  },
-}
 onMounted(async () => {
   serverData.value = await initHandler()
 
@@ -117,6 +57,8 @@ onMounted(async () => {
     },
   ]
 })
+
+const selectedReportPeriod: Ref<reportPeriodType> = ref(reportPeriodType.WEEKLY)
 </script>
 <template>
   <content-layout>
@@ -150,6 +92,66 @@ onMounted(async () => {
             :width="200"
           />
         </a-card>
+      </div>
+
+      <div class="mt-5 flex flex-row justify-between" style="width: 100%">
+        <a-card
+          :body-style="{ boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)' }"
+          :bordered="false"
+          class="coupon-info-card"
+          style="width: 33%"
+        >
+          <div class="text-center" style="font-weight: 500; font-size: 16px">
+            تعداد مشتریان تا به امروز
+          </div>
+          <div class="text-center" style="font-weight: 500; font-size: 32px">
+            9620 مشتری
+          </div>
+        </a-card>
+
+        <a-card
+          :body-style="{ boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)' }"
+          :bordered="false"
+          class="coupon-info-card"
+          style="width: 33%"
+        >
+          <div class="text-center" style="font-weight: 500; font-size: 16px">
+            تعداد نظرات تا به امروز
+          </div>
+          <div class="text-center" style="font-weight: 500; font-size: 32px">
+            650 نظر
+          </div>
+        </a-card>
+
+        <a-card
+          :body-style="{ boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)' }"
+          :bordered="false"
+          class="coupon-info-card"
+          style="width: 33%"
+        >
+          <div class="text-center" style="font-weight: 500; font-size: 16px">
+            تعداد مشتریان با خرید مجدد
+          </div>
+          <div class="text-center" style="font-weight: 500; font-size: 32px">
+            9620 مشتری
+          </div>
+        </a-card>
+      </div>
+
+      <div class="mt-10">
+        <h3 style="font-size: 24px; font-weight: 700">گزارش کلی</h3>
+
+        <a-radio-group v-model:value="selectedReportPeriod" size="large">
+          <a-radio-button :value="reportPeriodType.WEEKLY">
+            هفتگی
+          </a-radio-button>
+          <a-radio-button :value="reportPeriodType.MONTHLY">
+            ماهانه
+          </a-radio-button>
+          <a-radio-button :value="reportPeriodType.ANNUAL">
+            سالانه
+          </a-radio-button>
+        </a-radio-group>
       </div>
     </template>
   </content-layout>

@@ -10,7 +10,14 @@ export type cashback = {
   isActive: boolean
 }
 
-
-export type cachbackReport = {
-  
+export type cashbackStatics = {
+  type: string
+  amount: number
+  minimumAmount: number
+  hasDuration: boolean
+  successRate: number
+  income: number
+  cost: number
+  customerUsedCashbackCount: number
+  customerCashbackCount: number
 }

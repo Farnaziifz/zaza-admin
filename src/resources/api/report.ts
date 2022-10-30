@@ -7,6 +7,7 @@ const baseUrl = 'report'
 const promotionUsage = '/promotion-usage'
 const couponUsage = '/coupon-usage'
 const dashboardStatisticsOverall = '/dashboard-statistics-overall'
+const creditFinancialEvaluation = '/credit-financial-evaluation'
 
 export const getDashboardStatisticsOverall = async () =>
   await makeARequest<{

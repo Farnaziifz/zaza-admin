@@ -4,7 +4,7 @@ import {
   showLoadingMessage,
   showSuccessMessage,
 } from '@/logics/shared/message.handler'
-import {api} from "@/resources/api";
+import { api } from '@/resources/api'
 
 type response<T = never> = {
   data?: T
@@ -20,10 +20,8 @@ export const makeARequest = async <T>(
   route: string,
   data?: T
 ): Promise<response<T>> => {
-  if(apiHandler === api.get)
-    showLoadingMessage('درحال دریافت دیتا')
-  else
-    showLoadingMessage()
+  if (apiHandler === api.get) showLoadingMessage('درحال دریافت دیتا')
+  else showLoadingMessage()
   try {
     const res = await apiHandler(route, data)
     handleSuccessMessageBroadcasting(res.status)

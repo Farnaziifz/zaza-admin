@@ -20,8 +20,8 @@ export const reportConfig = {
       component: ReportCouponList,
     },
     {
-      name: 'cachback-list',
-      path: 'cachback-list',
+      name: 'cashback-list',
+      path: 'cashback-list',
       component: ReportCachBackList,
     },
   ],

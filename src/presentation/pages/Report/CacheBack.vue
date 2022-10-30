@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import ContentLayout from '@/presentation/layouts/ContentLayout.vue'
+import BChart from '@/presentation/components/shared/Organisms/BChart.vue'
 import EmptyLayout from '@/presentation/layouts/EmptyLayout.vue'
 import { getReportCachbackStatisticOverall } from '../../../logics/specific/reportCachback.handler'
 import { onBeforeMount, Ref, ref, computed } from 'vue'
@@ -10,6 +11,8 @@ import { discountCustomerGroup } from '@/core/types/discounts.type'
 import { customerData } from '../../../core/constants/discount.options'
 import { TableProps } from 'ant-design-vue'
 import _ from 'lodash'
+import { chartVariant } from '@/core/enums/chartType.enum'
+
 const cachbackStatistic: Ref<cashbackStatics | undefined> = ref(undefined)
 const visibleReciverModal = ref<boolean>(false)
 const customerGroupColumns: TableColumnType<discountCustomerGroup>[] = [
@@ -28,6 +31,13 @@ const activeModalItem = ref('')
 onBeforeMount(async () => {
   const staticRes = await getReportCachbackStatisticOverall()
   cachbackStatistic.value = staticRes.data
+  chartData.value.labels = [`کش بک ${cachbackStatistic.value?.amount} تومانی`]
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  chartData.value.datasets[0].data = [cachbackStatistic.value?.cost / 10]
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  chartData.value.datasets[1].data = [cachbackStatistic.value?.income / 10]
 })
 const handleRceiveCancel = () => {
   visibleReciverModal.value = false
@@ -45,6 +55,7 @@ const customerpagination = computed(() => ({
   current: customerData.value.page,
   pageSize: 10,
 }))
+
 const onChangeCustomerGroup: TableProps<discountCustomerGroup>['onChange'] =
   async (paginate) => {
     const res = await getCashbackCustomer(
@@ -55,6 +66,65 @@ const onChangeCustomerGroup: TableProps<discountCustomerGroup>['onChange'] =
     // @ts-ignore
     customerData.value = res.data
   }
+const chartData = ref({
+  labels: [''],
+  datasets: [
+    {
+      label: 'هزینه',
+      data: [0],
+      borderWidth: 1,
+      backgroundColor: '#434348',
+    },
+    {
+      label: 'درآمد',
+      data: [5],
+      borderWidth: 1,
+      backgroundColor: '#7CB5EC',
+    },
+  ],
+})
+
+const chartOptions = {
+  responsive: true,
+  plugins: {
+    title: {
+      display: true,
+      text: 'آمار کش بک',
+      align: 'end',
+      padding: {
+        bottom: 24,
+      },
+      font: {
+        size: 16,
+        family: 'YekanBakh',
+        weight: 500,
+      },
+    },
+    legend: {
+      display: true,
+      position: 'bottom',
+      labels: {
+        padding: 40,
+        pointStyle: 'circle',
+        usePointStyle: true,
+        font: {
+          size: 12,
+          family: 'YekanBakh',
+          weight: 700,
+        },
+      },
+    },
+  },
+  scales: {
+    y: {
+      ticks: {
+        callback: (value: number) => {
+          return _.toString(value * 10) + 'م'
+        },
+      },
+    },
+  },
+}
 </script>
 <template>
   <ContentLayout>
@@ -65,12 +135,17 @@ const onChangeCustomerGroup: TableProps<discountCustomerGroup>['onChange'] =
       <a-card
         :body-style="{
           boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)',
-          height: '450px',
         }"
         :bordered="false"
         class="coupon-info-card"
       >
-        chart section
+        <BChart
+          :chart-type="chartVariant.Bar"
+          :chart-data="chartData"
+          :chart-options="chartOptions"
+          :height="484"
+          :width="1184"
+        />
       </a-card>
       <div class="statics-section mt-4 flex">
         <a-card
@@ -145,7 +220,9 @@ const onChangeCustomerGroup: TableProps<discountCustomerGroup>['onChange'] =
             :level="3"
             class="text-center mt-6"
             v-if="cachbackStatistic"
-            >{{ $filters.toPersianCurrency(cachbackStatistic.income, 'تومان') }}
+            >{{
+              $filters.toPersianCurrency(cachbackStatistic.income / 10, 'تومان')
+            }}
           </a-typography-title>
         </a-card>
         <a-card

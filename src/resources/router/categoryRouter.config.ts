@@ -1,7 +1,7 @@
-import Category from '@/presentation/pages/Category.vue'
-import CategoryAdd from '@/presentation/pages/CategoryAdd.vue'
-import CategoryAddFirstStep from '@/presentation/pages/CategoryAddFirstStep.vue'
-import CategoryAddSecondStep from '@/presentation/pages/CategoryAddSecondStep.vue'
+import Category from '@/presentation/pages/Category/Category.vue'
+import CategoryAdd from '@/presentation/pages/Category/CategoryAdd.vue'
+import CategoryAddFirstStep from '@/presentation/pages/Category/CategoryAddFirstStep.vue'
+import CategoryAddSecondStep from '@/presentation/pages/Category/CategoryAddSecondStep.vue'
 
 export const categoryRouterConfig = {
   name: 'category',

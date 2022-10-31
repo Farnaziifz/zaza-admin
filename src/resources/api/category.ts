@@ -13,7 +13,6 @@ const categoryListGet = async (
   pageSize?: number,
   id?: string
 ): Promise<response> => {
-  console.log(id)
   const res = await api.get(
     `${pageUrl}?Page=${page}&PageSize=${pageSize}&Id=${id}`
   )

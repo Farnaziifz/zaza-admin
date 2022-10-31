@@ -4,7 +4,7 @@ import { useGroupStore } from '@/resources/store/group.store'
 import {
   postGroup,
   postGroupPreview,
-} from '@/logics/specific/categoryAddFirstStep.handler'
+} from '../../../logics/specific/categoryAddFirstStep.handler'
 import { goToPath, returnToPreviousRoute } from '@/logics/shared/route.handler'
 
 const columns = [

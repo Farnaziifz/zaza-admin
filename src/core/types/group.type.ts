@@ -17,3 +17,19 @@ export type group = {
   queries: query[]
   title: string
 }
+
+export type groups = {
+  groupId?: string
+  customersCount: number
+  isActive: boolean
+  title: string
+}
+
+export type groupList = {
+  items: groups[]
+  hasNextPage: boolean
+  hasPreviousPage: boolean
+  page: number
+  totalCount: number
+  totalPages: number
+}

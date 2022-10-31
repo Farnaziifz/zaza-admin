@@ -14,6 +14,8 @@ import { reportConfig } from '@/resources/router/report.config'
 import { commentConfig } from '@/resources/router/commentsRouter.config'
 import { dashboardConfig } from '@/resources/router/dashboard.config'
 
+import { groupsRouterConfig } from '../../resources/router/group.config'
+
 const config: RouterOptions = {
   routes: [
     {
@@ -34,6 +36,7 @@ const config: RouterOptions = {
         reportConfig,
         commentConfig,
         dashboardConfig,
+        groupsRouterConfig,
       ],
     },
   ],

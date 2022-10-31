@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import LogoIcon from '/src/presentation/components/shared/atoms/logoIcon.vue'
 import { ref, watch, computed } from 'vue'
-// import LabelsIcon from '../../shared/atoms/LabelsIcon.vue';
+
 import {
   TagsOutlined,
   ApiOutlined,
@@ -69,6 +69,12 @@ const changeRoute = (to: string) => {
         </template>
         <span> داشبورد</span>
       </a-menu-item>
+      <a-menu-item key="21" @click="changeRoute('/group/list')">
+        <template #icon>
+          <appstore-outlined />
+        </template>
+        <span> دسته‌بندی</span>
+      </a-menu-item>
       <a-sub-menu key="sub2">
         <template #icon>
           <tags-outlined />
@@ -85,6 +91,9 @@ const changeRoute = (to: string) => {
         </a-menu-item>
       </a-sub-menu>
       <a-menu-item key="3" @click="changeRoute('/customers/list')">
+        <template #icon>
+          <appstore-outlined />
+        </template>
         <span>لیست مشتریان</span>
       </a-menu-item>
       <a-sub-menu key="sub3">
@@ -149,6 +158,9 @@ const changeRoute = (to: string) => {
       </a-sub-menu>
       <a-menu-item key="14" @click="changeRoute('/comments/list')">
         <span>نظرات</span>
+        <template #icon>
+          <appstore-outlined />
+        </template>
       </a-menu-item>
     </a-menu>
   </a-layout-sider>

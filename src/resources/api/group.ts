@@ -1,8 +1,7 @@
 import { api } from './index'
-import { group, groupTitle } from '@/core/types/group.type'
+import { group, groupTitle, groupList } from '@/core/types/group.type'
 import { AxiosError, AxiosResponse } from 'axios'
 import { makeARequest } from '@/logics/shared/apiResponse.handler'
-import { credit } from '@/core/types/credits.type'
 
 const pageUrl = 'group'
 const title = '/title'
@@ -18,6 +17,15 @@ const getGroupTitleById = async (groupIdsQuery: string) =>
 
 const groupTitleGet = async () =>
   await makeARequest<groupTitle>(api.get, pageUrl + title + titlePageQuery)
+
+const groupListGet = async (page?: number, pageSize?: number) =>
+  await makeARequest<groupList>(
+    api.get,
+    `${pageUrl}?Page=${page}&PageSize=${pageSize}`
+  )
+
+const groupDelete = async (id: string) =>
+  await makeARequest(api.delete, `${pageUrl}/${id}`)
 
 const groupPost = async (
   groupData: group
@@ -79,4 +87,6 @@ export const groupApi = () => ({
   postPreview: groupPreviewPost,
   getTitle: groupTitleGet,
   getGroupTitle: getGroupTitleById,
+  groupListGet,
+  groupDelete,
 })

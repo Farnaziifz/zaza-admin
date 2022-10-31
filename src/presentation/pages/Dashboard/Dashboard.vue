@@ -2,8 +2,11 @@
 import ContentLayout from '@/presentation/layouts/ContentLayout.vue'
 import BChart from '@/presentation/components/shared/Organisms/BChart.vue'
 import { chartVariant } from '@/core/enums/chartType.enum'
-import { onMounted, Ref, ref } from 'vue'
-import { initHandler } from '@/logics/specific/dashboard.handler'
+import { onMounted, Ref, ref, watch } from 'vue'
+import {
+  getFinancialEvaluations,
+  initHandler,
+} from '@/logics/specific/dashboard.handler'
 import { orderLabelOverallStatistics } from '@/core/types/order.type'
 import { degreeLabelOverallStatistics } from '@/core/types/degree.type'
 import { reportPeriodType } from '@/core/enums/reportType.enum'
@@ -11,7 +14,6 @@ import {
   degreeChartOptions,
   orderChartOptions,
 } from '@/core/constants/dashboard.options'
-import { reportApi } from '@/resources/api/report'
 
 const serverData: Ref<
   | {
@@ -65,10 +67,14 @@ onMounted(async () => {
 })
 
 const selectedReportPeriod: Ref<reportPeriodType> = ref(reportPeriodType.WEEKLY)
-
-reportApi().getCreditFinancialEvaluation(reportPeriodType.WEEKLY)
-reportApi().getCreditFinancialEvaluation(reportPeriodType.MONTHLY)
-reportApi().getCreditFinancialEvaluation(reportPeriodType.ANNUAL)
+watch(
+  selectedReportPeriod,
+  async () => {
+    await getFinancialEvaluations(selectedReportPeriod.value)
+    // serverData.value
+  },
+  { deep: true }
+)
 </script>
 <template>
   <content-layout>

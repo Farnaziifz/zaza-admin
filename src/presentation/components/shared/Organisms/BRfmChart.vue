@@ -38,14 +38,14 @@ const attentionNeedWidth = props.width / 2
 const normalLazyChurnSum =
   props.normalAmount + props.lazyAmount + props.churnAmount
 
-// const normalPercentage = props.normalAmount / normalLazyChurnSum
+const normalPercentage = props.normalAmount / normalLazyChurnSum
 const churnPercentage = props.churnAmount / normalLazyChurnSum
 const lazyPercentage = props.lazyAmount / normalLazyChurnSum
 const lazyChurnPercentageSum = churnPercentage + lazyPercentage
 
 const lazyChurnHeight = lazyChurnPercentageSum * props.height
-// const lazyWidth = (lazyPercentage * props.width) / lazyChurnPercentageSum / 2
-// const churnWidth = (churnPercentage * props.width) / lazyChurnPercentageSum / 2
+const lazyWidth = (lazyPercentage * props.width) / lazyChurnPercentageSum / 2
+const churnWidth = (churnPercentage * props.width) / lazyChurnPercentageSum / 2
 
 const normalHeight = props.height - lazyChurnHeight
 const normalWidth = props.width / 2
@@ -98,15 +98,46 @@ const normalWidth = props.width / 2
     </div>
     <div class="flex flex-col">
       <rfm-box
-        tooltip-title="test"
         background-color="#FF727E"
         :width="normalWidth"
         :height="normalHeight"
         text-color="#fff"
-      />
-      <div class="flex flex-row">
-        <span></span>
-        <span></span>
+        :tooltip-title="`% معمولی ها: ${_.floor(normalPercentage * 100)}`"
+      >
+        <template #text>
+          معمولی ها
+          {{ _.floor(normalPercentage * 100) }}
+          %
+        </template>
+      </rfm-box>
+
+      <div class="flex flex-row" :style="{ height: `${lazyChurnHeight}px` }">
+        <rfm-box
+          background-color="#C6002F"
+          :width="lazyWidth"
+          text-color="#fff"
+          :tooltip-title="`% خواب آلودها: ${_.floor(lazyPercentage * 100)}`"
+        >
+          <template #text>
+            خواب آلود ها
+            <br />
+            {{ _.floor(lazyPercentage * 100) }}
+            %
+          </template>
+        </rfm-box>
+        <rfm-box
+          :tooltip-title="`% از دست رفته ها ${_.floor(churnPercentage * 100)}`"
+          background-color="#72001B"
+          :width="churnWidth"
+          text-color="#fff"
+        >
+          <template #text>
+            از دست رفته ها
+            <br />
+            {{ _.floor(churnPercentage * 100) }}
+            %
+          </template>
+        </rfm-box>
       </div>
     </div>
   </div>

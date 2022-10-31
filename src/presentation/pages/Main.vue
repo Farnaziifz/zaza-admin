@@ -18,6 +18,9 @@ const closeMessage = () => mainStore.closeMessage()
         :hero-amount="3"
         :loyal-amount="1"
         :attention-need-amount="2"
+        :lazy-amount="6"
+        :churn-amount="3"
+        :normal-amount="1"
       />
 
       <router-view />

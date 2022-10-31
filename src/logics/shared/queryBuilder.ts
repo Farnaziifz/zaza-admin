@@ -1,121 +1,62 @@
-type filterModel = {
-  field: string
-  operand: '==' | '>=' | '<=' | '<' | '>'
-  value: string
+export type queryFilter = {
+    field: string
+    operand: '==' | '>=' | '<=' | '<' | '>'
+    value: string
 }
 
-type searchModel = {
-  keyword: string
-  field: string
+export type querySearch = {
+    keyword: string
+    field: string
 }
 
-type sortModel = {
-  field: string
-  order: 'ASC' | 'DESC'
+export type querySort = {
+    field: string
+    order: 'ASC' | 'DESC'
 }
 
-class FilterObject implements filterModel {
-  field: string
-  operand: '==' | '>=' | '<=' | '<' | '>'
-  value: string
-
-  constructor(model: filterModel) {
-    this.value = model.value
-    this.field = model.field
-    this.operand = model.operand
-  }
+export enum queryType {
+    SORT = 'SORT',
+    SEARCH = 'SEARCH',
+    FILTER = 'FILTER'
 }
 
-export const createFilterObject = (model: filterModel) => {
-  return new FilterObject(model)
+export type queryList = {
+    type: queryType,
+    data: querySort | queryFilter | querySearch
+}[]
+
+export const createFilterQuery = (model: queryFilter, index = 0) =>
+    `FilterModels[${index}].value=${model.value}&FilterModels[${index}].operand=${model.operand}&FilterModels[${index}].field=${model.field}&`
+
+export const createSearchQuery = (model: querySearch, index = 0) =>
+    `SearchModels[${index}].field=${model.field}&SearchModels.[${index}].keyword=${model.keyword}&`
+
+export const createSortQuery = (model: querySort, index = 0) =>
+    `SortModels[${index}].field=${model.field}&SortModels[${index}}.order=${model.order}&`;
+
+
+export const createFilterQueryString = (filterArray: queryFilter[]) =>
+    filterArray.reduce((acc, cur, index) => acc += createFilterQuery(cur, index), '')
+
+export const createSearchQueryString = (searchArray: querySearch[]) =>
+    searchArray.reduce((acc, cur, index) => acc += createSearchQuery(cur, index), '')
+
+export const createSortQueryString = (sortArray: querySort[]) =>
+    sortArray.reduce((acc, cur, index) => acc += createSortQuery(cur, index), '')
+
+
+export const createQueryString = (queryArray: queryList) => {
+    const sortArray: querySort[] = queryArray.filter(el => el.type === queryType.SORT).map(el => el.data) as querySort[]
+    const searchArray: querySearch[] = queryArray.filter(el => el.type === queryType.SEARCH).map(el => el.data) as querySearch[]
+    const filterArray: queryFilter[] = queryArray.filter(el => el.type === queryType.FILTER).map(el => el.data) as queryFilter[]
+
+    let q = ``
+    if (sortArray)
+        q += createSortQueryString(sortArray)
+    if (searchArray)
+        q += createSearchQueryString(searchArray)
+    if (filterArray)
+        q += createFilterQueryString(filterArray)
+
+    return q
 }
-
-export const createQueryString = (
-  model: filterModel | searchModel | sortModel
-): string => {
-  let queryString = ''
-
-  switch (model.constructor.name) {
-    case 'FilterObject':
-      queryString += ' '
-      break
-    case 'SortObject':
-      break
-    case 'SearchObject':
-      break
-  }
-
-  return queryString
-}
-
-// export const createFilterModel = (model: filterModel, index = 0) => {
-//     let queryString = ''
-//     let i = 0
-//     for (const key in model) {
-//         queryString += `FilterModels[${index}].${key}=${model[key]}`
-//         if (i < 2) {
-//             queryString += '&'
-//             i++
-//         }
-//     }
-//     return queryString
-// }
-//
-// export const createSearchModel = (model: searchModel, index = 0) => {
-//     let queryString = ''
-//     let i = 0
-//     for (const key in model) {
-//         queryString += `SearchModels[${index}].${key}=${model[key]}`
-//         if (i < 1) {
-//             queryString += '&'
-//             i++
-//         }
-//     }
-//     return queryString
-// }
-//
-// //SortModels[0].field=CreatedAt&SortModels[0].order=ASC
-// export const createSortModel = (model: sortModel, index = 0) => {
-//     let queryString = ''
-//     let i = 0
-//     for (const key in model) {
-//         queryString += `SortModels${index}.${key}=${model[key]}`
-//         if (i < 1) {
-//             queryString += '&'
-//             i++
-//         }
-//     }
-//
-//     return queryString
-// }
-
-// const arr = [
-//     { field: 'test1', order: 'test2', type: 'SortModels' },
-//     { field: 'test3', keyword: 'test4', type: 'SearchModels' },
-//     {
-//       field: 'test5',
-//       operand: 'test6',
-//       value: 'test7',
-//       type: 'FilterModels',
-//     },
-//   ]
-//
-//let qS = ''
-//
-// arr.forEach((el, index) => {
-//     if (!(index === 0 || index < arr.length - 1)) qS += '&'
-//     let i = 0
-//     let sortM = 0
-//     let searchM = 0
-//     let filterM = 0
-//     for (const key in el) {
-//       if (key !== 'type') {
-//         qS += `${el.type}[${index}].${key}=${el[key]}`
-
-//         if (i < Object.keys(el).length) {
-//           qS += '&'
-//           i++
-//         }
-//       }
-//     }
-//   })

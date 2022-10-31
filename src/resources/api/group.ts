@@ -27,6 +27,9 @@ const groupListGet = async (page?: number, pageSize?: number) =>
 const groupDelete = async (id: string) =>
   await makeARequest(api.delete, `${pageUrl}/${id}`)
 
+const groupStatus = async (id: string) =>
+  await makeARequest(api.put, `${pageUrl}/status/${id}`)
+
 const groupPost = async (
   groupData: group
 ): Promise<
@@ -89,4 +92,5 @@ export const groupApi = () => ({
   getGroupTitle: getGroupTitleById,
   groupListGet,
   groupDelete,
+  groupStatus,
 })

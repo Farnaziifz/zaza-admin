@@ -17,3 +17,8 @@ export const deleteGroup = async (id: string) => {
   const res = await api.groupDelete(id)
   return res.data
 }
+
+export const groupStatus = async (id: string) => {
+  const res = await api.groupStatus(id)
+  return res.data
+}

@@ -5,9 +5,11 @@ import { groupList, groups } from '../../../core/types/group.type'
 import {
   getGroupList,
   deleteGroup,
+  groupStatus,
 } from '../../../logics/specific/group.handler'
 import { TableColumnType, TableProps } from 'ant-design-vue'
 import router from '@/resources/router'
+import PlusIcon from '/src/presentation/components/shared/atoms/PlusIcon.vue'
 
 const data: Ref<groupList | undefined> = ref({
   items: [],
@@ -51,11 +53,13 @@ onBeforeMount(async () => {
   const res = await getGroupList(page, pageSize)
   data.value = res
 })
+
 const pagination = computed(() => ({
   total: data.value?.totalCount,
   current: data.value?.page,
   pageSize: 10,
 }))
+
 const onChange: TableProps<groupList>['onChange'] = async (
   paginate,
   sorter
@@ -63,6 +67,7 @@ const onChange: TableProps<groupList>['onChange'] = async (
   console.log('params', paginate, sorter)
   data.value = await getGroupList(paginate.current, paginate.pageSize)
 }
+
 const showModal = (item: string, isActive: boolean) => {
   visible.value = true
   itemForChangeStatus.isActive = isActive
@@ -70,15 +75,18 @@ const showModal = (item: string, isActive: boolean) => {
 }
 
 const goToDetails = (item: string) => {
-  router.push({ name: 'customer-details', params: { id: item } })
+  router.push({ name: 'test', params: { id: item } })
 }
+
 const hideModal = () => {
   visible.value = false
 }
 
-const changegroupStatus = () => {
-  console.log('salam')
+const changegroupStatus = async () => {
+  await groupStatus(itemForChangeStatus.id)
+  hideModal()
 }
+
 const showDeleteModal = (item: string, title: string) => {
   visibleDeleteModal.value = true
   itemForDelete.id = item
@@ -93,11 +101,20 @@ const confirmModal = async () => {
   )
   visibleDeleteModal.value = false
 }
+const goToAdd = () => {
+  router.push({ path: '/category/add/first-step' })
+}
 </script>
 
 <template>
   <content-layout>
     <template #content-title>دسته‌بندی‌</template>
+    <template #content-actions>
+      <a-button type="primary" @click="goToAdd" class="button-secondary">
+        <template #icon><PlusIcon color="#fff" /></template>
+        <span>افزودن دسته‌بندی جدید</span>
+      </a-button>
+    </template>
     <template #content-body>
       <div v-if="data?.items && data.items.length">
         <a-table

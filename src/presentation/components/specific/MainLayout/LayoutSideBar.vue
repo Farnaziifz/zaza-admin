@@ -152,7 +152,9 @@ const changeRoute = (to: string) => {
         >
           ارزیابی از دست رفتن مشتریان
         </a-menu-item>
-        <a-menu-item key="13" @click="changeRoute('/loyalty-evaluation')"
+        <a-menu-item
+          key="13"
+          @click="changeRoute('/business-intelligence/loyalty-evaluation')"
           >ارزیابی وفاداری مشتریان</a-menu-item
         >
       </a-sub-menu>

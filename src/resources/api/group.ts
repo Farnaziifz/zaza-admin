@@ -1,5 +1,5 @@
 import { api } from './index'
-import { group, groupTitle, groupList } from '@/core/types/group.type'
+import { group, groupTitle, groupList, groups } from '@/core/types/group.type'
 import { AxiosError, AxiosResponse } from 'axios'
 import { makeARequest } from '@/logics/shared/apiResponse.handler'
 
@@ -26,6 +26,8 @@ const groupListGet = async (page?: number, pageSize?: number) =>
 
 const groupDelete = async (id: string) =>
   await makeARequest(api.delete, `${pageUrl}/${id}`)
+
+const groupDetailsGet = async (id: string) => await makeARequest<groups>
 
 const groupStatus = async (id: string) =>
   await makeARequest(api.put, `${pageUrl}/status/${id}`)

@@ -1,17 +1,17 @@
 <script setup lang="ts">
 import ContentLayout from '../layouts/ContentLayout.vue'
-import HintCollapse from '/src/presentation/components/shared/Organisms/HintCollapse.vue'
+import HintCollapse from '../components/shared/Organisms/HintCollapse.vue'
 import { t } from 'vui18n'
-import { hintType } from '../../core/types/hints.type'
-import InputBadgeLabel from '/src/presentation/components/specific/LabelSettings/InputBadgeLabel.vue'
+import { hintType } from '@/core/types/hints.type'
+import InputBadgeLabel from '../components/specific/LabelSettings/InputBadgeLabel.vue'
 import { badgeDataFactory } from '../factory/specific/labelSettings/labelSettingsBadgeData.factory'
 import {
   initHandler,
   mapServerDataToInitialDataHandler,
   validateAndChangeServerDataHandler,
-} from '../../logics/specific/labelSettingsBadge'
+} from '@/logics/specific/labelSettingsBadge'
 import { onBeforeMount } from 'vue'
-import { convertFieldToNumber } from '../../logics/shared/filedManipulator'
+import { convertFieldToNumber } from '@/logics/shared/fieldManipulator'
 
 const hints: hintType[] = [
   {
@@ -23,7 +23,7 @@ const badgeData = badgeDataFactory()
 
 onBeforeMount(async () => {
   const serverData = await initHandler()
-  if (serverData) mapServerDataToInitialDataHandler(badgeData.value, serverData)
+  mapServerDataToInitialDataHandler(badgeData.value, serverData)
 })
 
 const submitDataHandler = async () => {
@@ -62,7 +62,6 @@ const submitDataHandler = async () => {
 
             <template #addonBefore>
               <input-badge-label
-                v-if="badge.title"
                 class="px-3 flex items-center"
                 :background-color="badge.backgroundColor"
                 :outline-color="badge.outlineColor"

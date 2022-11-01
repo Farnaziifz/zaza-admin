@@ -1,50 +1,43 @@
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
+// eslint-disable-next-file @typescript-eslint/ban-ts-comment
 import pd from 'persian-date'
 import _ from 'lodash'
 import {reportPeriodType} from "@/core/enums/reportType.enum";
-import momentJalali from 'jalali-moment'
+import momentJalali, {unitOfTime} from 'jalali-moment'
 
+
+export const getPersianNameOfMonth = (date: string, format:string) => {
+    return momentJalali(date, format).locale("fa").format("jMMMM")
+}
 
 export const getAllDaysInPeriodQuery = (type: reportPeriodType) => {
     let stepCount = 0;
-    let step = "d";
+    let step: unitOfTime.StartOf = "jDay";
     switch (type) {
         case 'WEEKLY':
-            stepCount = ((momentJalali().isoWeekday() + 2) % 7) - 1;
+            stepCount = 7;
             break
         case 'MONTHLY':
-            stepCount = momentJalali().jDate() - 1;
+            stepCount = 30;
             break
         case 'ANNUAL':
-            stepCount = momentJalali().jMonth();
+            stepCount = 12;
             step = "jMonth";
             break
     }
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    const startOfRange = momentJalali().add(-stepCount, step);
-    const currentDate = startOfRange.clone()
+
+    const currentDate = momentJalali().clone()
     const range = []
 
-    const format = 'yyyy/MM/DD-HH:mm:ss'
+    const format = 'YYYY/MM/DDTHH:mm:ss'
     for (let i = 0; i < stepCount; i++) {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
         range.push({
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            from: currentDate.startOf(step).utc().startOf("days").format(format),
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            to: currentDate.endOf(step).utc().endOf("days").format(format),
+            from: currentDate.utc().startOf(step).format(format),
+            to: currentDate.utc().endOf(step).format(format),
         })
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        currentDate.add(1, step)
+        currentDate.add(-1, step)
     }
 
-    return range.reduce((previousValue, currentValue, index) => previousValue + `Ranges[${index}].From=${currentValue.from}&Ranges[${index}].To=${currentValue.to}&`, `?Format=${format}&`)
+    return range.reduce((previousValue, currentValue, index) => previousValue + `Ranges[${index}].From=${currentValue.from}&Ranges[${index}].To=${currentValue.to}&`, `?Format=yyyy/MM/ddTHH:mm:ss&`)
 }
 
 

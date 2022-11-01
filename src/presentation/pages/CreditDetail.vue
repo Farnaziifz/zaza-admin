@@ -23,7 +23,6 @@ const serverData: Ref<
 onMounted(async () => {
   const creditId = useRoute().params.id as string
   serverData.value = await initHandler(creditId)
-  console.log(serverData.value)
 })
 
 //TODO => show the data in the application as you wanted to.

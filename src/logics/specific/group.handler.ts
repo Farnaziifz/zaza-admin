@@ -22,3 +22,8 @@ export const groupStatus = async (id: string) => {
   const res = await api.groupStatus(id)
   return res.data
 }
+
+export const getGroupDetails = async (id: string) => {
+  const res = await api.groupDetailsGet(id)
+  return res.data
+}

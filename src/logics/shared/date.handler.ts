@@ -3,53 +3,48 @@
 import pd from 'persian-date'
 import _ from 'lodash'
 import {reportPeriodType} from "@/core/enums/reportType.enum";
-import momentJalali, {unitOfTime} from 'jalali-moment'
-import moment from 'moment'
+import momentJalali from 'jalali-moment'
 
 
 export const getAllDaysInPeriodQuery = (type: reportPeriodType) => {
-    let momentStartOfType: unitOfTime.StartOf = 'weeks'
-    let step: unitOfTime.DurationConstructor = 'jD'
-    let diffUnit: unitOfTime.Diff = 'days'
+    let stepCount = 0;
+    let step = "d";
     switch (type) {
         case 'WEEKLY':
-            momentStartOfType = 'jw'
+            stepCount = ((momentJalali().isoWeekday() + 2) % 7) - 1;
             break
         case 'MONTHLY':
-            momentStartOfType = 'jMonth'
+            stepCount = momentJalali().jDate() - 1;
             break
         case 'ANNUAL':
-            momentStartOfType = 'jYear'
-            step = 'jMonth'
-            diffUnit = 'month'
+            stepCount = momentJalali().jMonth();
+            step = "jMonth";
             break
     }
-
-    const format = 'yyyy/MM/DD-hh:mm:ss'
-    const startOfRange = momentJalali().utc().startOf(momentStartOfType)
-    const today = momentJalali().utc().startOf(step)
-    const startOfRangeDiffUntilNow = today.diff(startOfRange, diffUnit)
-
-    const range: { from: Date; to: Date }[] = []
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    const startOfRange = momentJalali().add(-stepCount, step);
     const currentDate = startOfRange.clone()
+    const range = []
 
-    //TODO MAHDI
-    for (let i = 0; i <= startOfRangeDiffUntilNow; i++) {
+    const format = 'yyyy/MM/DD-HH:mm:ss'
+    for (let i = 0; i < stepCount; i++) {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         range.push({
-            from: currentDate.startOf(step).startOf('jDay').toDate(),
-            to: currentDate.endOf(step).startOf('jDay').toDate(),
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            from: currentDate.startOf(step).utc().startOf("days").format(format),
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            to: currentDate.endOf(step).utc().endOf("days").format(format),
         })
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         currentDate.add(1, step)
     }
 
-
-    let q = `?Format=${format}&`
-    range.forEach((el, index) => {
-        q += `Ranges[${index}].From=${moment(el.from).format(
-            format
-        )}&Ranges[${index}].To=${moment(el.to).format(format)}&`
-    })
-    return q
+    return range.reduce((previousValue, currentValue, index) => previousValue + `Ranges[${index}].From=${currentValue.from}&Ranges[${index}].To=${currentValue.to}&`, `?Format=${format}&`)
 }
 
 

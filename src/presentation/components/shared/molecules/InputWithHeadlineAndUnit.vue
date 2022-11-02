@@ -30,9 +30,11 @@ watch(
 
 <template>
   <div>
-    <slot name="headline">
-      {{ props.headline }}
-    </slot>
+    <div>
+      <slot name="headline">
+        {{ props.headline }}
+      </slot>
+    </div>
     <a-input-number
       v-model:value="inputValue"
       :placeholder="placeholder"

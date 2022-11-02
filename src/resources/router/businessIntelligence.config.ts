@@ -2,7 +2,7 @@ import BI from '@/presentation/pages/BusinessIntelligence/BI.vue'
 import BIChurnRateSettings from '@/presentation/pages/BusinessIntelligence/BIChurnRateSettings.vue'
 import BIEvaluation from '@/presentation/pages/BusinessIntelligence/BIEvaluation.vue'
 import BILoyaltyEvaluation from '/src/presentation/pages/BusinessIntelligence/BILoyaltyEvaluation.vue'
-
+import BIRetentionRateSetting from '../../presentation/pages/BusinessIntelligence/BIRetantionRateSetting.vue'
 export const businessIntelligenceConfig = {
   name: 'business-intelligence',
   path: 'business-intelligence',
@@ -23,6 +23,11 @@ export const businessIntelligenceConfig = {
       name: 'loyalty-evaluation',
       path: 'loyalty-evaluation',
       component: BILoyaltyEvaluation,
+    },
+    {
+      name: 'retantion-rate-setting',
+      path: 'retantion-rate-setting',
+      component: BIRetentionRateSetting,
     },
   ],
 }

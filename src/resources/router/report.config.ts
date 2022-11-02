@@ -15,7 +15,7 @@ export const reportConfig = {
       component: ReportDiscountList,
     },
     {
-      name: 'coupon-list',
+      name: 'report-coupon-list',
       path: 'coupon-list',
       component: ReportCouponList,
     },

@@ -39,9 +39,17 @@ const getReportCachbackStatistic = async () =>
     `${baseUrl}/cashback-statistics-overall`
   )
 
+
+export type barChartEvaluationServerReport = {
+  from: string
+  id: string
+  sumIncome: number
+  to: string
+}[]
+
 const getCreditFinancialEvaluation = async (type: reportPeriodType) => {
   const query = getAllDaysInPeriodQuery(type)
-  const res = await makeARequest(
+  const res = await makeARequest<barChartEvaluationServerReport>(
     api.get,
     `${baseUrl}${creditFinancialEvaluation}${query}`
   )
@@ -49,9 +57,10 @@ const getCreditFinancialEvaluation = async (type: reportPeriodType) => {
   return res
 }
 
+
 const getCashbackFinancialEvaluation = async (type: reportPeriodType) => {
   const query = getAllDaysInPeriodQuery(type)
-  const res = await makeARequest(
+  const res = await makeARequest<barChartEvaluationServerReport>(
     api.get,
     `${baseUrl}${cashbackFinancialEvaluation}${query}`
   )
@@ -61,7 +70,7 @@ const getCashbackFinancialEvaluation = async (type: reportPeriodType) => {
 
 const getPromotionFinancialEvaluation = async (type: reportPeriodType) => {
   const query = getAllDaysInPeriodQuery(type)
-  const res = await makeARequest(
+  const res = await makeARequest<barChartEvaluationServerReport>(
     api.get,
     `${baseUrl}${promotionFinancialEvaluation}${query}`
   )

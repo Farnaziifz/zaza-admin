@@ -23,17 +23,6 @@ import {
   retentionRateOverallStatistics,
 } from '@/core/types/businessIntelligence'
 
-const chartData = {
-  labels: ['daskldj', 'dasl', 'dsa', '123', 'test', 'test1', 'test2'],
-  datasets: [
-    {
-      label: 'هزینه',
-      data: [1, 2, 3, 4, 5, 6, 7],
-      backgroundColor: '#7CB5EC',
-    },
-  ],
-}
-
 const serverData: Ref<
   | {
       degreeLabelOverallStatisticsData?: degreeLabelOverallStatistics
@@ -45,6 +34,9 @@ const serverData: Ref<
       }
       retentionRate?: retentionRateOverallStatistics
       churnRate?: churnRateOverallStatistics
+      promotionEvaluation?: { data?: number[]; label?: string[] }
+      cashbackEvaluation?: { data?: number[]; label?: string[] }
+      creditEvaluation?: { data?: number[]; label?: string[] }
     }
   | undefined
 > = ref()
@@ -56,6 +48,21 @@ const degreeLabelOverallStatisticsData = ref({
 
 const orderOverallStatisticsData = ref({
   labels: ['راضی', 'خنثی', 'ناراضی'],
+  datasets: [{}],
+})
+
+const cashbackEvaluationReportChartData = ref({
+  labels: [''],
+  datasets: [{}],
+})
+
+const promotionEvaluationReportChartData = ref({
+  labels: [''],
+  datasets: [{}],
+})
+
+const creditEvaluationReportChartData = ref({
+  labels: [''],
   datasets: [{}],
 })
 
@@ -84,14 +91,76 @@ onMounted(async () => {
       backgroundColor: ['#A155B9', '#16BFD6', '#F765A3'],
     },
   ]
+
+  cashbackEvaluationReportChartData.value.labels =
+    serverData.value?.cashbackEvaluation?.label ?? []
+
+  cashbackEvaluationReportChartData.value.datasets = [
+    {
+      label: 'درآمد',
+      data: serverData.value?.cashbackEvaluation?.data ?? [],
+      backgroundColor: '#7CB5EC',
+    },
+  ]
+
+  creditEvaluationReportChartData.value.labels =
+    serverData.value?.creditEvaluation?.label ?? []
+
+  creditEvaluationReportChartData.value.datasets = [
+    {
+      label: 'درآمد',
+      data: serverData.value?.creditEvaluation?.data ?? [],
+      backgroundColor: '#7CB5EC',
+    },
+  ]
+
+  promotionEvaluationReportChartData.value.labels =
+    serverData.value?.promotionEvaluation?.label ?? []
+
+  promotionEvaluationReportChartData.value.datasets = [
+    {
+      label: 'درآمد',
+      data: serverData.value?.promotionEvaluation?.data ?? [],
+      backgroundColor: '#7CB5EC',
+    },
+  ]
 })
 
 const selectedReportPeriod: Ref<reportPeriodType> = ref(reportPeriodType.WEEKLY)
 watch(
   selectedReportPeriod,
   async () => {
-    await getFinancialEvaluations(selectedReportPeriod.value)
-    // serverData.value
+    const res = await getFinancialEvaluations(selectedReportPeriod.value)
+    cashbackEvaluationReportChartData.value.labels =
+      res.cashbackEvaluation?.label ?? []
+
+    cashbackEvaluationReportChartData.value.datasets = [
+      {
+        label: 'درآمد',
+        data: res.cashbackEvaluation?.data ?? [],
+        backgroundColor: '#7CB5EC',
+      },
+    ]
+
+    creditEvaluationReportChartData.value.labels =
+      res.creditEvaluation?.label ?? []
+    creditEvaluationReportChartData.value.datasets = [
+      {
+        label: 'درآمد',
+        data: res.creditEvaluation?.data ?? [],
+        backgroundColor: '#7CB5EC',
+      },
+    ]
+
+    promotionEvaluationReportChartData.value.labels =
+      res.promotionEvaluation?.label ?? []
+    promotionEvaluationReportChartData.value.datasets = [
+      {
+        label: 'درآمد',
+        data: res.promotionEvaluation?.data ?? [],
+        backgroundColor: '#7CB5EC',
+      },
+    ]
   },
   { deep: true }
 )
@@ -102,6 +171,7 @@ watch(
     <template #content-body>
       <div class="flex items-center flex-wrap" style="min-height: 250px">
         <a-card
+          v-if="serverData"
           :body-style="{ boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)' }"
           style="margin-left: 16px; height: 250px"
           :bordered="false"
@@ -224,7 +294,7 @@ watch(
           >
             <BChart
               :chart-type="chartVariant.Bar"
-              :chart-data="chartData"
+              :chart-data="cashbackEvaluationReportChartData"
               :chart-options="cashbackChartOptions"
               :height="754"
               :width="1184"
@@ -240,7 +310,7 @@ watch(
           >
             <BChart
               :chart-type="chartVariant.Bar"
-              :chart-data="chartData"
+              :chart-data="promotionEvaluationReportChartData"
               :chart-options="promotionChartOptions"
               :height="754"
               class="mx-4"
@@ -256,7 +326,7 @@ watch(
           >
             <BChart
               :chart-type="chartVariant.Bar"
-              :chart-data="chartData"
+              :chart-data="creditEvaluationReportChartData"
               :chart-options="discountCharOptions"
               :height="754"
               class="mx-4"

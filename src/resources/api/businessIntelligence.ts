@@ -43,7 +43,6 @@ const getRetentionRateOverallStatistics = async () =>
   await makeARequest<retentionRateOverallStatistics>(
     api.get,
 
-
     `${pageUrl}${retentionRate}${overallStatistics}`
   )
 

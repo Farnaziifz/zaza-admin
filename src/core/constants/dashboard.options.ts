@@ -100,7 +100,7 @@ export const discountCharOptions = {
     y: {
       ticks: {
         callback: (value: number | string, index: number) => {
-          return _.toString(index) + ' dkjashd'
+          return _.toString(index) + 'م'
         },
       },
     },
@@ -141,7 +141,7 @@ export const promotionChartOptions = {
     y: {
       ticks: {
         callback: (value: number | string, index: number) => {
-          return _.toString(index) + ' dkjashd'
+          return _.toString(index) + 'م'
         },
       },
     },
@@ -183,7 +183,7 @@ export const cashbackChartOptions = {
     y: {
       ticks: {
         callback: (value: number | string, index: number) => {
-          return _.toString(index) + ' dkjashd'
+          return _.toString(index) + 'م'
         },
       },
     },

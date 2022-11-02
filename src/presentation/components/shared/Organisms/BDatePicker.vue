@@ -5,9 +5,10 @@ import { computed, ref, watch } from 'vue'
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import pd from 'persian-date'
+import { convertDateArrayToDateString } from '@/logics/shared/date.handler'
 
 type BDatePickerProps = {
-  value?: string | string[] | Date
+  value?: string | string[] | Date[] | Date
   placeHolder: string
   range: boolean
   customId?: string
@@ -34,11 +35,12 @@ watch(
   { deep: true }
 )
 const pickedComputed = computed(() => {
-  if (pickedDate.value && typeof pickedDate.value !== 'string')
-    return new pd(pickedDate.value).toLocale('en').format('YYYY/MM/DD')
-  if (pickedDate.value && typeof pickedDate.value === 'string')
-    return pickedDate.value
-  else return undefined
+  if (props.range)
+    return convertDateArrayToDateString(props.value as Date[] | string[])
+  else if (props.value instanceof Date)
+    return new pd(props.value).toLocale('fa').format('YYYY/MM/DD')
+
+  return pickedDate.value
 })
 </script>
 <template>
@@ -59,7 +61,7 @@ const pickedComputed = computed(() => {
       :custom-input="`${customId ? '#' + customId : '#b-date-picker'}`"
       :type="props.dateType ? 'datetime' : 'date'"
       :min="minDate"
-      :disabled="disabled"
+      :disabled="disabled ?? false"
     />
   </div>
 </template>

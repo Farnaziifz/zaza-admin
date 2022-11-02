@@ -11,9 +11,24 @@ import { orderLabelOverallStatistics } from '@/core/types/order.type'
 import { degreeLabelOverallStatistics } from '@/core/types/degree.type'
 import { reportPeriodType } from '@/core/enums/reportType.enum'
 import {
-  degreeChartOptions,
   orderChartOptions,
+  degreeChartOptions,
+  discountCharOptions,
+  promotionChartOptions,
+  cashbackChartOptions,
 } from '@/core/constants/dashboard.options'
+import BRfmChart from '@/presentation/components/shared/Organisms/BRfmChart.vue'
+
+const chartData = {
+  labels: ['daskldj', 'dasl', 'dsa', '123', 'test', 'test1', 'test2'],
+  datasets: [
+    {
+      label: 'هزینه',
+      data: [1, 2, 3, 4, 5, 6, 7],
+      backgroundColor: '#7CB5EC',
+    },
+  ],
+}
 
 const serverData: Ref<
   | {
@@ -81,6 +96,14 @@ watch(
     <template #content-title> داشبورد</template>
     <template #content-body>
       <div class="flex items-center">
+        <a-card
+          :body-style="{ boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)' }"
+          style="margin-left: 16px"
+          :bordered="false"
+          class="coupon-info-card"
+        >
+          <BRfmChart></BRfmChart>
+        </a-card>
         <a-card
           :body-style="{ boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)' }"
           style="margin-left: 16px"
@@ -173,6 +196,56 @@ watch(
             سالانه
           </a-radio-button>
         </a-radio-group>
+
+        <div class="flex flex-nowrap items-center mt-4">
+          <a-card
+            :body-style="{ boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)' }"
+            :bordered="false"
+            class="coupon-info-card"
+            style="width: 33%"
+          >
+            <BChart
+              :chart-type="chartVariant.Bar"
+              :chart-data="chartData"
+              :chart-options="cashbackChartOptions"
+              :height="754"
+              :width="1184"
+              class="mx-4"
+            />
+          </a-card>
+
+          <a-card
+            :body-style="{ boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)' }"
+            :bordered="false"
+            class="coupon-info-card"
+            style="width: 33%"
+          >
+            <BChart
+              :chart-type="chartVariant.Bar"
+              :chart-data="chartData"
+              :chart-options="promotionChartOptions"
+              :height="754"
+              class="mx-4"
+              :width="1184"
+            />
+          </a-card>
+
+          <a-card
+            :body-style="{ boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)' }"
+            :bordered="false"
+            class="coupon-info-card"
+            style="width: 33%"
+          >
+            <BChart
+              :chart-type="chartVariant.Bar"
+              :chart-data="chartData"
+              :chart-options="discountCharOptions"
+              :height="754"
+              class="mx-4"
+              :width="1184"
+            />
+          </a-card>
+        </div>
       </div>
     </template>
   </content-layout>

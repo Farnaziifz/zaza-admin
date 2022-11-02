@@ -42,19 +42,18 @@ const getReportCachbackStatistic = async () =>
 const getCreditFinancialEvaluation = async (type: reportPeriodType) => {
   const query = getAllDaysInPeriodQuery(type)
   const res = await makeARequest(
-      api.get,
-      `${baseUrl}${creditFinancialEvaluation}${query}`
+    api.get,
+    `${baseUrl}${creditFinancialEvaluation}${query}`
   )
 
   return res
 }
 
-
 const getCashbackFinancialEvaluation = async (type: reportPeriodType) => {
   const query = getAllDaysInPeriodQuery(type)
   const res = await makeARequest(
-      api.get,
-      `${baseUrl}${cashbackFinancialEvaluation}${query}`
+    api.get,
+    `${baseUrl}${cashbackFinancialEvaluation}${query}`
   )
 
   return res
@@ -63,8 +62,8 @@ const getCashbackFinancialEvaluation = async (type: reportPeriodType) => {
 const getPromotionFinancialEvaluation = async (type: reportPeriodType) => {
   const query = getAllDaysInPeriodQuery(type)
   const res = await makeARequest(
-      api.get,
-      `${baseUrl}${promotionFinancialEvaluation}${query}`
+    api.get,
+    `${baseUrl}${promotionFinancialEvaluation}${query}`
   )
 
   return res

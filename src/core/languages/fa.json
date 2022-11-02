@@ -5,6 +5,10 @@
       "silver": "نقره ای",
       "bronze": "برنزی"
     },
+    "retantionRateCalculated": {
+      "PER_PRICE": "مبلغ پرداختی",
+      "PER_ORDER": "تعداد سفارش"
+    },
     "couponTypeEnum": {
       "FIRST_ORDER": "اولین خرید",
       "BUY_SPECIFIC_PRODUCT": "خرید محصولات",

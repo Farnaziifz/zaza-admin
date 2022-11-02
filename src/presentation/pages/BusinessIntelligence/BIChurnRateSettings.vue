@@ -10,6 +10,7 @@ import {
   initHandler,
   putServerDataHandler,
 } from '@/logics/specific/biChurnRate.handler'
+import { goToPath } from '@/logics/shared/route.handler'
 
 const numberOfDaysInMonth = 30
 const numberOfDaysInWeek = 7
@@ -57,7 +58,10 @@ const btnDisabled = computed(() => {
 
 const isLazySectionDisabled = computed(() => !serverData.value.loseWeekCount)
 
-const sendDataToServer = async () => putServerDataHandler(serverData.value)
+const sendDataToServer = async () => {
+  putServerDataHandler(serverData.value)
+  goToPath('/business-intelligence/churn-evaluation')
+}
 
 onMounted(async () => {
   const res = await initHandler()

@@ -5,6 +5,14 @@ export type retantionRate = {
   customerType: string
 }
 
+export type retantionRateSetting = {
+  type?: string
+  heroWeekCount?: number
+  loyalWeekCount?: number
+  heroValueCount?: number
+  loyalValueCount?: number
+}
+
 export type retantionRateCustomerList = {
   items: retantionRate[]
   hasNextPage: boolean

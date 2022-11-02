@@ -161,7 +161,6 @@ export const cashbackChartOptions = {
       font: {
         size: 16,
 
-
         family: 'YekanBakh',
         weight: 500,
       },

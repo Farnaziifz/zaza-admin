@@ -18,6 +18,10 @@ import {
   cashbackChartOptions,
 } from '@/core/constants/dashboard.options'
 import BRfmChart from '@/presentation/components/shared/Organisms/BRfmChart.vue'
+import {
+  churnRateOverallStatistics,
+  retentionRateOverallStatistics,
+} from '@/core/types/businessIntelligence'
 
 const chartData = {
   labels: ['daskldj', 'dasl', 'dsa', '123', 'test', 'test1', 'test2'],
@@ -39,6 +43,8 @@ const serverData: Ref<
         numberOfFeedbacks: number
         customerWithRepurchase: number
       }
+      retentionRate?: retentionRateOverallStatistics
+      churnRate?: churnRateOverallStatistics
     }
   | undefined
 > = ref()
@@ -55,7 +61,6 @@ const orderOverallStatisticsData = ref({
 
 onMounted(async () => {
   serverData.value = await initHandler()
-
   degreeLabelOverallStatisticsData.value.datasets = [
     {
       data: [
@@ -95,14 +100,27 @@ watch(
   <content-layout>
     <template #content-title> داشبورد</template>
     <template #content-body>
-      <div class="flex items-center">
+      <div class="flex items-center flex-wrap" style="min-height: 250px">
         <a-card
           :body-style="{ boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)' }"
-          style="margin-left: 16px"
+          style="margin-left: 16px; height: 250px"
           :bordered="false"
           class="coupon-info-card"
         >
-          <BRfmChart></BRfmChart>
+          <div style="font-size: 16px; font-weight: 500" class="mb-10">
+            طبقه‌بندی مشتریان براساس RFM
+          </div>
+          <BRfmChart
+            class="mb-14"
+            :attention-need-amount="
+              serverData?.retentionRate.attentionNeedCustomerPercentage
+            "
+            :loyal-amount="serverData?.retentionRate?.loyalCustomerPercentage"
+            :hero-amount="serverData?.retentionRate?.heroCustomerPercentage"
+            :lazy-amount="serverData?.churnRate?.lazyCustomerPercentage"
+            :churn-amount="serverData?.churnRate?.lostCustomerPercentage"
+            :normal-amount="serverData?.churnRate?.normalCustomerPercentage"
+          ></BRfmChart>
         </a-card>
         <a-card
           :body-style="{ boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)' }"

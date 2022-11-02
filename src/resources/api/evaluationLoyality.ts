@@ -30,8 +30,12 @@ const retantionRatePut = async (data: retantionRateSetting) => {
   )
 }
 
+const retantionRateGetDetails = async () =>
+  await makeARequest<retantionRateSetting>(api.get, `${pageUrl}/retention-rate`)
+
 export const retaitionLoyalityApi = () => ({
   getRetentionLoyalityRateOverallStatistics,
   getRetantionLoyalCustomerList,
   retantionRatePut,
+  retantionRateGetDetails,
 })

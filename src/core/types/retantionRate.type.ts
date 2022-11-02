@@ -7,7 +7,8 @@ export type retantionRate = {
 
 export type retantionRateSetting = {
   type?: string
-  weekCount?: number
+  heroWeekCount?: number
+  loyalWeekCount?: number
   heroValueCount?: number
   loyalValueCount?: number
 }

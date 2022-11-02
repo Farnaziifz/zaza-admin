@@ -1,14 +1,20 @@
 <script setup lang="ts">
 import IncentiveDetailLayoutVue from '@/presentation/layouts/IncentiveDetailLayout.vue'
 import HintCollapse from '/src/presentation/components/shared/Organisms/HintCollapse.vue'
-import { ref, computed } from 'vue'
+import { ref, computed, onBeforeMount, createVNode } from 'vue'
 import { retantionRateCalulatedType } from '../../../core/enums/retantionRateType.enum'
 import { t } from 'vui18n'
 import BSelect from '/src/presentation/components/shared/atoms/BSelect.vue'
 import InputWithHeadlineAndUnit from '/src/presentation/components/shared/molecules/InputWithHeadlineAndUnit.vue'
-import { updateRetantionRate } from '../../../logics/specific/retationLoyality.handler'
+import {
+  updateRetantionRate,
+  retantionRateGetDetails,
+} from '../../../logics/specific/retationLoyality.handler'
 import _ from 'lodash'
 import { showErrorMessage } from '@/logics/shared/message.handler'
+import { Modal } from 'ant-design-vue'
+import { ExclamationCircleOutlined } from '@ant-design/icons-vue'
+import { goToPath } from '@/logics/shared/route.handler'
 
 const selectedCalculatedType = ref('')
 const calculatedTypeOptions: any[] = []
@@ -18,7 +24,22 @@ const heroWeekCount = ref('')
 const normalWeekCount = ref('')
 const heroPayPrice = ref('')
 const normalPayPrice = ref('')
+onBeforeMount(async () => {
+  const res = await retantionRateGetDetails()
+  console.log(res)
+  heroWeekCount.value = _.toString(res?.heroWeekCount)
+  normalWeekCount.value = _.toString(res?.loyalWeekCount)
 
+  if (res?.type === 'PER_PRICE') {
+    selectedCalculatedType.value = res?.type ? res.type : ''
+    heroPayPrice.value = _.toString(res?.heroValueCount)
+    normalPayPrice.value = _.toString(res?.loyalValueCount)
+  } else if (res?.type === 'PER_ORDER') {
+    selectedCalculatedType.value = res?.type ? res.type : ''
+    heroOrderCount.value = _.toString(res?.heroValueCount)
+    normalOrderCount.value = _.toString(res?.loyalValueCount)
+  }
+})
 for (const type in retantionRateCalulatedType)
   calculatedTypeOptions.push({
     value: type,
@@ -56,18 +77,31 @@ const btnDisabled = computed(() => {
   return true
 })
 
+const confirm = () => {
+  Modal.confirm({
+    title: 'تغییر اطلاعات',
+    icon: createVNode(ExclamationCircleOutlined),
+    content: 'در صورت ثبت تغییرات اطلاعات قبلی مشتریان پاک‌ می‍‌شود.',
+    okText: 'بستن',
+    cancelText: 'تغییر',
+    onOk() {
+      validateForm()
+    },
+  })
+}
+
 const validateForm = () => {
   if (selectedCalculatedType.value === 'PER_ORDER') {
     if (_.toNumber(heroOrderCount.value) < _.toNumber(normalOrderCount.value)) {
       showErrorMessage(
-        'تعداد سفارش مشتریان امیدوار کننده نباید بیشتر از تعداد سفارش مشتریان قهرمان باشد'
+        'تعداد سفارش مشتریان وفادار نباید بیشتر از تعداد سفارش مشتریان قهرمان باشد'
       )
       return
     }
   } else if (selectedCalculatedType.value === 'PER_PRICE') {
     if (heroPayPrice.value < normalPayPrice.value) {
       showErrorMessage(
-        'مبلغ پرداختی مشتریان امیدوار کننده نباید بیشتر از مبلغ پرداختی مشتریان قهرمان باشد'
+        'مبلغ پرداختی مشتریان وفادار نباید بیشتر از مبلغ پرداختی مشتریان قهرمان باشد'
       )
       return
     }
@@ -79,17 +113,21 @@ const onSubmit = async () => {
   if (selectedCalculatedType.value === 'PER_ORDER') {
     await updateRetantionRate({
       type: selectedCalculatedType.value,
-      weekCount: _.toNumber(heroWeekCount.value),
+      heroWeekCount: _.toNumber(heroWeekCount.value),
       heroValueCount: _.toNumber(heroOrderCount.value),
+      loyalWeekCount: _.toNumber(normalWeekCount.value),
       loyalValueCount: _.toNumber(normalOrderCount.value),
     })
+    goToPath('/business-intelligence/loyalty-evaluation')
   } else {
     await updateRetantionRate({
       type: selectedCalculatedType.value,
-      weekCount: _.toNumber(heroWeekCount.value),
+      heroWeekCount: _.toNumber(heroWeekCount.value),
       heroValueCount: _.toNumber(heroPayPrice.value),
       loyalValueCount: _.toNumber(normalPayPrice.value),
+      loyalWeekCount: _.toNumber(normalWeekCount.value),
     })
+    goToPath('/business-intelligence/loyalty-evaluation')
   }
 }
 </script>
@@ -100,12 +138,12 @@ const onSubmit = async () => {
       <hint-collapse
         :hints="[
           {
-            body: 'مشتری وفادار',
+            body: 'مشتری قهرمان',
             description:
               'بسته به نوع استراتژی کسب‌وکار شما، مشتریانی که بعد از یک مدت زمان مشخص دیگر سفارشی به شما نداده‌اند، از دست رفته‌اند و باید برای بازگشتشان برنامه‌ریزی کنید.',
           },
           {
-            body: 'مشتری امیدوار کننده',
+            body: 'مشتری وفادار',
             description:
               'مشتریانی که نزدیک به از دست رفتن هستند اما هنوز به برگشتشان امید داریم، مشتریان خواب‌آلود شما هستند.',
           },
@@ -181,7 +219,7 @@ const onSubmit = async () => {
           <div>
             <div class="input-title mt-6">
               <p style="font-weight: 500; font-size: 16px" class="mb-0">
-                نوع محاسبه مشتریان امیدوارکننده
+                نوع محاسبه مشتریان وفادار
               </p>
               <p style="font-weight: 500; font-size: 16px" class="mb-0">
                 نوع محاسبه
@@ -211,7 +249,7 @@ const onSubmit = async () => {
           <div class="mt-6 mr-10">
             <div class="input-title">
               <p style="font-weight: 500; font-size: 16px" class="mb-0">
-                مدت زمان محاسبه مشتریان امیدوارکننده
+                مدت زمان محاسبه مشتریان وفادار
               </p>
               <p style="font-weight: 500; font-size: 16px" class="mb-0">
                 تعداد هفته
@@ -232,7 +270,7 @@ const onSubmit = async () => {
           <div>
             <div class="input-title mt-6">
               <p style="font-weight: 500; font-size: 16px" class="mb-0">
-                نوع محاسبه مشتریان امیدوارکننده
+                نوع محاسبه مشتریان وفادار
               </p>
               <p style="font-weight: 500; font-size: 16px" class="mb-0">
                 نوع محاسبه
@@ -262,7 +300,7 @@ const onSubmit = async () => {
           <div class="mt-6 mr-10">
             <div class="input-title">
               <p style="font-weight: 500; font-size: 16px" class="mb-0">
-                مدت زمان محاسبه مشتریان امیدوارکننده
+                مدت زمان محاسبه مشتریان وفادار
               </p>
               <p style="font-weight: 500; font-size: 16px" class="mb-0">
                 تعداد هفته
@@ -282,7 +320,7 @@ const onSubmit = async () => {
             type="primary"
             class="button-secondary"
             :disabled="btnDisabled"
-            @click="validateForm"
+            @click="confirm"
           >
             <span>ثبت اطلاعات</span>
           </a-button>

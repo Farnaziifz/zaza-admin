@@ -24,3 +24,8 @@ export const updateRetantionRate = async (data: retantionRateSetting) => {
   const res = await api.retantionRatePut(data)
   return res
 }
+
+export const retantionRateGetDetails = async () => {
+  const res = await api.retantionRateGetDetails()
+  return res.data
+}

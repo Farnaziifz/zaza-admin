@@ -13,6 +13,8 @@ import { TablePaginationConfig } from 'ant-design-vue'
 import { loyalityType } from '../../../core/enums/fluxityType.enum'
 import { retantionRateCustomerList } from '@/core/types/retantionRate.type'
 import _ from 'lodash'
+import { goToPath } from '@/logics/shared/route.handler'
+
 const overallStatisticsData: Ref<
   retentionLoyalityRateOverallStatistics | undefined
 > = ref(undefined)
@@ -102,6 +104,9 @@ const onChangePage = async (paginate: TablePaginationConfig) =>
       },
     ]
   ))
+const goToSetting = () => {
+  goToPath('/business-intelligence/retantion-rate-setting')
+}
 </script>
 
 <template>
@@ -112,6 +117,7 @@ const onChangePage = async (paginate: TablePaginationConfig) =>
         type="primary"
         class="button-secondary items-center"
         size="large"
+        @click="goToSetting"
       >
         <template #icon>
           <setting-outlined />

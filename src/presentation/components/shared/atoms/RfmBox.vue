@@ -4,34 +4,28 @@ const props = withDefaults(
     width: number
     backgroundColor: string
     textColor: string
-    height?: number
+    height: number
     text?: string
     fontWeight?: number
     fontSize?: number
     tooltipTitle: string
     tooltipPosition?: string
-    heightSizeType?: 'px' | '%'
-    widthSizeType?: 'px' | '%'
   }>(),
   {
     fontSize: 12,
     fontWeight: 500,
-    heightSizeType: 'px',
-    widthSizeType: 'px',
+    tooltipPosition: 'top',
   }
 )
-console.log(props.height)
 </script>
 <template>
   <a-tooltip :title="props.tooltipTitle" :placement="tooltipPosition">
     <div
       :style="{
-        width: `${props.width}${props.widthSizeType}`,
+        width: `${props.width}px`,
         color: `${props.textColor}`,
         backgroundColor: `${props.backgroundColor}`,
-        height: `${
-          props.height ? props.height + props.heightSizeType : 'inherit'
-        }`,
+        height: `${props.height ? props.height + 'px' : 'inherit'}`,
         fontWeight: props.fontWeight,
         fontSize: `${props.fontSize}px`,
       }"

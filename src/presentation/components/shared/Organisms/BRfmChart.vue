@@ -6,8 +6,6 @@ import { computed } from 'vue'
 type rfmProps = {
   width?: number
   height?: number
-  heightSizeType?: 'px' | '%'
-  widthSizeType?: 'px' | '%'
   heroAmount: number
   loyalAmount: number
   attentionNeedAmount: number
@@ -19,8 +17,6 @@ type rfmProps = {
 const props = withDefaults(defineProps<rfmProps>(), {
   height: 80,
   width: 512,
-  heightSizeType: 'px',
-  widthSizeType: 'px',
 })
 const heroLoyalAttentionNeedSum = computed(
   () => props.attentionNeedAmount + props.loyalAmount + props.heroAmount
@@ -88,13 +84,8 @@ const normalWidth = computed(() => props.width / 2)
 <template>
   <div class="flex flex-row">
     <div class="flex flex-col">
-      <div
-        class="flex flex-row"
-        :style="{ height: `${heroLoyalHeight}${heightSizeType}` }"
-      >
+      <div class="flex flex-row" :style="{ height: `${heroLoyalHeight}px` }">
         <rfm-box
-          :width-size-type="props.widthSizeType"
-          :height-size-type="props.heightSizeType"
           :width="heroWidth"
           :height="heroLoyalHeight"
           background-color="#0B4272"
@@ -109,8 +100,6 @@ const normalWidth = computed(() => props.width / 2)
         </rfm-box>
 
         <rfm-box
-          :width-size-type="props.widthSizeType"
-          :height-size-type="props.heightSizeType"
           background-color="#1373C6"
           :width="loyalWidth"
           :height="heroLoyalHeight"
@@ -125,8 +114,6 @@ const normalWidth = computed(() => props.width / 2)
         </rfm-box>
       </div>
       <rfm-box
-        :width-size-type="props.widthSizeType"
-        :height-size-type="props.heightSizeType"
         text-color="#f0f0f0"
         background-color="#74AFFF"
         :width="attentionNeedWidth"
@@ -144,8 +131,6 @@ const normalWidth = computed(() => props.width / 2)
     </div>
     <div class="flex flex-col">
       <rfm-box
-        :width-size-type="props.widthSizeType"
-        :height-size-type="props.heightSizeType"
         background-color="#FF727E"
         :width="normalWidth"
         :height="normalHeight"
@@ -161,8 +146,6 @@ const normalWidth = computed(() => props.width / 2)
 
       <div class="flex flex-row" :style="{ height: `${lazyChurnHeight}px` }">
         <rfm-box
-          :width-size-type="props.widthSizeType"
-          :height-size-type="props.heightSizeType"
           background-color="#C6002F"
           :width="lazyWidth"
           :height="lazyChurnHeight"
@@ -177,8 +160,6 @@ const normalWidth = computed(() => props.width / 2)
           </template>
         </rfm-box>
         <rfm-box
-          :width-size-type="props.widthSizeType"
-          :height-size-type="props.heightSizeType"
           :tooltip-title="`% از دست رفته ها ${_.floor(churnPercentage * 100)}`"
           background-color="#72001B"
           :width="churnWidth"

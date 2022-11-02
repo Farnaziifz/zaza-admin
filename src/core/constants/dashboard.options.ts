@@ -99,6 +99,11 @@ export const discountCharOptions = {
   scales: {
     y: {
       ticks: {
+        font: {
+          size: 12,
+          family: 'YekanBakh',
+          weight: 400,
+        },
         callback: (value: number | string, index: number) => {
           return _.toString(index) + 'م'
         },
@@ -140,6 +145,11 @@ export const promotionChartOptions = {
   scales: {
     y: {
       ticks: {
+        font: {
+          size: 12,
+          family: 'YekanBakh',
+          weight: 400,
+        },
         callback: (value: number | string, index: number) => {
           return _.toString(index) + 'م'
         },
@@ -160,7 +170,6 @@ export const cashbackChartOptions = {
       },
       font: {
         size: 16,
-
         family: 'YekanBakh',
         weight: 500,
       },
@@ -180,8 +189,22 @@ export const cashbackChartOptions = {
     },
   },
   scales: {
+    x: {
+      title: {
+        font: {
+          size: 12,
+          family: 'YekanBakh',
+          weight: 400,
+        },
+      },
+    },
     y: {
       ticks: {
+        font: {
+          size: 12,
+          family: 'YekanBakh',
+          weight: 400,
+        },
         callback: (value: number | string, index: number) => {
           return _.toString(index) + 'م'
         },

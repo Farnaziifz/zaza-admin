@@ -183,13 +183,19 @@ watch(
           <BRfmChart
             class="mb-14"
             :attention-need-amount="
-              serverData?.retentionRate.attentionNeedCustomerPercentage
+              serverData?.retentionRate?.attentionNeedCustomerPercentage ?? 0
             "
-            :loyal-amount="serverData?.retentionRate?.loyalCustomerPercentage"
-            :hero-amount="serverData?.retentionRate?.heroCustomerPercentage"
-            :lazy-amount="serverData?.churnRate?.lazyCustomerPercentage"
-            :churn-amount="serverData?.churnRate?.lostCustomerPercentage"
-            :normal-amount="serverData?.churnRate?.normalCustomerPercentage"
+            :loyal-amount="
+              serverData?.retentionRate?.loyalCustomerPercentage ?? 0
+            "
+            :hero-amount="
+              serverData?.retentionRate?.heroCustomerPercentage ?? 0
+            "
+            :lazy-amount="serverData?.churnRate?.lazyCustomerPercentage ?? 0"
+            :churn-amount="serverData?.churnRate?.lostCustomerPercentage ?? 0"
+            :normal-amount="
+              serverData?.churnRate?.normalCustomerPercentage ?? 0
+            "
           ></BRfmChart>
         </a-card>
         <a-card
@@ -232,7 +238,7 @@ watch(
             تعداد مشتریان تا به امروز
           </div>
           <div class="text-center" style="font-weight: 500; font-size: 32px">
-            {{ serverData?.reportOverallStatistics.numberOfCustomers ?? 0 }}
+            {{ serverData?.reportOverallStatistics?.numberOfCustomers ?? 0 }}
             مشتری
           </div>
         </a-card>
@@ -247,7 +253,7 @@ watch(
             تعداد نظرات تا به امروز
           </div>
           <div class="text-center" style="font-weight: 500; font-size: 32px">
-            {{ serverData?.reportOverallStatistics.numberOfFeedbacks ?? 0 }}
+            {{ serverData?.reportOverallStatistics?.numberOfFeedbacks ?? 0 }}
             نظر
           </div>
         </a-card>
@@ -263,7 +269,7 @@ watch(
           </div>
           <div class="text-center" style="font-weight: 500; font-size: 32px">
             {{
-              serverData?.reportOverallStatistics.customerWithRepurchase ?? 0
+              serverData?.reportOverallStatistics?.customerWithRepurchase ?? 0
             }}
             مشتری
           </div>

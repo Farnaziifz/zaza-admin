@@ -39,7 +39,6 @@ const getReportCachbackStatistic = async () =>
     `${baseUrl}/cashback-statistics-overall`
   )
 
-
 export type barChartEvaluationServerReport = {
   from: string
   id: string
@@ -56,7 +55,6 @@ const getCreditFinancialEvaluation = async (type: reportPeriodType) => {
 
   return res
 }
-
 
 const getCashbackFinancialEvaluation = async (type: reportPeriodType) => {
   const query = getAllDaysInPeriodQuery(type)

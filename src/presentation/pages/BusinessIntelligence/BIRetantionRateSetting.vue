@@ -82,8 +82,8 @@ const confirm = () => {
     title: 'تغییر اطلاعات',
     icon: createVNode(ExclamationCircleOutlined),
     content: 'در صورت ثبت تغییرات اطلاعات قبلی مشتریان پاک‌ می‍‌شود.',
-    okText: 'بستن',
-    cancelText: 'تغییر',
+    okText: 'تغییر',
+    cancelText: 'بستن',
     onOk() {
       validateForm()
     },

@@ -42,6 +42,18 @@ export const convertDateFromPersianToGeorgian = (
     ? new pd(date.split('/').map((x: string) => _.toNumber(x))).toDate()
     : date
 
+export const convertDateTimeFromPersianToGeorgian = (
+  date: string
+): Date | undefined => {
+  const p = new pd(
+    date
+      .split(' ')
+      .flatMap((x, index) => (index === 0 ? x.split('/') : x.split(':')))
+      .map((x) => _.toNumber(x))
+  ).toDate()
+  return p
+}
+
 export const getAllDaysInPeriodQuery = (type: reportPeriodType) => {
   let stepCount = 0
   let step: unitOfTime.StartOf = 'jDay'

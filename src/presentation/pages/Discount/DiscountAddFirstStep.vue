@@ -140,7 +140,6 @@ if (discountStore.title) {
               ref="end"
               customId="endDate"
               :minDate="pickedStartDate"
-              :disabled="!pickedStartDate.length"
             >
               <template #headline>
                 <span style="font-weight: 500; font-size: 16px">

@@ -36,9 +36,11 @@ export const convertDateArrayToDateString = (dateArray: Date[] | string[]) => {
 }
 
 export const convertDateFromPersianToGeorgian = (
-  date: string
+  date: string | Date
 ): Date | undefined =>
-  new pd(date.split('/').map((x: string) => _.toNumber(x))).toDate()
+  typeof date === 'string'
+    ? new pd(date.split('/').map((x: string) => _.toNumber(x))).toDate()
+    : date
 
 export const getAllDaysInPeriodQuery = (type: reportPeriodType) => {
   let stepCount = 0

@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { ref, watch } from 'vue'
 import { groupQueryTypeEnum } from '@/core/enums/groupQueryTypeEnum'
+import _ from 'lodash'
 
 const emits = defineEmits(['update:value'])
 
@@ -12,7 +13,7 @@ watch(
   hasFeedback,
   () => {
     emits('update:value', {
-      value: hasFeedback.value === 'true',
+      value: _.toString(hasFeedback.value),
       type: groupQueryTypeEnum.HAS_FEEDBACK,
       to: null,
       from: null,

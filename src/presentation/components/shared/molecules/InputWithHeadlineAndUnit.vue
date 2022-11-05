@@ -2,7 +2,7 @@
 import { ref, watch } from 'vue'
 
 type InputWithHeadlineAndUnit = {
-  value: string | number
+  value: string | number 
   headline?: string
   unit: string
   placeholder: string

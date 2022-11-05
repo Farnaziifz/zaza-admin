@@ -4,7 +4,7 @@ import HintCollapse from '/src/presentation/components/shared/Organisms/HintColl
 import { ref } from 'vue'
 import { newDiscountAdd } from '../../../logics/specific/discount.handler'
 import { useDiscountStore } from '../../../resources/store/discount.store'
-import { convertDateFromPersianToGeorgian } from '@/logics/shared/date.handler'
+import { convertDateTimeFromPersianToGeorgian } from '@/logics/shared/date.handler'
 
 const discountStore = useDiscountStore()
 const notificationWay = ref()
@@ -15,7 +15,17 @@ const optionNotificationGroup = [
   { label: ' واتس اپ (به زودی)', value: 'WA', disabled: true },
 ]
 
+const setSelectedNotification = (value: string[]) => {
+  discountStore.notificationType = value
+}
+
 const onSubmitDiscountCode = async () => {
+  const filterdSelectedGroups = discountStore.promotionAssignedGroups?.map(
+    (el) => {
+      return { groupId: el.groupId }
+    }
+  )
+  console.log(filterdSelectedGroups)
   await newDiscountAdd({
     title: discountStore.title,
     code: discountStore.code,
@@ -23,17 +33,18 @@ const onSubmitDiscountCode = async () => {
     stateType: discountStore.stateType,
     type: discountStore.type,
     startAt: discountStore.startAt
-      ? convertDateFromPersianToGeorgian(discountStore.startAt.toString())
+      ? convertDateTimeFromPersianToGeorgian(discountStore.startAt.toString())
       : '',
     expireAt: discountStore.expireAt
-      ? convertDateFromPersianToGeorgian(discountStore.expireAt.toString())
+      ? convertDateTimeFromPersianToGeorgian(discountStore.expireAt.toString())
       : '',
     amount: discountStore.amount,
     minimumAmount: discountStore.minimumAmount,
     maximumAmount: discountStore.maximumAmount,
     consumeLimitation: discountStore.consumeLimitation,
     promotionSteps: discountStore.promotionSteps,
-    promotionAssignedGroups: discountStore.promotionAssignedGroups,
+    promotionAssignedGroups: filterdSelectedGroups,
+    notificationType: discountStore.notificationType,
   })
 }
 </script>
@@ -59,6 +70,7 @@ const onSubmitDiscountCode = async () => {
           style="width: 100%"
           name="notificationGroup"
           :options="optionNotificationGroup"
+          @change="setSelectedNotification"
         >
         </a-checkbox-group>
       </a-card>

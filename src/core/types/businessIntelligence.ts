@@ -58,4 +58,3 @@ export type retentionLoyalityRateOverallStatistics = {
   loyalCustomerPercentage: number
   attentionNeedCustomerPercentage: number
 }
-

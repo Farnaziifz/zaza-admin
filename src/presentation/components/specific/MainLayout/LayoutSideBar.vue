@@ -7,6 +7,7 @@ import {
   ApiOutlined,
   BarChartOutlined,
   AppstoreOutlined,
+  BookOutlined,
 } from '@ant-design/icons-vue'
 import router from '../../../../resources/router'
 
@@ -71,7 +72,7 @@ const changeRoute = (to: string) => {
       </a-menu-item>
       <a-menu-item key="21" @click="changeRoute('/group/list')">
         <template #icon>
-          <appstore-outlined />
+          <book-outlined />
         </template>
         <span> دسته‌بندی</span>
       </a-menu-item>
@@ -155,8 +156,8 @@ const changeRoute = (to: string) => {
         <a-menu-item
           key="13"
           @click="changeRoute('/business-intelligence/loyalty-evaluation')"
-          >ارزیابی وفاداری مشتریان</a-menu-item
-        >
+          >ارزیابی وفاداری مشتریان
+        </a-menu-item>
       </a-sub-menu>
       <a-menu-item key="14" @click="changeRoute('/comments/list')">
         <span>نظرات</span>

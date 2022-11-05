@@ -44,13 +44,18 @@ const closeModal = () => {
 
 const addQueryToList = () => {
   if (
-    (selectValue.value === groupQueryTypeEnum.PAID_MONEY_RANGE ||
-      selectValue.value === groupQueryTypeEnum.PAYMENT_AVERAGE) &&
-    (queryValue.value?.from < 5000 || queryValue.value?.to < 5000)
+    selectValue.value === groupQueryTypeEnum.PAID_MONEY_RANGE ||
+    selectValue.value === groupQueryTypeEnum.PAYMENT_AVERAGE
   ) {
-    closeModal()
-    showErrorMessage('مقادیر وارده برای بازه اشتباه میباشد')
-    return
+    if (queryValue.value?.from && queryValue.value?.from < 5000) {
+      showErrorMessage('مقادیر وارده برای بازه اشتباه میباشد')
+      return
+    }
+
+    if (queryValue.value?.to && queryValue.value?.to < 5000) {
+      showErrorMessage('مقادیر وارده برای بازه اشتباه میباشد')
+      return
+    }
   }
 
   if (
@@ -58,8 +63,8 @@ const addQueryToList = () => {
     queryValue.value?.from &&
     queryValue.value.from > queryValue.value.to
   ) {
-    closeModal()
     showErrorMessage('مقادیر وارده برای بازه اشتباه میباشد')
+    console.log('dsajkdhaj')
     return
   }
 
@@ -67,7 +72,6 @@ const addQueryToList = () => {
     (queryValue.value?.from || queryValue.value?.to) &&
     queryValue.value?.value
   ) {
-    closeModal()
     showErrorMessage('لطفا مقدار مورد نظر خود را وارد کنید')
     return
   }

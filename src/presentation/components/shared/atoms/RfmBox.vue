@@ -4,7 +4,7 @@ const props = withDefaults(
     width: number
     backgroundColor: string
     textColor: string
-    height?: number
+    height: number
     text?: string
     fontWeight?: number
     fontSize?: number
@@ -14,6 +14,7 @@ const props = withDefaults(
   {
     fontSize: 12,
     fontWeight: 500,
+    tooltipPosition: 'top',
   }
 )
 </script>
@@ -30,8 +31,8 @@ const props = withDefaults(
       }"
       class="text-center flex items-center justify-center"
     >
-      <slot name="text">
-        {{ props.text }}
+      <slot v-if="props.height >= 32 && props.width >= 24" name="text">
+        {{ props.width }}
       </slot>
     </div>
   </a-tooltip>

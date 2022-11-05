@@ -3,7 +3,7 @@ import HintCollapse from '/src/presentation/components/shared/Organisms/HintColl
 import InputWithHeadline from '/src/presentation/components/shared/molecules/InputWithHeadline.vue'
 import { t } from 'vui18n'
 import PlusIcon from '/src/presentation/components/shared/atoms/PlusIcon.vue'
-import { computed, Ref, ref, watch } from 'vue'
+import { computed, Ref, ref } from 'vue'
 import BSelect from '/src/presentation/components/shared/atoms/BSelect.vue'
 import BDatePicker from '/src/presentation/components/shared/Organisms/BDatePicker.vue'
 import { groupQueryTypeEnum } from '@/core/enums/groupQueryTypeEnum'
@@ -21,17 +21,15 @@ import FilterNumberOfFailedPayment from '/src/presentation/components/specific/C
 import FilterBadgeLabel from '/src/presentation/components/specific/CategoryAddFirstStep/FilterBadgeLabel.vue'
 import FilterSatisfaction from '/src/presentation/components/specific/CategoryAddFirstStep/FilterSatisfaction.vue'
 import { DeleteOutlined } from '@ant-design/icons-vue'
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-import pd from 'persian-date'
 import _ from 'lodash'
 import { useGroupStore } from '@/resources/store/group.store'
+import { convertDateFromPersianToGeorgian } from '@/logics/shared/date.handler'
 
 const titleValue = ref('')
 const btnDisabled = computed(() => !titleValue.value)
 const showModal = ref(false)
 const selectValue: Ref<string | undefined> = ref('')
-const pickedDate = ref([])
+const pickedDate = ref()
 const groupStore = useGroupStore()
 
 const openModal = () => {
@@ -91,18 +89,10 @@ for (const key in groupQueryTypeEnum) {
 const queryValue = ref()
 const queryList: Ref<query[]> = ref([])
 
-watch(queryList, () => console.log(queryList.value), { deep: true })
-
-const convertDate = (date: string): Date | null => {
-  if (date)
-    return new pd(date.split('/').map((x: string) => _.toNumber(x))).toDate()
-  else return null
-}
-
 const nextStep = async () => {
   await saveGroupQueries({
-    from: convertDate(pickedDate.value[0]),
-    to: convertDate(pickedDate.value[1]),
+    from: convertDateFromPersianToGeorgian(pickedDate.value[0]),
+    to: convertDateFromPersianToGeorgian(pickedDate.value[1]),
     title: titleValue.value,
     queries: queryList.value,
   })
@@ -115,6 +105,9 @@ const deleteQuery = (key: number) => {
 if (groupStore.title) {
   titleValue.value = groupStore.title
   queryList.value = groupStore.queries
+}
+if (groupStore.to && groupStore.from) {
+  pickedDate.value = [groupStore.from, groupStore.to]
 }
 </script>
 
@@ -147,6 +140,7 @@ if (groupStore.title) {
           )
         "
         :range="true"
+        type="date"
       >
         <template #headline>
           <span style="font-weight: 500; font-size: 16px">

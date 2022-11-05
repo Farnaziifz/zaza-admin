@@ -2,10 +2,25 @@ import { makeARequest } from '@/logics/shared/apiResponse.handler'
 import { api } from '@/resources/api/index'
 import { promotionUsageReport } from '@/core/types/discounts.type'
 import { couponsList } from '@/core/types/coupons.type'
+import { reportPeriodType } from '@/core/enums/reportType.enum'
+import { getAllDaysInPeriodQuery } from '@/logics/shared/date.handler'
 import { cashbackStatics } from '../../core/types/cashback.type'
+
 const baseUrl = 'report'
 const promotionUsage = '/promotion-usage'
 const couponUsage = '/coupon-usage'
+const dashboardStatisticsOverall = '/dashboard-statistics-overall'
+const creditFinancialEvaluation = '/credit-financial-evaluation'
+const cashbackFinancialEvaluation = '/cashback-financial-evaluation'
+const promotionFinancialEvaluation = '/promotion-financial-evaluation'
+
+export const getDashboardStatisticsOverall = async () =>
+  await makeARequest<{
+    numberOfCustomers: number
+    numberOfFeedbacks: number
+    customerWithRepurchase: number
+  }>(api.get, `${baseUrl}${dashboardStatisticsOverall}`)
+
 export const getReportPromotionUsage = async (page = 1) =>
   await makeARequest<promotionUsageReport>(
     api.get,
@@ -24,8 +39,49 @@ const getReportCachbackStatistic = async () =>
     `${baseUrl}/cashback-statistics-overall`
   )
 
+export type barChartEvaluationServerReport = {
+  from: string
+  id: string
+  sumIncome: number
+  to: string
+}[]
+
+const getCreditFinancialEvaluation = async (type: reportPeriodType) => {
+  const query = getAllDaysInPeriodQuery(type)
+  const res = await makeARequest<barChartEvaluationServerReport>(
+    api.get,
+    `${baseUrl}${creditFinancialEvaluation}${query}`
+  )
+
+  return res
+}
+
+const getCashbackFinancialEvaluation = async (type: reportPeriodType) => {
+  const query = getAllDaysInPeriodQuery(type)
+  const res = await makeARequest<barChartEvaluationServerReport>(
+    api.get,
+    `${baseUrl}${cashbackFinancialEvaluation}${query}`
+  )
+
+  return res
+}
+
+const getPromotionFinancialEvaluation = async (type: reportPeriodType) => {
+  const query = getAllDaysInPeriodQuery(type)
+  const res = await makeARequest<barChartEvaluationServerReport>(
+    api.get,
+    `${baseUrl}${promotionFinancialEvaluation}${query}`
+  )
+
+  return res
+}
+
 export const reportApi = () => ({
   getReportPromotionUsage,
   getReportCouponUsage,
   getReportCachbackStatistic,
+  getDashboardStatisticsOverall,
+  getCreditFinancialEvaluation,
+  getCashbackFinancialEvaluation,
+  getPromotionFinancialEvaluation,
 })

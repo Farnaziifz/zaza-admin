@@ -12,8 +12,8 @@ export type groupTitle = {
 } & pagination
 
 export type group = {
-  from: string | Date | null
-  to: string | Date | null
+  from?: string | Date | null
+  to?: string | Date | null
   queries: query[]
   title: string
 }

@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import _ from 'lodash'
 import RfmBox from '@/presentation/components/shared/atoms/RfmBox.vue'
+import { computed } from 'vue'
 
 type rfmProps = {
   width?: number
@@ -17,38 +18,68 @@ const props = withDefaults(defineProps<rfmProps>(), {
   height: 80,
   width: 512,
 })
-const heroLoyalAttentionNeedSum =
-  props.attentionNeedAmount + props.loyalAmount + props.heroAmount
+const heroLoyalAttentionNeedSum = computed(
+  () => props.attentionNeedAmount + props.loyalAmount + props.heroAmount
+)
 
-const heroPercentage = props.heroAmount / heroLoyalAttentionNeedSum
-const loyalPercentage = props.loyalAmount / heroLoyalAttentionNeedSum
-const heroLoyalPercentageSum = heroPercentage + loyalPercentage
-const attentionNeedPercentage =
-  props.attentionNeedAmount / heroLoyalAttentionNeedSum
+const heroPercentage = computed(
+  () => props.heroAmount / heroLoyalAttentionNeedSum.value
+)
+const loyalPercentage = computed(
+  () => props.loyalAmount / heroLoyalAttentionNeedSum.value
+)
 
-const heroLoyalHeight = heroLoyalPercentageSum * props.height
-const attentionNeedHeight = props.height - heroLoyalHeight
+const heroLoyalPercentageSum = computed(
+  () => heroPercentage.value + loyalPercentage.value
+)
 
-const heroWidth = (heroPercentage * props.width) / heroLoyalPercentageSum / 2
-const loyalWidth = (loyalPercentage * props.width) / heroLoyalPercentageSum / 2
+const attentionNeedPercentage = computed(
+  () => props.attentionNeedAmount / heroLoyalAttentionNeedSum.value
+)
+
+const heroLoyalHeight = computed(
+  () => heroLoyalPercentageSum.value * props.height
+)
+const attentionNeedHeight = computed(() => props.height - heroLoyalHeight.value)
+
+const heroWidth = computed(
+  () => (heroPercentage.value * props.width) / heroLoyalPercentageSum.value / 2
+)
+const loyalWidth = computed(
+  () => (loyalPercentage.value * props.width) / heroLoyalPercentageSum.value / 2
+)
 const attentionNeedWidth = props.width / 2
 
 //----------------------------------------------------
-//normal V lazy & churn
-const normalLazyChurnSum =
-  props.normalAmount + props.lazyAmount + props.churnAmount
+const normalLazyChurnSum = computed(
+  () => props.normalAmount + props.lazyAmount + props.churnAmount
+)
 
-const normalPercentage = props.normalAmount / normalLazyChurnSum
-const churnPercentage = props.churnAmount / normalLazyChurnSum
-const lazyPercentage = props.lazyAmount / normalLazyChurnSum
-const lazyChurnPercentageSum = churnPercentage + lazyPercentage
+const normalPercentage = computed(
+  () => props.normalAmount / normalLazyChurnSum.value
+)
+const churnPercentage = computed(
+  () => props.churnAmount / normalLazyChurnSum.value
+)
+const lazyPercentage = computed(
+  () => props.lazyAmount / normalLazyChurnSum.value
+)
+const lazyChurnPercentageSum = computed(
+  () => churnPercentage.value + lazyPercentage.value
+)
 
-const lazyChurnHeight = lazyChurnPercentageSum * props.height
-const lazyWidth = (lazyPercentage * props.width) / lazyChurnPercentageSum / 2
-const churnWidth = (churnPercentage * props.width) / lazyChurnPercentageSum / 2
+const lazyChurnHeight = computed(
+  () => lazyChurnPercentageSum.value * props.height
+)
+const lazyWidth = computed(
+  () => (lazyPercentage.value * props.width) / lazyChurnPercentageSum.value / 2
+)
+const churnWidth = computed(
+  () => (churnPercentage.value * props.width) / lazyChurnPercentageSum.value / 2
+)
 
-const normalHeight = props.height - lazyChurnHeight
-const normalWidth = props.width / 2
+const normalHeight = computed(() => props.height - lazyChurnHeight.value)
+const normalWidth = computed(() => props.width / 2)
 </script>
 <template>
   <div class="flex flex-row">
@@ -56,6 +87,7 @@ const normalWidth = props.width / 2
       <div class="flex flex-row" :style="{ height: `${heroLoyalHeight}px` }">
         <rfm-box
           :width="heroWidth"
+          :height="heroLoyalHeight"
           background-color="#0B4272"
           text-color="#f0f0f0"
           :tooltip-title="`%  قهرمانان: ${_.floor(heroPercentage * 100)} `"
@@ -70,6 +102,7 @@ const normalWidth = props.width / 2
         <rfm-box
           background-color="#1373C6"
           :width="loyalWidth"
+          :height="heroLoyalHeight"
           text-color="#f0f0f0"
           :tooltip-title="` % وفادارها: ${_.floor(loyalPercentage * 100)}`"
         >
@@ -115,6 +148,7 @@ const normalWidth = props.width / 2
         <rfm-box
           background-color="#C6002F"
           :width="lazyWidth"
+          :height="lazyChurnHeight"
           text-color="#fff"
           :tooltip-title="`% خواب آلودها: ${_.floor(lazyPercentage * 100)}`"
         >
@@ -129,6 +163,7 @@ const normalWidth = props.width / 2
           :tooltip-title="`% از دست رفته ها ${_.floor(churnPercentage * 100)}`"
           background-color="#72001B"
           :width="churnWidth"
+          :height="lazyChurnHeight"
           text-color="#fff"
         >
           <template #text>

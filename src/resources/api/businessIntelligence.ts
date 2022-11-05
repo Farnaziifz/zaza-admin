@@ -42,6 +42,7 @@ const getRetentionRateCustomer = async (page = 1) =>
 const getRetentionRateOverallStatistics = async () =>
   await makeARequest<retentionRateOverallStatistics>(
     api.get,
+
     `${pageUrl}${retentionRate}${overallStatistics}`
   )
 

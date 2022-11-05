@@ -77,6 +77,8 @@ const addQueryToList = () => {
   }
 
   if (queryValue.value) {
+    queryValue.value.from = _.toString(queryValue.value.from)
+    queryValue.value.to = _.toString(queryValue.value.to)
     queryList.value.push(queryValue.value)
     closeModal()
   } else {

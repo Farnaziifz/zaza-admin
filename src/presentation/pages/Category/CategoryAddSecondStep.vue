@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { computed, onBeforeMount, ref } from 'vue'
-import _ from 'lodash'
 import { useGroupStore } from '@/resources/store/group.store'
 import {
   postGroup,
@@ -55,8 +54,8 @@ const onChange = async (paginate: { current: number; pageSize: number }) => {
 
 const submitGroup = async () => {
   await postGroup({
-    from: _.toString(groupStore.from),
-    to: _.toString(groupStore.to),
+    from: groupStore.from,
+    to: groupStore.to,
     queries: groupStore.queries,
     title: groupStore.title,
   })

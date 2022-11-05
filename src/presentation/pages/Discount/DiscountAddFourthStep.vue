@@ -25,19 +25,13 @@ const onSubmitDiscountCode = async () => {
       return { groupId: el.groupId }
     }
   )
-  console.log(filterdSelectedGroups)
-  await newDiscountAdd({
+
+  const data = {
     title: discountStore.title,
     code: discountStore.code,
     consumeType: discountStore.consumeType,
     stateType: discountStore.stateType,
     type: discountStore.type,
-    startAt: discountStore.startAt
-      ? convertDateTimeFromPersianToGeorgian(discountStore.startAt.toString())
-      : '',
-    expireAt: discountStore.expireAt
-      ? convertDateTimeFromPersianToGeorgian(discountStore.expireAt.toString())
-      : '',
     amount: discountStore.amount,
     minimumAmount: discountStore.minimumAmount,
     maximumAmount: discountStore.maximumAmount,
@@ -45,7 +39,21 @@ const onSubmitDiscountCode = async () => {
     promotionSteps: discountStore.promotionSteps,
     promotionAssignedGroups: filterdSelectedGroups,
     notificationType: discountStore.notificationType,
-  })
+  }
+  if (discountStore.startAt)
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    data.startAt = convertDateTimeFromPersianToGeorgian(
+      discountStore.startAt.toString()
+    )
+  if (discountStore.expireAt)
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    data.expireAt = convertDateTimeFromPersianToGeorgian(
+      discountStore.expireAt.toString()
+    )
+  await newDiscountAdd(data)
+  discountStore.emptyDiscountStore()
 }
 </script>
 

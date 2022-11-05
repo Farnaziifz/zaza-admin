@@ -59,7 +59,7 @@ const submitGroup = async () => {
     queries: groupStore.queries,
     title: groupStore.title,
   })
-  goToPath('/credits')
+  goToPath('/group/list')
 }
 
 const goToPastStep = () => returnToPreviousRoute()

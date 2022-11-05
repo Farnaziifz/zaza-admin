@@ -3,7 +3,7 @@ import ContentLayout from '../layouts/ContentLayout.vue'
 import HintCollapse from '/src/presentation/components/shared/Organisms/HintCollapse.vue'
 import { t } from 'vui18n'
 import { hintType } from '@/core/types/hints.type'
-import InputBadgeLabel from '/src/presentation/components/specific/LabelSettings/InputBadgeLabel.vue'
+import InputBadgeLabel from '../components/specific/LabelSettings/InputBadgeLabel.vue'
 import { badgeDataFactory } from '../factory/specific/labelSettings/labelSettingsBadgeData.factory'
 import {
   initHandler,

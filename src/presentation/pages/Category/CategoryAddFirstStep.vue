@@ -103,8 +103,8 @@ const queryList: Ref<query[]> = ref([])
 
 const nextStep = async () => {
   await saveGroupQueries({
-    from: convertDateFromPersianToGeorgian(pickedDate.value[0]),
-    to: convertDateFromPersianToGeorgian(pickedDate.value[1]),
+    from: convertDateFromPersianToGeorgian(pickedDate.value?.[0]),
+    to: convertDateFromPersianToGeorgian(pickedDate.value?.[1]),
     title: titleValue.value,
     queries: queryList.value,
   })

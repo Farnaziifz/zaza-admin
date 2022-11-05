@@ -78,11 +78,11 @@ const addQueryToList = () => {
 
   if (queryValue.value) {
     queryValue.value.from =
-      _.toString(queryValue.value.from) === ''
+      _.toString(queryValue.value.from) !== ''
         ? _.toString(queryValue.value.from)
         : null
     queryValue.value.to =
-      _.toString(queryValue.value.to) === ''
+      _.toString(queryValue.value.to) !== ''
         ? _.toString(queryValue.value.to)
         : null
     queryList.value.push(queryValue.value)

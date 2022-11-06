@@ -46,15 +46,17 @@ onBeforeMount(async () => {
   serverData.value = await getGroupDetails(groupId)
   const customerRes = await getTargetCustomerList([groupId], 1)
   customerData.value = customerRes.data
-  serverData.value?.queries?.unshift({
-    type: 'TIME_RAGE',
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    //@ts-ignore
-    from: serverData.value?.from,
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    //@ts-ignore
-    to: serverData.value?.to,
-  })
+  if (serverData.value?.from && serverData.value.to) {
+    serverData.value?.queries?.unshift({
+      type: 'TIME_RAGE',
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      //@ts-ignore
+      from: serverData.value?.from,
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      //@ts-ignore
+      to: serverData.value?.to,
+    })
+  }
 })
 const openStatusModal = () => {
   visible.value = true

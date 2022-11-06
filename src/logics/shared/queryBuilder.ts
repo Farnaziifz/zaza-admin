@@ -68,6 +68,5 @@ export const createQueryString = (queryArray?: queryList) => {
   if (searchArray) q += createSearchQueryString(searchArray)
   if (filterArray) q += createFilterQueryString(filterArray)
 
-
   return q
 }

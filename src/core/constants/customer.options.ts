@@ -19,10 +19,6 @@ export const columns: TableColumnType<customer>[] = [
     key: 'fullName',
     dataIndex: 'fullName',
     customFilterDropdown: true,
-    onFilter: (value, record) =>
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      record.name.toString().toLowerCase().includes(value.toLowerCase()),
   },
   {
     title: 'تاریخ عضویت',
@@ -57,7 +53,10 @@ export const columns: TableColumnType<customer>[] = [
     title: 'وضعیت',
     dataIndex: 'isActive',
     key: 'isActive',
-    filters: [{ text: 'فعال', value: 'true' }],
+    filters: [
+      { text: 'فعال', value: 'true' },
+      { text: 'غیرفعال', value: 'false' },
+    ],
   },
   {
     title: 'عملیات',

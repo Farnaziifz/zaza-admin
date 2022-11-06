@@ -38,9 +38,24 @@ const onChange = async (
   sorter: {
     columnKey: string
     order: string
+    column?: object
   }
 ) => {
   const q = []
+
+  if (filters) {
+    filters.isActive.forEach((el) => {
+      q.push({
+        type: queryType.FILTER,
+        data: {
+          field: 'IsActive',
+          operand: '==',
+          value: el,
+        },
+      })
+    })
+  }
+
   if (sorter.column !== undefined) {
     q.push({
       type: queryType.SORT,
@@ -178,7 +193,8 @@ const reset = async () => {
                 :value="selectedKeys[0]?.keyword"
                 style="width: 188px; margin-bottom: 8px; display: block"
                 @change="
-                  (e) =>
+                  // @ts-ignore
+                  ;(e) =>
                     setSelectedKeys(
                       e.target.value
                         ? [

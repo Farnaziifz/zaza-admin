@@ -44,6 +44,8 @@ const onChange = async (
   const q = []
 
   if (filters) {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     filters.isActive.forEach((el) => {
       q.push({
         type: queryType.FILTER,

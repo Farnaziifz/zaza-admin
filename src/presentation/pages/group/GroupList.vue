@@ -75,7 +75,7 @@ const showModal = (item: string, isActive: boolean) => {
 }
 
 const goToDetails = (item: string) => {
-  router.push({ name: 'test', params: { id: item } })
+  router.push({ name: 'group-details', params: { id: item } })
 }
 
 const hideModal = () => {
@@ -153,9 +153,9 @@ const goToAdd = () => {
             </template>
           </template>
         </a-table>
-        <a-modal v-model:visible="visible" title="تغییر وضعیت مشتری">
+        <a-modal v-model:visible="visible" title="تغییر وضعیت دسته‌بندی">
           <p>
-            آیا از تغییر وضعیت مشتری به
+            آیا از تغییر وضعیت دسته‌بندی به
             <a-typography-text
               v-if="!itemForChangeStatus.isActive"
               type="success"
@@ -179,12 +179,12 @@ const goToAdd = () => {
         </a-modal>
         <a-modal
           v-model:visible="visibleDeleteModal"
-          title="حذف کوپن"
+          title="حذف دسته‌بندی"
           ok-text="حذف"
           cancel-text="بستن"
           @ok="confirmModal"
         >
-          <p>آیا از حذف کوپن "{{ itemForDelete.title }}" مطمئن هستید؟</p>
+          <p>آیا از حذف دسته‌بندی "{{ itemForDelete.title }}" مطمئن هستید؟</p>
         </a-modal>
       </div>
     </template>

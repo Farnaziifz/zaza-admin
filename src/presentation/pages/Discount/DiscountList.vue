@@ -125,7 +125,10 @@ const goToAdd = () => {
       >
         <template #bodyCell="{ column, record }">
           <template v-if="column.key === 'amount'">
-            {{ $filters.toPersianCurrency(record.amount, 'تومان') }}
+            <span v-if="record.type === 'CASH'">{{
+              $filters.toPersianCurrency(record.amount, 'تومان')
+            }}</span>
+            <span v-else>{{ record.amount }} درصد </span>
           </template>
           <template v-else-if="column.key === 'isActive'">
             <span>

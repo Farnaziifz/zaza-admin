@@ -11,7 +11,12 @@ import {
 import { onBeforeMount, ref, reactive, computed } from 'vue'
 import router from '@/resources/router'
 import { columns, data } from '@/core/constants/customer.options'
-import { querySearch, querySort, queryType } from '@/logics/shared/queryBuilder'
+import {
+  queryList,
+  querySearch,
+  querySort,
+  queryType,
+} from '@/logics/shared/queryBuilder'
 import _ from 'lodash'
 import { SearchOutlined } from '@ant-design/icons-vue'
 
@@ -41,12 +46,12 @@ const onChange = async (
     column?: object
   }
 ) => {
-  const q = []
+  const q: queryList = []
 
   if (filters) {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    filters.isActive.forEach((el) => {
+    filters?.isActive?.forEach((el) => {
       q.push({
         type: queryType.FILTER,
         data: {
@@ -180,13 +185,7 @@ const reset = async () => {
             </template>
           </template>
           <template
-            #customFilterDropdown="{
-              setSelectedKeys,
-              selectedKeys,
-              // confirm,
-              // clearFilters,
-              column,
-            }"
+            #customFilterDropdown="{ setSelectedKeys, selectedKeys, column }"
           >
             <div style="padding: 8px">
               <a-input

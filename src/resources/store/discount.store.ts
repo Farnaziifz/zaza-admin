@@ -19,6 +19,7 @@ export const useDiscountStore = defineStore('discount-store', {
     consumeLimitation: 0,
     promotionSteps: [],
     promotionAssignedGroups: [],
+    notificationType: [],
   }),
 
   actions: {
@@ -40,6 +41,22 @@ export const useDiscountStore = defineStore('discount-store', {
     },
     changeDiscountThirdStep(discountData: discountThirdStep) {
       this.promotionAssignedGroups = discountData.promotionAssignedGroups
+    },
+    emptyDiscountStore() {
+      this.title = ''
+      this.type = undefined
+      this.consumeType = undefined
+      this.stateType = undefined
+      this.code = undefined
+      this.startAt = ''
+      this.expireAt = ''
+      this.amount = 0
+      this.minimumAmount = 0
+      this.maximumAmount = 0
+      this.consumeLimitation = 0
+      this.promotionSteps = []
+      this.promotionAssignedGroups = []
+      this.notificationType = []
     },
   },
 })

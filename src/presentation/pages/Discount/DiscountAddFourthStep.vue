@@ -2,14 +2,61 @@
 import ContentLayout from '/src/presentation/layouts/ContentLayout.vue'
 import HintCollapse from '/src/presentation/components/shared/Organisms/HintCollapse.vue'
 import { ref } from 'vue'
-const notificationWay = ref()
+import { newDiscountAdd } from '../../../logics/specific/discount.handler'
+import { useDiscountStore } from '../../../resources/store/discount.store'
+import { convertDateTimeFromPersianToGeorgian } from '@/logics/shared/date.handler'
 
+const discountStore = useDiscountStore()
+const notificationWay = ref()
 const optionNotificationGroup = [
   { label: 'پیامک', value: 'SMS' },
   { label: 'ایمیل ( به زودی )', value: 'EMAIL', disabled: true },
   { label: ' پوش ناتفیکیشن (به زودی)', value: 'PUSH', disabled: true },
   { label: ' واتس اپ (به زودی)', value: 'WA', disabled: true },
 ]
+
+const setSelectedNotification = (value: string[]) => {
+  discountStore.notificationType = value
+}
+
+const onSubmitDiscountCode = async () => {
+  const filterdSelectedGroups = discountStore.promotionAssignedGroups?.map(
+    (el) => {
+      return { groupId: el.groupId }
+    }
+  )
+
+  const data = {
+    title: discountStore.title,
+    code: discountStore.code,
+    consumeType: discountStore.consumeType,
+    stateType: discountStore.stateType,
+    type: discountStore.type,
+    amount: discountStore.amount,
+    minimumAmount: discountStore.minimumAmount,
+    maximumAmount: discountStore.maximumAmount,
+    consumeLimitation: discountStore.consumeLimitation,
+    promotionSteps: discountStore.promotionSteps,
+    promotionAssignedGroups: filterdSelectedGroups,
+    notificationType: discountStore.notificationType,
+  }
+  if (discountStore.startAt)
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    data.startAt = convertDateTimeFromPersianToGeorgian(
+      discountStore.startAt.toString()
+    )
+  if (discountStore.expireAt)
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    data.expireAt = convertDateTimeFromPersianToGeorgian(
+      discountStore.expireAt.toString()
+    )
+  const res = await newDiscountAdd(data)
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  if (res) discountStore.emptyDiscountStore()
+}
 </script>
 
 <template>
@@ -33,6 +80,7 @@ const optionNotificationGroup = [
           style="width: 100%"
           name="notificationGroup"
           :options="optionNotificationGroup"
+          @change="setSelectedNotification"
         >
         </a-checkbox-group>
       </a-card>
@@ -41,7 +89,11 @@ const optionNotificationGroup = [
         <a-button class="ml-4">
           <span>مرحله قبل</span>
         </a-button>
-        <a-button type="primary" class="button-secondary">
+        <a-button
+          type="primary"
+          class="button-secondary"
+          @click="onSubmitDiscountCode"
+        >
           <span>ثبت</span>
         </a-button>
       </div>

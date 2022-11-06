@@ -14,7 +14,7 @@ import { goToPath } from '@/logics/shared/route.handler'
 import { showErrorMessage } from '@/logics/shared/message.handler'
 import { saveDiscountDataSecondStep } from '../../../logics/specific/discount.handler'
 import { useDiscountStore } from '@/resources/store/discount.store'
-
+import _ from 'lodash'
 const discountStore = useDiscountStore()
 const settingData = ref({
   consumeType: '',
@@ -31,7 +31,6 @@ const minimumAmount = ref()
 const maximumAmount = ref()
 const consumeLimitation = ref()
 
-// const minimumPayPriceInput = ref('')
 const btnDisabled = computed(() => {
   if (
     settingData.value.consumeType &&
@@ -44,15 +43,9 @@ const btnDisabled = computed(() => {
 })
 
 const onAddDiscountSecondStep = () => {
-  console.log(remainingPrice.value)
-  if (
-    remainingPrice.value !== 0 &&
-    settingData.value.consumeType === DiscountConsumeType.SEVERAL_TIMES &&
-    settingData.value.stateType === DiscountStateType.VARIABLE &&
-    settingData.value.type === DiscountTypeType.CASH
-  ) {
-    showErrorMessage('مجموع مبلع مرتبه کامل نشده است.')
-  } else {
+  const checked = checkValidationOfForm()
+
+  if (checked) {
     saveDiscountDataSecondStep({
       type: settingData.value.type,
       consumeType: settingData.value.consumeType,
@@ -64,6 +57,47 @@ const onAddDiscountSecondStep = () => {
       promotionSteps: confirmPromotionStep.value,
     })
   }
+}
+
+const checkValidationOfForm = () => {
+  //TODO refactor this fucking makaroni khoshmaze (Farnaz Farzipour)
+  const OnceConstCashe =
+    settingData.value.consumeType === DiscountConsumeType.ONCE &&
+    settingData.value.type === DiscountTypeType.CASH &&
+    settingData.value.stateType === DiscountStateType.CONSTANT
+
+  const ServeralConstCashe =
+    settingData.value.consumeType === DiscountConsumeType.SEVERAL_TIMES &&
+    settingData.value.type === DiscountTypeType.CASH &&
+    settingData.value.stateType === DiscountStateType.CONSTANT
+  const SevralVarCashe =
+    settingData.value.consumeType === DiscountConsumeType.SEVERAL_TIMES &&
+    settingData.value.type === DiscountTypeType.CASH &&
+    settingData.value.stateType === DiscountStateType.VARIABLE
+
+  if (
+    (OnceConstCashe || ServeralConstCashe || SevralVarCashe) &&
+    _.toNumber(minimumAmount.value) < _.toNumber(amount.value)
+  ) {
+    showErrorMessage('حداقل مبلغ پرداختی باید بیشتر از مبلغ تخفیف باشد.')
+  } else if (remainingPrice.value !== 0 && SevralVarCashe) {
+    showErrorMessage('مجموع مبلع مرتبه کامل نشده است.')
+  } else if (
+    settingData.value.type === DiscountTypeType.PERCENTAGE &&
+    (amount.value > 100 || amount.value < 0)
+  ) {
+    showErrorMessage('مقدار درصد باید بین ۰ تا ۱۰۰ باشد.')
+  } else if (
+    settingData.value.type === DiscountTypeType.CASH &&
+    amount.value * 10 < 5000
+  ) {
+    showErrorMessage('مقدار مبلغ تخفیف نباید کمتر از ۵۰۰ تومان باشد.')
+  } else if (SevralVarCashe && amount.value * 10 < 5000) {
+    showErrorMessage('مقدار مبلغ تخفیف نباید کمتر از ۵۰۰ تومان باشد.')
+  } else {
+    return true
+  }
+  return false
 }
 const goToPastStep = () => goToPath('/discount/add/first-step')
 
@@ -378,7 +412,6 @@ const onChangeAmount = (value: string) => {
         <a-button class="ml-4" @click="goToPastStep">
           <span>مرحله قبل</span>
         </a-button>
-        {{ remainingPrice }}
         <a-button
           type="primary"
           class="button-secondary"

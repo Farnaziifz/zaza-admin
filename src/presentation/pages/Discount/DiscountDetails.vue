@@ -88,13 +88,13 @@ const onChangeStatus = async () => {
           <div v-if="serverData.startAt" class="info-container">
             <div class="key">تاریخ و زمان شروع</div>
             <div class="value">
-              {{ $filters.toPersianDate(serverData.startAt) }}
+              {{ $filters.toPersianDate(_.toString(serverData.startAt)) }}
             </div>
           </div>
           <div v-if="serverData.expireAt" class="info-container">
             <div class="key">تاریخ و زمان پایان</div>
             <div class="value">
-              {{ $filters.toPersianDate(serverData.expireAt) }}
+              {{ $filters.toPersianDate(_.toString(serverData.expireAt)) }}
             </div>
           </div>
         </div>

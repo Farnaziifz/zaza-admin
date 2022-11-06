@@ -99,8 +99,6 @@ const groupTableColumn: TableColumnType<{
   },
 ]
 
-// true => repeated
-// false => not repeated
 const checkRepeatedGroupInSelectedGroupsList = () =>
   groupItems.value
     ? selectedGroups.value.indexOf(

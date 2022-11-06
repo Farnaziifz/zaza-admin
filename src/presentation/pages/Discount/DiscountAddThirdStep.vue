@@ -15,7 +15,9 @@ import { showErrorMessage } from '@/logics/shared/message.handler'
 import { TableColumnType } from 'ant-design-vue'
 import { groupCustomer, groupCustomerItem } from '@/core/types/customer.type'
 import { goToPath } from '@/logics/shared/route.handler'
+import { useDiscountStore } from '../../../resources/store/discount.store'
 
+const discountStore = useDiscountStore()
 const selectedGroup: Ref<string | undefined> = ref()
 const groupOptions: Ref<{ label: string; value: string }[]> = ref([])
 const groupItems: Ref<groupItemTitle[] | undefined> = ref([])
@@ -166,13 +168,19 @@ const deleteRowFromSelectedGroups = () => {
 }
 
 const onSendThirdData = () => {
-  const filterdSelectedGroups = selectedGroups.value.map((el) => {
-    return { groupId: el.groupId }
-  })
   saveDiscountThirdStep({
-    promotionAssignedGroups: filterdSelectedGroups,
+    promotionAssignedGroups: selectedGroups.value,
   })
   goToPath('/discount/add/fourth-step')
+}
+
+if (
+  discountStore.promotionAssignedGroups &&
+  discountStore.promotionAssignedGroups.length
+) {
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  //@ts-ignore
+  selectedGroups.value = discountStore.promotionAssignedGroups
 }
 </script>
 <template>

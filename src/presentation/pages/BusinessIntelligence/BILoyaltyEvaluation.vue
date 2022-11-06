@@ -12,8 +12,10 @@ import BChart from '@/presentation/components/shared/Organisms/BChart.vue'
 import { TablePaginationConfig } from 'ant-design-vue'
 import { loyalityType } from '../../../core/enums/fluxityType.enum'
 import { retantionRateCustomerList } from '@/core/types/retantionRate.type'
-import _ from 'lodash'
 import { goToPath } from '@/logics/shared/route.handler'
+import { SearchOutlined } from '@ant-design/icons-vue'
+import { querySearch, queryType } from '@/logics/shared/queryBuilder'
+import _ from 'lodash'
 
 const overallStatisticsData: Ref<
   retentionLoyalityRateOverallStatistics | undefined
@@ -32,8 +34,12 @@ const customerRetentionColumn = [
     key: 'fullName',
     dataIndex: 'fullName',
     customFilterDropdown: true,
-    // onFilter: (value, record) =>
-    //   record.fullName.toSrting().toLowerCase().includes(value.toLowerCase),
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    onFilter: (value, record) =>
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      record.name.toString().toLowerCase().includes(value.toLowerCase()),
   },
   {
     title: 'تعداد سفارش',
@@ -110,8 +116,45 @@ const onChangePage = async (paginate: TablePaginationConfig) =>
 const goToSetting = () => {
   goToPath('/business-intelligence/retantion-rate-setting')
 }
-const search = async () => {
-  console.log('saalm')
+const search = async (selectedKeys: querySearch[]) => {
+  console.log(selectedKeys)
+
+  const searchQueries = selectedKeys.map((el) => {
+    el.keyword = decodeURI(el.keyword)
+    return {
+      type: queryType.SEARCH,
+      data: el,
+    }
+  })
+  const res = await retantionLoyalCustomerList(
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    retantionateCustomerListPagination.value.current,
+    [
+      {
+        field: 'CustomerType',
+        operand: '==',
+        value: selectedCustomerType.value,
+      },
+    ],
+    searchQueries
+  )
+  if (res) retantionRateData.value = res
+}
+const reset = async () => {
+  const res = await retantionLoyalCustomerList(
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    retantionateCustomerListPagination.value.current,
+    [
+      {
+        field: 'CustomerType',
+        operand: '==',
+        value: selectedCustomerType.value,
+      },
+    ]
+  )
+  if (res) retantionRateData.value = res
 }
 </script>
 
@@ -240,6 +283,7 @@ const search = async () => {
                 :value="selectedKeys[0]?.keyword"
                 style="width: 188px; margin-bottom: 8px; display: block"
                 @change="
+                // @ts-ignore
                   (e) =>
                     setSelectedKeys(
                       e.target.value

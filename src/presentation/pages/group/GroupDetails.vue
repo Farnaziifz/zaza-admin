@@ -46,13 +46,30 @@ onBeforeMount(async () => {
   serverData.value = await getGroupDetails(groupId)
   const customerRes = await getTargetCustomerList([groupId], 1)
   customerData.value = customerRes.data
+  serverData.value?.queries?.unshift({
+    type: 'TIME_RAGE',
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    //@ts-ignore
+    from: serverData.value?.from,
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    //@ts-ignore
+    to: serverData.value?.to,
+  })
 })
 const openStatusModal = () => {
   visible.value = true
+  itemForChangeStatus.isActive = serverData.value?.isActive
+    ? serverData.value?.isActive
+    : false
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  //@ts-ignore
+  itemForChangeStatus.id = serverData.value?.id ? serverData.value?.id : ''
 }
 const changeGroupStatus = async () => {
-  const res = await groupStatus(groupId)
-  if (res) getGroupDetails(groupId)
+  await groupStatus(groupId)
+  serverData.value = await getGroupDetails(groupId)
+
+  visible.value = false
 }
 const hideModal = () => {
   visible.value = false
@@ -64,10 +81,8 @@ const pagination = computed(() => ({
   pageSize: 10,
 }))
 const onChange: TableProps<customerGroupList>['onChange'] = async (
-  paginate,
-  sorter
+  paginate
 ) => {
-  console.log('params', paginate, sorter)
   const res = await getTargetCustomerList(
     [groupId],
     _.toNumber(paginate.current)
@@ -103,23 +118,25 @@ const onChange: TableProps<customerGroupList>['onChange'] = async (
               :key="credit.amount"
             >
               هدیه اعتباری
-              {{ $filters.toPersianCurrency(credit.amount, 'تومان') }}
+              {{ $filters.toPersianCurrency(credit.amount, 'تومانی') }}
             </li>
             <li
               v-for="discount in serverData?.promotionAssignedGroups"
               :key="discount.amount"
             >
               <span v-if="discount.unit === 'CASH'"
-                >هدیه اعتباری
-                {{ $filters.toPersianCurrency(discount.amount, 'تومان') }}</span
+                >کد تخفیف
+                {{
+                  $filters.toPersianCurrency(discount.amount, 'تومانی')
+                }}</span
               >
-              <span v-else>هدیه اعتباری {{ discount.amount }} درصدی</span>
+              <span v-else>کد تخفیف {{ discount.amount }} درصدی</span>
             </li>
           </ul>
           <p v-else>مشوق وابسته‌ای وجود ندارد</p>
         </template>
       </CardCollapse>
-      <CardCollapse title="فیلتر های اتنخاب شده" class="card-filter">
+      <CardCollapse title="فیلتر های انتخاب شده" class="card-filter">
         <template #body>
           <div
             class="filter-item-container flex flex-wrap"
@@ -133,11 +150,16 @@ const onChange: TableProps<customerGroupList>['onChange'] = async (
               <ul class="key-list">
                 <li>
                   <div class="key">
+                    <span v-if="item.type === 'TIME_RAGE'"
+                      >بازه زمانی انتخاب شده</span
+                    >
+                  </div>
+                  <div class="key">
                     <span v-if="item.type === 'BUSINESS_CLASSIFICATION'"
                       >طبقه‌بندی تجاری</span
                     >
                     <span v-if="item.type === 'PURCHASED_PRODUCT_RANGE'"
-                      >بازه دلخواه تعداد زیرمحصولات خریداری شده</span
+                      >بازه دلخواه تعداد محصولات خریداری شده</span
                     >
                     <span v-if="item.type === 'NUMBER_OF_FAILED_PAYMENT'"
                       >بازه دلخواه تعداد پرداخت ناموفق‌ها</span
@@ -152,7 +174,7 @@ const onChange: TableProps<customerGroupList>['onChange'] = async (
                     <span v-if="item.type === 'SATISFACTION_LABEL'"
                       >برچسب رضایتمندی</span
                     >
-                    <span v-if="item.type === 'BADGE_LABEL'">برچسب نشان</span>
+                    <span v-if="item.type === 'BADGE_LABEL'">برچسب پویایی</span>
                     <span v-if="item.type === 'PAID_MONEY_RANGE'"
                       >بازه دلخواه میزان پول پرداختی</span
                     >
@@ -164,6 +186,17 @@ const onChange: TableProps<customerGroupList>['onChange'] = async (
                 </li>
               </ul>
               <div class="value">
+                <span v-if="item.type === 'TIME_RAGE'">
+                  <!-- {{ item }} -->
+                  <span v-if="item.from">از</span>
+                  <span v-if="item.from" class="colored"
+                    >{{ $filters.toPersianDate(_.toString(item.from)) }}
+                  </span>
+                  <span v-if="item.to"> تا </span>
+                  <span v-if="item.to" class="colored"
+                    >{{ $filters.toPersianDate(_.toString(item.to)) }}
+                  </span>
+                </span>
                 <span v-if="item.value === 'CHURN'">از دست رفته</span>
                 <span v-if="item.value === 'LAZY'">خواب آلود</span>
                 <span v-if="item.value === 'NORMAL'">عادی</span>
@@ -227,11 +260,8 @@ const onChange: TableProps<customerGroupList>['onChange'] = async (
                 <span v-if="item.type === 'PAID_MONEY_RANGE'">
                   <span v-if="item.from">از</span>
                   <span v-if="item.from" class="colored"
-                    >{{
-                      $filters.toPersianCurrency(item.from / 10, 'تومان')
-                    }}
-                    سفارش</span
-                  >
+                    >{{ $filters.toPersianCurrency(item.from / 10, 'تومان') }}
+                  </span>
                   <span v-if="item.to"> تا </span>
                   <span v-if="item.to" class="colored"
                     >{{
@@ -279,6 +309,7 @@ const onChange: TableProps<customerGroupList>['onChange'] = async (
       </a-card>
 
       <a-modal v-model:visible="visible" title="تغییر وضعیت دسته‌بندی">
+        {{ itemForChangeStatus.isActive }}
         <p>
           آیا از تغییر وضعیت دسته‌بندی به
           <a-typography-text v-if="!itemForChangeStatus.isActive" type="success"

@@ -31,7 +31,6 @@ const minimumAmount = ref()
 const maximumAmount = ref()
 const consumeLimitation = ref()
 
-// const minimumPayPriceInput = ref('')
 const btnDisabled = computed(() => {
   if (
     settingData.value.consumeType &&
@@ -85,7 +84,7 @@ const checkValidationOfForm = () => {
     showErrorMessage('مجموع مبلع مرتبه کامل نشده است.')
   } else if (
     settingData.value.type === DiscountTypeType.PERCENTAGE &&
-    (amount.value < 100 || amount.value > 0)
+    (amount.value > 100 || amount.value < 0)
   ) {
     showErrorMessage('مقدار درصد باید بین ۰ تا ۱۰۰ باشد.')
   } else if (

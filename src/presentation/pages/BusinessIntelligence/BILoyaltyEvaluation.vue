@@ -31,6 +31,9 @@ const customerRetentionColumn = [
     title: 'مشتری',
     key: 'fullName',
     dataIndex: 'fullName',
+    customFilterDropdown: true,
+    // onFilter: (value, record) =>
+    //   record.fullName.toSrting().toLowerCase().includes(value.toLowerCase),
   },
   {
     title: 'تعداد سفارش',
@@ -106,6 +109,9 @@ const onChangePage = async (paginate: TablePaginationConfig) =>
   ))
 const goToSetting = () => {
   goToPath('/business-intelligence/retantion-rate-setting')
+}
+const search = async () => {
+  console.log('saalm')
 }
 </script>
 
@@ -219,9 +225,64 @@ const goToSetting = () => {
             </template>
           </template>
           <template
-            #customFilterDropdown="{ setSelectedKeys, selectedKeys, column }"
+            #customFilterDropdown="{
+              setSelectedKeys,
+              selectedKeys,
+              // confirm,
+              // clearFilters,
+              column,
+            }"
           >
-            
+            <div style="padding: 8px">
+              <a-input
+                ref="searchInput"
+                :placeholder="`جستجو در نام مشتری`"
+                :value="selectedKeys[0]?.keyword"
+                style="width: 188px; margin-bottom: 8px; display: block"
+                @change="
+                  (e) =>
+                    setSelectedKeys(
+                      e.target.value
+                        ? [
+                            {
+                              keyword: e.target.value,
+                              field: _.upperFirst(column.dataIndex),
+                            },
+                          ]
+                        : []
+                    )
+                "
+              />
+              <a-button
+                type="primary"
+                size="small"
+                style="width: 90px"
+                class="ml-2"
+                @click="search(selectedKeys)"
+              >
+                <template #icon>
+                  <SearchOutlined />
+                </template>
+                جستجو
+              </a-button>
+              <a-button
+                size="small"
+                style="width: 90px"
+                @click="
+                  () => {
+                    reset()
+                    setSelectedKeys([])
+                  }
+                "
+              >
+                پاک کردن
+              </a-button>
+            </div>
+          </template>
+          <template #customFilterIcon="{ filtered }">
+            <search-outlined
+              :style="{ color: filtered ? '#108ee9' : undefined }"
+            />
           </template>
         </a-table>
       </div>

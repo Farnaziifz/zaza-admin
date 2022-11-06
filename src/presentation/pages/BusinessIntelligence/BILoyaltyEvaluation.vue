@@ -218,6 +218,11 @@ const goToSetting = () => {
               }}
             </template>
           </template>
+          <template
+            #customFilterDropdown="{ setSelectedKeys, selectedKeys, column }"
+          >
+            
+          </template>
         </a-table>
       </div>
     </template>

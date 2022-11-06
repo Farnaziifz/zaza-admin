@@ -5,8 +5,12 @@ import {
   showLoadingMessage,
   showSuccessMessage,
 } from '@/logics/shared/message.handler'
+import { queryList } from '@/logics/shared/queryBuilder'
 
 const api = customerApi()
+
+export const getCustomerList = async (page = 1, queries?: queryList) =>
+  await api.customerListGet(page, queries)
 
 export const initPageHandler = async (
   page?: number,

@@ -18,26 +18,35 @@ export const columns: TableColumnType<customer>[] = [
     title: 'مشتری',
     key: 'fullName',
     dataIndex: 'fullName',
+    customFilterDropdown: true,
+    onFilter: (value, record) =>
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      record.name.toString().toLowerCase().includes(value.toLowerCase()),
   },
   {
     title: 'تاریخ عضویت',
     key: 'createdAt',
     dataIndex: 'createdAt',
+    sorter: true,
   },
   {
     title: 'میانگین پرداختی',
     dataIndex: 'totalExpenses',
     key: 'totalExpenses',
+    sorter: true,
   },
   {
     title: 'تعداد سفارش',
     dataIndex: 'numberOfOrder',
     key: 'numberOfOrder',
+    sorter: true,
   },
   {
     title: 'ارزش مشتری',
     dataIndex: 'value',
     key: 'value',
+    sorter: true,
   },
   {
     title: 'برچسب مشتری',
@@ -48,6 +57,7 @@ export const columns: TableColumnType<customer>[] = [
     title: 'وضعیت',
     dataIndex: 'isActive',
     key: 'isActive',
+    filters: [{ text: 'فعال', value: 'true' }],
   },
   {
     title: 'عملیات',

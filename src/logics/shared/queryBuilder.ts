@@ -29,10 +29,10 @@ export const createFilterQuery = (model: queryFilter, index = 0) =>
   `FilterModels[${index}].value=${model.value}&FilterModels[${index}].operand=${model.operand}&FilterModels[${index}].field=${model.field}&`
 
 export const createSearchQuery = (model: querySearch, index = 0) =>
-  `SearchModels[${index}].field=${model.field}&SearchModels.[${index}].keyword=${model.keyword}&`
+  `SearchModels[${index}].field=${model.field}&SearchModels[${index}].keyword=${model.keyword}&`
 
 export const createSortQuery = (model: querySort, index = 0) =>
-  `SortModels[${index}].field=${model.field}&SortModels[${index}}.order=${model.order}&`
+  `SortModels[${index}].field=${model.field}&SortModels[${index}].order=${model.order}&`
 
 export const createFilterQueryString = (filterArray: queryFilter[]) =>
   filterArray.reduce(
@@ -52,21 +52,22 @@ export const createSortQueryString = (sortArray: querySort[]) =>
     ''
   )
 
-export const createQueryString = (queryArray: queryList) => {
+export const createQueryString = (queryArray?: queryList) => {
   const sortArray: querySort[] = queryArray
-    .filter((el) => el.type === queryType.SORT)
+    ?.filter((el) => el.type === queryType.SORT)
     .map((el) => el.data) as querySort[]
   const searchArray: querySearch[] = queryArray
-    .filter((el) => el.type === queryType.SEARCH)
+    ?.filter((el) => el.type === queryType.SEARCH)
     .map((el) => el.data) as querySearch[]
   const filterArray: queryFilter[] = queryArray
-    .filter((el) => el.type === queryType.FILTER)
+    ?.filter((el) => el.type === queryType.FILTER)
     .map((el) => el.data) as queryFilter[]
 
   let q = ``
   if (sortArray) q += createSortQueryString(sortArray)
   if (searchArray) q += createSearchQueryString(searchArray)
   if (filterArray) q += createFilterQueryString(filterArray)
+
 
   return q
 }

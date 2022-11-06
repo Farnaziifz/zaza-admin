@@ -52,8 +52,10 @@ const onSubmitDiscountCode = async () => {
     data.expireAt = convertDateTimeFromPersianToGeorgian(
       discountStore.expireAt.toString()
     )
-  await newDiscountAdd(data)
-  discountStore.emptyDiscountStore()
+  const res = await newDiscountAdd(data)
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  if (res) discountStore.emptyDiscountStore()
 }
 </script>
 

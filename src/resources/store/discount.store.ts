@@ -19,7 +19,7 @@ export const useDiscountStore = defineStore('discount-store', {
     consumeLimitation: 0,
     promotionSteps: [],
     promotionAssignedGroups: [],
-    notificationType: []
+    notificationType: [],
   }),
 
   actions: {
@@ -56,6 +56,7 @@ export const useDiscountStore = defineStore('discount-store', {
       this.consumeLimitation = 0
       this.promotionSteps = []
       this.promotionAssignedGroups = []
+      this.notificationType = []
     },
   },
 })

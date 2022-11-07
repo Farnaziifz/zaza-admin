@@ -107,7 +107,7 @@ const search = async (selectedKeys: querySearch[]) => {
       data: el,
     }
   })
-  const res = await getCustomerList(pagination.value.current, searchQueries)
+  const res = await getCustomerList(1, searchQueries)
   if (res.data) data.value = res.data
 }
 const reset = async () => {

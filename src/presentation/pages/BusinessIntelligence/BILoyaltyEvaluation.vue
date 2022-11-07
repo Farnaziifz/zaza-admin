@@ -117,8 +117,6 @@ const goToSetting = () => {
   goToPath('/business-intelligence/retantion-rate-setting')
 }
 const search = async (selectedKeys: querySearch[]) => {
-  console.log(selectedKeys)
-
   const searchQueries = selectedKeys.map((el) => {
     el.keyword = decodeURI(el.keyword)
     return {
@@ -129,7 +127,7 @@ const search = async (selectedKeys: querySearch[]) => {
   const res = await retantionLoyalCustomerList(
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    retantionateCustomerListPagination.value.current,
+    1,
     [
       {
         field: 'CustomerType',

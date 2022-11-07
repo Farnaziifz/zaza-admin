@@ -194,8 +194,7 @@ const reset = async () => {
                 :value="selectedKeys[0]?.keyword"
                 style="width: 188px; margin-bottom: 8px; display: block"
                 @change="
-                  // @ts-ignore
-                  ;(e) =>
+                  (e) =>
                     setSelectedKeys(
                       e.target.value
                         ? [

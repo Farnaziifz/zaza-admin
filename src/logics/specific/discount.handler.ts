@@ -18,6 +18,7 @@ import {
 } from '@/logics/shared/message.handler'
 import { useDiscountStore } from '@/resources/store/discount.store'
 import { goToPath } from '@/logics/shared/route.handler'
+import { queryList } from '../shared/queryBuilder'
 
 const api = discountApi()
 const customersApi = customerApi()
@@ -38,6 +39,9 @@ export const initPageHandler = async (
     throw 'error'
   }
 }
+
+export const getDiscountListRe = async (page = 1, queries?: queryList) =>
+  await api.discountListGetRe(page, queries)
 
 export const chnageDiscountStatus = async (data: string) => {
   const res = await api.put(data)

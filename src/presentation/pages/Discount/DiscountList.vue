@@ -2,16 +2,14 @@
 import ContentLayout from '@/presentation/layouts/ContentLayout.vue'
 import PlusIcon from '/src/presentation/components/shared/atoms/PlusIcon.vue'
 import { TableProps } from 'ant-design-vue'
-import {
-  discountsList,
-  discountCustomerGroup,
-} from '@/core/types/discounts.type'
+import { discountCustomerGroup } from '@/core/types/discounts.type'
 import { ref, onBeforeMount, computed, reactive } from 'vue'
 import {
   initPageHandler,
   chnageDiscountStatus,
   deleteDiscount,
   getDiscoutGroup,
+  getDiscountListRe,
 } from '../../../logics/specific/discount.handler'
 import router from '@/resources/router'
 import {
@@ -20,6 +18,15 @@ import {
   data,
   customerData,
 } from '../../../core/constants/discount.options'
+import { SearchOutlined } from '@ant-design/icons-vue'
+import _ from 'lodash'
+import {
+  queryList,
+  querySearch,
+  queryType,
+  querySort,
+} from '@/logics/shared/queryBuilder'
+import { TablePaginationConfig } from 'ant-design-vue'
 
 const pagination = computed(() => ({
   total: data.value.totalCount,
@@ -40,8 +47,43 @@ onBeforeMount(async () => {
   const pageSize = 10
   data.value = await initPageHandler(page, pageSize)
 })
-const onChange: TableProps<discountsList>['onChange'] = async (paginate) => {
-  data.value = await initPageHandler(paginate.current, paginate.pageSize)
+const onChange = async (
+  paginate: TablePaginationConfig,
+  filters: object,
+  sorter: {
+    columnKey: string
+    order: string
+    column?: object
+  }
+) => {
+  const q: queryList = []
+
+  if (filters) {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    filters?.isActive?.forEach((el) => {
+      q.push({
+        type: queryType.FILTER,
+        data: {
+          field: 'IsActive',
+          operand: '==',
+          value: el,
+        },
+      })
+    })
+  }
+
+  if (sorter.column !== undefined) {
+    q.push({
+      type: queryType.SORT,
+      data: {
+        field: _.upperFirst(sorter.columnKey),
+        order: sorter.order === 'ascend' ? 'ASC' : 'DESC',
+      } as querySort,
+    })
+  }
+  const res = await getDiscountListRe(paginate.current, q)
+  if (res.data) data.value = res.data
 }
 const visibleStatusModal = ref<boolean>(false)
 const visibleDeleteModal = ref<boolean>(false)
@@ -104,6 +146,36 @@ const onChangeCustomerGroup: TableProps<discountCustomerGroup>['onChange'] =
   }
 const goToAdd = () => {
   router.push({ name: 'discount-add' })
+}
+
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+const searchInputChange = (e, setSelectedKeys, column) => {
+  setSelectedKeys(
+    e.target.value
+      ? [
+          {
+            keyword: e.target.value,
+            field: _.upperFirst(column.dataIndex),
+          },
+        ]
+      : []
+  )
+}
+const search = async (selectedKeys: querySearch[]) => {
+  const searchQueries = selectedKeys.map((el) => {
+    el.keyword = decodeURI(el.keyword)
+    return {
+      type: queryType.SEARCH,
+      data: el,
+    }
+  })
+  const res = await getDiscountListRe(1, searchQueries)
+  if (res.data) data.value = res.data
+}
+const reset = async () => {
+  const res = await getDiscountListRe(1)
+  if (res.data) data.value = res.data
 }
 </script>
 <template>
@@ -189,6 +261,48 @@ const goToAdd = () => {
               </div>
             </div>
           </template>
+        </template>
+        <template
+          #customFilterDropdown="{ setSelectedKeys, selectedKeys, column }"
+        >
+          <div style="padding: 8px">
+            <a-input
+              ref="searchInput"
+              :placeholder="`جستجو در عنوان تخفیف`"
+              :value="selectedKeys[0]?.keyword"
+              style="width: 188px; margin-bottom: 8px; display: block"
+              @change="searchInputChange($event, setSelectedKeys, column)"
+            />
+            <a-button
+              type="primary"
+              size="small"
+              style="width: 90px"
+              class="ml-2"
+              @click="search(selectedKeys)"
+            >
+              <template #icon>
+                <SearchOutlined />
+              </template>
+              جستجو
+            </a-button>
+            <a-button
+              size="small"
+              style="width: 90px"
+              @click="
+                () => {
+                  reset()
+                  setSelectedKeys([])
+                }
+              "
+            >
+              پاک کردن
+            </a-button>
+          </div>
+        </template>
+        <template #customFilterIcon="{ filtered }">
+          <search-outlined
+            :style="{ color: filtered ? '#108ee9' : undefined }"
+          />
         </template>
       </a-table>
       <a-modal

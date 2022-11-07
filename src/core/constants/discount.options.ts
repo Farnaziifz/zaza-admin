@@ -12,6 +12,7 @@ export const columns: TableColumnType<discounts>[] = [
     title: 'عنوان تخفیف',
     key: 'title',
     dataIndex: 'title',
+    customFilterDropdown: true,
   },
   {
     title: 'تنظیمات تخفیف',
@@ -32,11 +33,16 @@ export const columns: TableColumnType<discounts>[] = [
     title: 'وضعیت تخفیف',
     dataIndex: 'isActive',
     key: 'isActive',
+    filters: [
+      { text: 'فعال', value: 'true' },
+      { text: 'غیرفعال', value: 'false' },
+    ],
   },
   {
     title: 'زمان شروع و پایان',
     dataIndex: 'startAt',
     key: 'startAt',
+    sorter: true,
   },
   {
     title: 'عملیات',

@@ -2,6 +2,8 @@ import { api } from './index'
 import { discountsList, discounts } from '../../core/types/discounts.type'
 import { error } from '../../core/types/error.type'
 import { AxiosError, AxiosResponse } from 'axios'
+import { queryList, createQueryString } from '@/logics/shared/queryBuilder'
+import { makeARequest } from '@/logics/shared/apiResponse.handler'
 
 const pageUrl = 'promotion'
 type responses = {
@@ -25,6 +27,12 @@ const discountListGet = async (
   const res = await api.get(`${pageUrl}?Page=${page}&PageSize=${pageSize}`)
   return res.data
 }
+
+const discountListGetRe = async (page: number, queries?: queryList) =>
+  await makeARequest<discountsList>(
+    api.get,
+    `${pageUrl}?Page=${page}&${createQueryString(queries)}`
+  )
 
 const chnageDiscountStatus = async (data: string) => {
   const path = '/status'
@@ -112,5 +120,6 @@ export const discountApi = () => {
     getGroupDetails: getDiscountGroupDetails,
     checkCodeValidation: checkDiscountValidation,
     generateCode: generateCode,
+    discountListGetRe: discountListGetRe,
   }
 }

@@ -2,15 +2,23 @@
 import ContentLayout from '/src/presentation/layouts/ContentLayout.vue'
 import EmptyLayout from '/src/presentation/layouts/EmptyLayout.vue'
 import BadgeComponent from '/src/presentation/components/shared/Organisms/Badge.vue'
-import { TableProps } from 'ant-design-vue'
-import { customerList } from '../../../core/types/customer.type'
+import { TablePaginationConfig } from 'ant-design-vue'
 import {
   initPageHandler,
   chnageCustomerStatus,
-} from '../../../logics/specific/customrtList.handler'
+  getCustomerList,
+} from '@/logics/specific/customrtList.handler'
 import { onBeforeMount, ref, reactive, computed } from 'vue'
 import router from '@/resources/router'
-import { columns, data } from '../../../core/constants/customer.options'
+import { columns, data } from '@/core/constants/customer.options'
+import {
+  queryList,
+  querySearch,
+  querySort,
+  queryType,
+} from '@/logics/shared/queryBuilder'
+import _ from 'lodash'
+import { SearchOutlined } from '@ant-design/icons-vue'
 
 const itemForChangeStatus = reactive({ isActive: false, id: '' })
 const modalSubmissionButtonLoader = ref(false)
@@ -28,13 +36,46 @@ const pagination = computed(() => ({
   pageSize: 10,
   showSizeChanger: true,
 }))
-const onChange: TableProps<customerList>['onChange'] = async (
-  paginate,
-  sorter
+
+const onChange = async (
+  paginate: TablePaginationConfig,
+  filters: object,
+  sorter: {
+    columnKey: string
+    order: string
+    column?: object
+  }
 ) => {
-  console.log('params', paginate, sorter)
-  data.value = await initPageHandler(paginate.current, paginate.pageSize)
+  const q: queryList = []
+
+  if (filters) {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    filters?.isActive?.forEach((el) => {
+      q.push({
+        type: queryType.FILTER,
+        data: {
+          field: 'IsActive',
+          operand: '==',
+          value: el,
+        },
+      })
+    })
+  }
+
+  if (sorter.column !== undefined) {
+    q.push({
+      type: queryType.SORT,
+      data: {
+        field: _.upperFirst(sorter.columnKey),
+        order: sorter.order === 'ascend' ? 'ASC' : 'DESC',
+      } as querySort,
+    })
+  }
+  const res = await getCustomerList(paginate.current, q)
+  if (res.data) data.value = res.data
 }
+
 const visible = ref<boolean>(false)
 const showModal = (item: string, isActive: boolean) => {
   visible.value = true
@@ -56,6 +97,37 @@ const changeCustomerStatus = async () => {
 }
 const goToDetails = (item: string) => {
   router.push({ name: 'customer-details', params: { id: item } })
+}
+
+const search = async (selectedKeys: querySearch[]) => {
+  const searchQueries = selectedKeys.map((el) => {
+    el.keyword = decodeURI(el.keyword)
+    return {
+      type: queryType.SEARCH,
+      data: el,
+    }
+  })
+  const res = await getCustomerList(pagination.value.current, searchQueries)
+  if (res.data) data.value = res.data
+}
+const reset = async () => {
+  const res = await getCustomerList(1)
+  if (res.data) data.value = res.data
+}
+
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+const searchInputChange = (e, setSelectedKeys, column) => {
+  setSelectedKeys(
+    e.target.value
+      ? [
+          {
+            keyword: e.target.value,
+            field: _.upperFirst(column.dataIndex),
+          },
+        ]
+      : []
+  )
 }
 </script>
 
@@ -127,6 +199,48 @@ const goToDetails = (item: string) => {
               </div>
             </template>
           </template>
+          <template
+            #customFilterDropdown="{ setSelectedKeys, selectedKeys, column }"
+          >
+            <div style="padding: 8px">
+              <a-input
+                ref="searchInput"
+                :placeholder="`جستجو در نام مشتری`"
+                :value="selectedKeys[0]?.keyword"
+                style="width: 188px; margin-bottom: 8px; display: block"
+                @change="searchInputChange($event, setSelectedKeys, column)"
+              />
+              <a-button
+                type="primary"
+                size="small"
+                style="width: 90px"
+                class="ml-2"
+                @click="search(selectedKeys)"
+              >
+                <template #icon>
+                  <SearchOutlined />
+                </template>
+                جستجو
+              </a-button>
+              <a-button
+                size="small"
+                style="width: 90px"
+                @click="
+                  () => {
+                    reset()
+                    setSelectedKeys([])
+                  }
+                "
+              >
+                پاک کردن
+              </a-button>
+            </div>
+          </template>
+          <template #customFilterIcon="{ filtered }">
+            <search-outlined
+              :style="{ color: filtered ? '#108ee9' : undefined }"
+            />
+          </template>
         </a-table>
         <a-modal v-model:visible="visible" title="تغییر وضعیت مشتری">
           <p>
@@ -134,8 +248,8 @@ const goToDetails = (item: string) => {
             <a-typography-text
               v-if="!itemForChangeStatus.isActive"
               type="success"
-              >فعال</a-typography-text
-            >
+              >فعال
+            </a-typography-text>
             <a-typography-text v-else type="danger">غیرفعال</a-typography-text>
             مطمئن هستید؟
           </p>
@@ -145,11 +259,11 @@ const goToDetails = (item: string) => {
               v-if="!itemForChangeStatus.isActive"
               type="primary"
               @click="changeCustomerStatus"
-              >فعال</a-button
-            >
+              >فعال
+            </a-button>
             <a-button v-else type="primary" @click="changeCustomerStatus"
-              >غیرفعال</a-button
-            >
+              >غیرفعال
+            </a-button>
           </template>
         </a-modal>
       </div>
@@ -170,19 +284,24 @@ const goToDetails = (item: string) => {
 <style lang="scss">
 .ant-table-column-sorters {
   justify-content: center !important;
+
   span {
     margin: 0 !important;
   }
 }
+
 .ant-table-cell {
   text-align: center !important;
 }
+
 .customer-action-container {
   display: flex;
   justify-content: center;
+
   .customer-action-button {
     margin: 0 16px;
     cursor: pointer;
+
     a {
       color: #1894ff;
     }

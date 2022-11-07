@@ -4,6 +4,7 @@ import { error } from '@/core/types/error.type'
 import { makeARequest } from '@/logics/shared/apiResponse.handler'
 import { orderLabelOverallStatistics } from '@/core/types/order.type'
 import { degreeLabelOverallStatistics } from '@/core/types/degree.type'
+import { createQueryString, queryList } from '@/logics/shared/queryBuilder'
 
 const pageUrl = 'customer'
 const degreeLabelOverallStatisticsUrl = '/degree-label-overall-statistics'
@@ -39,6 +40,12 @@ const getCustomerListByGroupId = async (id: string, page: number) =>
   await makeARequest<groupCustomer>(
     api.get,
     `${pageUrl}${group}?GroupIds=${id}&Page=${page}`
+  )
+
+const customerListGetRe = async (page: number, queries?: queryList) =>
+  await makeARequest<customerList>(
+    api.get,
+    `${pageUrl}?Page=${page}&${createQueryString(queries)}`
   )
 
 const cusotmerListGet = async (
@@ -194,5 +201,6 @@ export const customerApi = () => {
     getCustomerListByMultipleGroupIds,
     getCustomerDegreeLabelOverallStatistics,
     getCustomerOrderOverallStatistics,
+    customerListGet: customerListGetRe,
   }
 }

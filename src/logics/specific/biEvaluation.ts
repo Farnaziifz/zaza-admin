@@ -1,6 +1,7 @@
 import { businessIntelligenceApi } from '@/resources/api/businessIntelligence'
 import { filter } from '@/core/types/filter.type'
 import { filterQueryBuilder } from '@/logics/shared/filter.handler'
+import { queryList } from '@/logics/shared/queryBuilder'
 
 const api = businessIntelligenceApi()
 
@@ -17,10 +18,11 @@ export const initHandler = async (filters: filter[]) => {
 
 export const churnCustomerListGETHandler = async (
   page?: number,
-  filters?: filter[]
+  filters?: filter[],
+  queries?: queryList
 ) => {
   let query = ''
   if (filters) query = filterQueryBuilder(filters)
-  const res = await api.getChurnRateCustomer(page, query)
+  const res = await api.getChurnRateCustomer(page, query, queries)
   return res.data
 }

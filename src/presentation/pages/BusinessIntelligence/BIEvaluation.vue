@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import IncentiveDetailLayout from '@/presentation/layouts/IncentiveDetailLayout.vue'
-import { SettingOutlined } from '@ant-design/icons-vue'
+import { SettingOutlined, SearchOutlined } from '@ant-design/icons-vue'
 import BChart from '@/presentation/components/shared/Organisms/BChart.vue'
 import { chartVariant } from '@/core/enums/chartType.enum'
 import { computed, onMounted, Ref, ref, watch } from 'vue'
@@ -15,6 +15,8 @@ import {
 import { TablePaginationConfig } from 'ant-design-vue'
 import { fluxityType } from '@/core/enums/fluxityType.enum'
 import { goToPath } from '@/logics/shared/route.handler'
+import { querySearch, queryType } from '@/logics/shared/queryBuilder'
+import _ from 'lodash'
 
 const selectedCustomerType = ref(fluxityType.NORMAL)
 const churnRateCustomerData: Ref<churnRateCustomerList | undefined> =
@@ -38,6 +40,7 @@ const customerRetentionColumn = [
     title: 'مشتری',
     key: 'fullName',
     dataIndex: 'fullName',
+    customFilterDropdown: true,
   },
   {
     title: 'تعداد سفارش',
@@ -101,6 +104,30 @@ watch(
   },
   { deep: true }
 )
+const search = async (selectedKeys: querySearch[]) => {
+  console.log(selectedKeys)
+  const searchQueries = selectedKeys.map((el) => {
+    el.keyword = decodeURI(el.keyword)
+    return {
+      type: queryType.SEARCH,
+      data: el,
+    }
+  })
+  console.log(searchQueries)
+  const res = await churnCustomerListGETHandler(
+    churnRateCustomerListPagination.value.current,
+    [{ field: 'fluxity', operand: '==', value: selectedCustomerType.value }],
+    searchQueries
+  )
+  if (res) churnRateCustomerData.value = res
+}
+
+const reset = async () => {
+  const res = await churnCustomerListGETHandler(1, [
+    { field: 'fluxity', operand: '==', value: selectedCustomerType.value },
+  ])
+  if (res) churnRateCustomerData.value = res
+}
 </script>
 
 <template>
@@ -213,6 +240,61 @@ watch(
             <template v-if="column.key === 'totalExpenses'">
               {{ record.totalExpenses }} تومان
             </template>
+          </template>
+
+          <template
+            #customFilterDropdown="{ setSelectedKeys, selectedKeys, column }"
+          >
+            <div style="padding: 8px">
+              <a-input
+                ref="searchInput"
+                :placeholder="`جستجو در نام مشتری`"
+                :value="selectedKeys[0]?.keyword"
+                style="width: 188px; margin-bottom: 8px; display: block"
+                @change="
+                  (e) =>
+                    setSelectedKeys(
+                      e.target.value
+                        ? [
+                            {
+                              keyword: e.target.value,
+                              field: _.upperFirst(column.dataIndex),
+                            },
+                          ]
+                        : []
+                    )
+                "
+              />
+              <a-button
+                type="primary"
+                size="small"
+                style="width: 90px"
+                class="ml-2"
+                @click="search(selectedKeys)"
+              >
+                <template #icon>
+                  <SearchOutlined />
+                </template>
+                جستجو
+              </a-button>
+              <a-button
+                size="small"
+                style="width: 90px"
+                @click="
+                  () => {
+                    reset()
+                    setSelectedKeys([])
+                  }
+                "
+              >
+                پاک کردن
+              </a-button>
+            </div>
+          </template>
+          <template #customFilterIcon="{ filtered }">
+            <search-outlined
+              :style="{ color: filtered ? '#108ee9' : undefined }"
+            />
           </template>
         </a-table>
       </div>

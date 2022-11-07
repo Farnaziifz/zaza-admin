@@ -7,6 +7,7 @@ import {
   retentionRateCustomerList,
   retentionRateOverallStatistics,
 } from '@/core/types/businessIntelligence'
+import {createQueryString, queryList} from "@/logics/shared/queryBuilder";
 
 const pageUrl = 'business-intelligence'
 const churnRateUrl = '/churn-rate'
@@ -21,10 +22,10 @@ const getChurnRate = async () =>
 const putChurnRate = async (churnData: churnRate) =>
   await makeARequest(api.put, pageUrl + churnRateUrl, churnData)
 
-const getChurnRateCustomer = async (page = 1, filter = '') =>
+const getChurnRateCustomer = async (page = 1, filter = '', queries?: queryList) =>
   await makeARequest<churnRateCustomerList>(
     api.get,
-    `${pageUrl}${churnRate}${customer}?Page=${page}&${filter}`
+    `${pageUrl}${churnRate}${customer}?Page=${page}&${filter}${createQueryString(queries ?? [])}`
   )
 
 const getChurnRateOverallStatistics = async () =>

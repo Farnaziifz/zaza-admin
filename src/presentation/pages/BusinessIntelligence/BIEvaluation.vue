@@ -114,7 +114,7 @@ const search = async (selectedKeys: querySearch[]) => {
     }
   })
   const res = await churnCustomerListGETHandler(
-    churnRateCustomerListPagination.value.current,
+    1,
     [{ field: 'fluxity', operand: '==', value: selectedCustomerType.value }],
     searchQueries
   )

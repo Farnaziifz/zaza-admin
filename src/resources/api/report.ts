@@ -5,7 +5,7 @@ import { couponsList } from '@/core/types/coupons.type'
 import { reportPeriodType } from '@/core/enums/reportType.enum'
 import { getAllDaysInPeriodQuery } from '@/logics/shared/date.handler'
 import { cashbackStatics } from '../../core/types/cashback.type'
-import {createQueryString, queryList} from "@/logics/shared/queryBuilder";
+import { createQueryString, queryList } from '@/logics/shared/queryBuilder'
 
 const baseUrl = 'report'
 const promotionUsage = '/promotion-usage'

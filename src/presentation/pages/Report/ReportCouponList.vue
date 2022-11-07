@@ -100,7 +100,7 @@ const search = async (selectedKeys: querySearch[]) => {
       data: el,
     }
   })
-  const res = await getCoupons(pagination.value.current, searchQueries)
+  const res = await getCoupons(1, searchQueries)
   if (res.data) serverData.value = res.data
 }
 const reset = async () => {

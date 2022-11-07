@@ -1,5 +1,5 @@
 import { reportApi } from '@/resources/api/report'
-import {queryList} from "@/logics/shared/queryBuilder";
+import { queryList } from '@/logics/shared/queryBuilder'
 
 const api = reportApi()
 

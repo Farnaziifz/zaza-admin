@@ -113,7 +113,6 @@ const search = async (selectedKeys: querySearch[]) => {
       data: el,
     }
   })
-  console.log(searchQueries)
   const res = await churnCustomerListGETHandler(
     churnRateCustomerListPagination.value.current,
     [{ field: 'fluxity', operand: '==', value: selectedCustomerType.value }],
@@ -127,6 +126,21 @@ const reset = async () => {
     { field: 'fluxity', operand: '==', value: selectedCustomerType.value },
   ])
   if (res) churnRateCustomerData.value = res
+}
+
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+const searchInputChange = (e, setSelectedKeys, column) => {
+  setSelectedKeys(
+    e.target.value
+      ? [
+          {
+            keyword: e.target.value,
+            field: _.upperFirst(column.dataIndex),
+          },
+        ]
+      : []
+  )
 }
 </script>
 
@@ -251,19 +265,7 @@ const reset = async () => {
                 :placeholder="`جستجو در نام مشتری`"
                 :value="selectedKeys[0]?.keyword"
                 style="width: 188px; margin-bottom: 8px; display: block"
-                @change="
-                  (e) =>
-                    setSelectedKeys(
-                      e.target.value
-                        ? [
-                            {
-                              keyword: e.target.value,
-                              field: _.upperFirst(column.dataIndex),
-                            },
-                          ]
-                        : []
-                    )
-                "
+                @change="searchInputChange($event, setSelectedKeys, column)"
               />
               <a-button
                 type="primary"

@@ -12,17 +12,33 @@ import EmptyLayout from '@/presentation/layouts/EmptyLayout.vue'
 import { couponsList } from '@/core/types/coupons.type'
 import { CouponsRewardsType } from '@/core/enums/couponsType.enum'
 import _ from 'lodash'
+import { SearchOutlined } from '@ant-design/icons-vue'
+import { queryType, querySearch, queryList } from '@/logics/shared/queryBuilder'
+import { CouponsTypesType } from '@/core/enums/couponsType.enum'
+
+const typeFilter = (() => {
+  const f = []
+  for (const key in CouponsTypesType) {
+    f.push({
+      text: t(`types.couponTypeEnum.${key}`),
+      value: key,
+    })
+  }
+  return f
+})()
 
 const couponListColumn = [
   {
     title: 'عنوان کوپن',
     key: 'title',
     dataIndex: 'title',
+    customFilterDropdown: true,
   },
   {
     title: 'نوع کوپن',
     key: 'type',
     dataIndex: 'type',
+    filters: typeFilter,
   },
   {
     title: 'پاداش',
@@ -53,9 +69,44 @@ onMounted(async () => {
   serverData.value = res.data
 })
 const pagination = composePaginationData(serverData)
-const onChangePagination = async (paginationData: { current: number }) => {
-  const res = await getCoupons(paginationData.current)
+const onChangePagination = async (
+  paginationData: { current: number },
+  filters: object
+) => {
+  const q: queryList = []
+  if (filters) {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    filters?.type?.forEach((el) => {
+      q.push({
+        type: queryType.FILTER,
+        data: {
+          field: 'Type',
+          operand: '==',
+          value: el,
+        },
+      })
+    })
+  }
+  const res = await getCoupons(paginationData.current, q)
   serverData.value = res.data
+}
+
+const search = async (selectedKeys: querySearch[]) => {
+  const searchQueries = selectedKeys.map((el) => {
+    el.keyword = decodeURI(el.keyword)
+    return {
+      type: queryType.SEARCH,
+      data: el,
+    }
+  })
+  const res = await getCoupons(pagination.value.current, searchQueries)
+  if (res.data) serverData.value = res.data
+}
+const reset = async () => {
+  const res = await getCoupons(pagination.value.current)
+
+  if (res.data) serverData.value = res.data
 }
 </script>
 
@@ -109,6 +160,61 @@ const onChangePagination = async (paginationData: { current: number }) => {
           <span v-if="column.key === 'selectionRate'">
             {{ `${record.selectionRate} درصد` }}
           </span>
+        </template>
+
+        <template
+          #customFilterDropdown="{ setSelectedKeys, selectedKeys, column }"
+        >
+          <div style="padding: 8px">
+            <a-input
+              ref="searchInput"
+              :placeholder="`جستجو در نام مشتری`"
+              :value="selectedKeys[0]?.keyword"
+              style="width: 188px; margin-bottom: 8px; display: block"
+              @change="
+                (e) =>
+                  setSelectedKeys(
+                    e.target.value
+                      ? [
+                          {
+                            keyword: e.target.value,
+                            field: _.upperFirst(column.dataIndex),
+                          },
+                        ]
+                      : []
+                  )
+              "
+            />
+            <a-button
+              type="primary"
+              size="small"
+              style="width: 90px"
+              class="ml-2"
+              @click="search(selectedKeys)"
+            >
+              <template #icon>
+                <SearchOutlined />
+              </template>
+              جستجو
+            </a-button>
+            <a-button
+              size="small"
+              style="width: 90px"
+              @click="
+                () => {
+                  reset()
+                  setSelectedKeys([])
+                }
+              "
+            >
+              پاک کردن
+            </a-button>
+          </div>
+        </template>
+        <template #customFilterIcon="{ filtered }">
+          <search-outlined
+            :style="{ color: filtered ? '#108ee9' : undefined }"
+          />
         </template>
       </a-table>
     </template>

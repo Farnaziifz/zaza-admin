@@ -29,7 +29,7 @@ export const createFilterQuery = (model: queryFilter, index = 0) =>
   `FilterModels[${index}].value=${model.value}&FilterModels[${index}].operand=${model.operand}&FilterModels[${index}].field=${model.field}&`
 
 export const createSearchQuery = (model: querySearch, index = 0) =>
-  `SearchModels[${index}].field=${model.field}&SearchModels.[${index}].keyword=${model.keyword}&`
+  `SearchModels[${index}].field=${model.field}&SearchModels[${index}].keyword=${model.keyword}&`
 
 export const createSortQuery = (model: querySort, index = 0) =>
   `SortModels[${index}].field=${model.field}&SortModels[${index}}.order=${model.order}&`

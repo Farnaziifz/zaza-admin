@@ -5,6 +5,7 @@ import { couponsList } from '@/core/types/coupons.type'
 import { reportPeriodType } from '@/core/enums/reportType.enum'
 import { getAllDaysInPeriodQuery } from '@/logics/shared/date.handler'
 import { cashbackStatics } from '../../core/types/cashback.type'
+import {createQueryString, queryList} from "@/logics/shared/queryBuilder";
 
 const baseUrl = 'report'
 const promotionUsage = '/promotion-usage'
@@ -27,10 +28,10 @@ export const getReportPromotionUsage = async (page = 1) =>
     `${baseUrl}${promotionUsage}?Page=${page}`
   )
 
-const getReportCouponUsage = async (page = 1) =>
+const getReportCouponUsage = async (page = 1, queries?: queryList) =>
   await makeARequest<couponsList>(
     api.get,
-    `${baseUrl}${couponUsage}?Page=${page}`
+    `${baseUrl}${couponUsage}?Page=${page}&${createQueryString(queries ?? [])}`
   )
 
 const getReportCachbackStatistic = async () =>

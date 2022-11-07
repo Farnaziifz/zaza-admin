@@ -2,6 +2,7 @@ import { api } from './index'
 import { credit, creditsList, creditTitleList } from '@/core/types/credits.type'
 import { error } from '@/core/types/error.type'
 import { makeARequest } from '@/logics/shared/apiResponse.handler'
+import { createQueryString, queryList } from '@/logics/shared/queryBuilder'
 
 const pageUrl = 'credit'
 type response = {
@@ -39,11 +40,18 @@ const creditsGroupListGet = async (
   return res.data
 }
 
+const getCreditListRe = async (page: number, queries?: queryList) =>
+  await makeARequest<creditsList>(
+    api.get,
+    `${pageUrl}?Page=${page}&${createQueryString(queries ?? [])}`
+  )
+
 export const creditsApi = () => {
   return {
     post: creditPost,
     get: creditsListGet,
     getGroup: creditsGroupListGet,
     getCreditDetails: getCreditDetailsById,
+    getCreditList: getCreditListRe,
   }
 }

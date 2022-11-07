@@ -1,5 +1,6 @@
 import { creditsApi } from '@/resources/api/credits'
 import { creditsList, creditCustomerGroup } from '@/core/types/credits.type'
+import { queryList } from '../shared/queryBuilder'
 
 const api = creditsApi()
 
@@ -18,6 +19,11 @@ export const initPageHandler = async (
     throw 'errors'
   }
 }
+
+export const getCreditListFromServer = async (
+  page: number,
+  queries?: queryList
+) => await api.getCreditList(page, queries)
 
 export const getCustomerGroup = async (
   data: { groupId: string }[],

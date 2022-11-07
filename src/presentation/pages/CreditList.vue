@@ -12,9 +12,12 @@ import { ref, Ref, onBeforeMount, computed, reactive, onMounted } from 'vue'
 import {
   initPageHandler,
   getCustomerGroup,
+  getCreditListFromServer,
 } from '@/logics/specific/credits.handler'
 import { useCreditStore } from '@/resources/store/credit.store'
-
+import { TablePaginationConfig } from 'ant-design-vue'
+import { queryList, querySort, queryType } from '@/logics/shared/queryBuilder'
+import _ from 'lodash'
 const columns: TableColumnType<credits>[] = [
   {
     title: 'مشتریان هدف',
@@ -25,11 +28,13 @@ const columns: TableColumnType<credits>[] = [
     title: 'میزان اعتبار',
     key: 'amount',
     dataIndex: 'amount',
+    sorter: true,
   },
   {
     title: 'بازه مصرف اعتبار',
     dataIndex: 'startAt',
     key: 'startAt',
+    sorter: true,
   },
   {
     title: 'عملیات',
@@ -75,12 +80,30 @@ onBeforeMount(async () => {
   const pageSize = 10
   data.value = await initPageHandler(page, pageSize)
 })
-const onChange: TableProps<creditsList>['onChange'] = async (
-  paginate,
-  sorter
+
+const onChange = async (
+  paginate: TablePaginationConfig,
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  filters,
+  sorter: {
+    columnKey: string
+    order: string
+    column?: object
+  }
 ) => {
-  console.log('params', paginate, sorter)
-  data.value = await initPageHandler(paginate.current, paginate.pageSize)
+  const q: queryList = []
+  if (sorter.column !== undefined) {
+    q.push({
+      type: queryType.SORT,
+      data: {
+        field: _.upperFirst(sorter.columnKey),
+        order: sorter.order === 'ascend' ? 'ASC' : 'DESC',
+      } as querySort,
+    })
+  }
+  const res = await getCreditListFromServer(paginate.current ?? 1, q)
+  if (res.data) data.value = res.data
 }
 const onChangeCustomerGroup: TableProps<creditCustomerGroup>['onChange'] =
   async (paginate) => {

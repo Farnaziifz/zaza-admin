@@ -12,8 +12,10 @@ import BChart from '@/presentation/components/shared/Organisms/BChart.vue'
 import { TablePaginationConfig } from 'ant-design-vue'
 import { loyalityType } from '../../../core/enums/fluxityType.enum'
 import { retantionRateCustomerList } from '@/core/types/retantionRate.type'
-import _ from 'lodash'
 import { goToPath } from '@/logics/shared/route.handler'
+import { SearchOutlined } from '@ant-design/icons-vue'
+import { querySearch, queryType } from '@/logics/shared/queryBuilder'
+import _ from 'lodash'
 
 const overallStatisticsData: Ref<
   retentionLoyalityRateOverallStatistics | undefined
@@ -31,6 +33,13 @@ const customerRetentionColumn = [
     title: 'مشتری',
     key: 'fullName',
     dataIndex: 'fullName',
+    customFilterDropdown: true,
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    onFilter: (value, record) =>
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      record.name.toString().toLowerCase().includes(value.toLowerCase()),
   },
   {
     title: 'تعداد سفارش',
@@ -106,6 +115,58 @@ const onChangePage = async (paginate: TablePaginationConfig) =>
   ))
 const goToSetting = () => {
   goToPath('/business-intelligence/retantion-rate-setting')
+}
+const search = async (selectedKeys: querySearch[]) => {
+  const searchQueries = selectedKeys.map((el) => {
+    el.keyword = decodeURI(el.keyword)
+    return {
+      type: queryType.SEARCH,
+      data: el,
+    }
+  })
+  const res = await retantionLoyalCustomerList(
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    1,
+    [
+      {
+        field: 'CustomerType',
+        operand: '==',
+        value: selectedCustomerType.value,
+      },
+    ],
+    searchQueries
+  )
+  if (res) retantionRateData.value = res
+}
+const reset = async () => {
+  const res = await retantionLoyalCustomerList(
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    retantionateCustomerListPagination.value.current,
+    [
+      {
+        field: 'CustomerType',
+        operand: '==',
+        value: selectedCustomerType.value,
+      },
+    ]
+  )
+  if (res) retantionRateData.value = res
+}
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+const searchInputChange = (e, setSelectedKeys, column) => {
+  setSelectedKeys(
+    e.target.value
+      ? [
+          {
+            keyword: e.target.value,
+            field: _.upperFirst(column.dataIndex),
+          },
+        ]
+      : []
+  )
 }
 </script>
 
@@ -217,6 +278,54 @@ const goToSetting = () => {
                 $filters.toPersianCurrency(record.totalExpenses / 10, 'تومان')
               }}
             </template>
+          </template>
+          <template
+            #customFilterDropdown="{
+              setSelectedKeys,
+              selectedKeys,
+              // confirm,
+              // clearFilters,
+              column,
+            }"
+          >
+            <div style="padding: 8px">
+              <a-input
+                ref="searchInput"
+                :placeholder="`جستجو در نام مشتری`"
+                :value="selectedKeys[0]?.keyword"
+                style="width: 188px; margin-bottom: 8px; display: block"
+                @change="searchInputChange($event, setSelectedKeys, column)"
+              />
+              <a-button
+                type="primary"
+                size="small"
+                style="width: 90px"
+                class="ml-2"
+                @click="search(selectedKeys)"
+              >
+                <template #icon>
+                  <SearchOutlined />
+                </template>
+                جستجو
+              </a-button>
+              <a-button
+                size="small"
+                style="width: 90px"
+                @click="
+                  () => {
+                    reset()
+                    setSelectedKeys([])
+                  }
+                "
+              >
+                پاک کردن
+              </a-button>
+            </div>
+          </template>
+          <template #customFilterIcon="{ filtered }">
+            <search-outlined
+              :style="{ color: filtered ? '#108ee9' : undefined }"
+            />
           </template>
         </a-table>
       </div>

@@ -5,6 +5,9 @@ import { retantionRateCustomerList } from '../../core/types/retantionRate.type'
 import { error } from '../../core/types/error.type'
 import { makeARequest } from '@/logics/shared/apiResponse.handler'
 import { retantionRateSetting } from '../../core/types/retantionRate.type'
+import { createQueryString } from '@/logics/shared/queryBuilder'
+import { queryList } from '@/logics/shared/queryBuilder'
+
 const pageUrl = 'business-intelligence'
 type responses = {
   data: retentionLoyalityRateOverallStatistics
@@ -16,10 +19,16 @@ const getRetentionLoyalityRateOverallStatistics =
     return res.data
   }
 
-const getRetantionLoyalCustomerList = async (page = 1, filter = '') =>
+const getRetantionLoyalCustomerList = async (
+  page = 1,
+  filterQuery: string,
+  queries?: queryList
+) =>
   await makeARequest<retantionRateCustomerList>(
     api.get,
-    `${pageUrl}/retention-rate/customer?Page=${page}&${filter}`
+    `${pageUrl}/retention-rate/customer?Page=${page}&${createQueryString(
+      queries
+    )}${filterQuery}`
   )
 
 const retantionRatePut = async (data: retantionRateSetting) => {

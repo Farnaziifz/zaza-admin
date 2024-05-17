@@ -2,17 +2,16 @@ version: '3'
 
 services:
   app:
-    image: ${CI_REGISTRY_IMAGE:-registry.git.webjar.ir/webjar-product/webjar-product-shop-admin-panel-vue}:${IMAGE_TAG}
+    image: ${CI_REGISTRY_IMAGE:-registry.git.hermes.ir/hermes-product/hermes-admin-panel-vue}:${IMAGE_TAG}
     restart: always
     command: bash -c "npm run build && node deploy/server/server.js"
     ports:
       - '${ADMIN_CONTAINER_PORT:-3000}:${PORT:-3000}'
     networks:
-      - shop_admin_nuxt_network
+      - admin_vue_network
     env_file:
       - app.env
 
-
 networks:
-  shop_admin_nuxt_network:
+  admin_vue_network:
     driver: bridge

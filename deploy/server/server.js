@@ -5,9 +5,9 @@ const app = express();
 
 const distPath = path.join(__dirname, "..", "..", "dist");
 
-app.use("/boomjar", express.static(distPath));
+app.use("/", express.static(distPath));
 
-app.get("/boomjar*", function (_, res) {
+app.get("/*", function (_, res) {
   res.sendFile(path.join(distPath, "index.html"));
 });
 

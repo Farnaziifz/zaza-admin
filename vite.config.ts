@@ -6,7 +6,7 @@ import { AntDesignVueResolver } from 'unplugin-vue-components/resolvers';
 import * as path from 'path';
 
 export default defineConfig({
-  base: "/boomjar",
+  base: "/",
   plugins: [
     vue(),
     eslintPlugin(),
@@ -29,7 +29,7 @@ export default defineConfig({
     preprocessorOptions: {
       less: {
         modifyVars: {
-          'primary-color': '#ff003d',
+          'primary-color': '#03294e',
         },
         javascriptEnabled: true,
       },

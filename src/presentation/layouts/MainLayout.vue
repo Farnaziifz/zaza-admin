@@ -23,7 +23,7 @@ const changeCollapse = () => {
             @change-collapse="changeCollapse"
           />
         </template>
-        <template #businessName> business Name</template>
+        <template #businessName> Hermespart Panel</template>
         <template #adminName> admin Name</template>
       </layout-header>
 
@@ -40,6 +40,7 @@ const changeCollapse = () => {
   </a-config-provider>
 </template>
 
-<style lang="sass">
-@import "src/assets/styles/mainLayout"
+<style lang="scss">
+@import "src/assets/styles/mainLayout";
+
 </style>

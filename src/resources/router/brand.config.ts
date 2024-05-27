@@ -8,7 +8,7 @@ export const brandsConfig = {
   redirect: '/brands/list',
   children: [
     {
-      name: 'comment-list',
+      name: 'brands-list',
       path: 'list',
       component: BrandList,
     },

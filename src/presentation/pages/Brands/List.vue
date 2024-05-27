@@ -8,12 +8,12 @@ import { brandItem, brandList } from '@/core/types/brand.type'
 import { initPageHandler } from '@/logics/specific/brands.handler'
 
 const serverData: Ref<brandList> = ref({
-  items: [],
-  hasNextPage: false,
-  hasPreviousPage: false,
-  page: 0,
-  totalCount: 0,
-  totalPages: 0,
+  total_pages: 0,
+  next: false,
+  previous: false,
+  current_page: 0,
+  results: [],
+  count: 0,
 })
 const columns: TableColumnType<brandItem>[] = [
   {
@@ -43,15 +43,78 @@ const columns: TableColumnType<brandItem>[] = [
   },
 ]
 
+const pagination = computed(() => ({
+  total: serverData.value.total_pages,
+  current: serverData.value.current_page,
+  pageSize: 10,
+}))
+
+const onChange: TableProps<brandList>['onChange'] = async () => {
+  serverData.value = await initPageHandler()
+}
+
 onBeforeMount(async () => {
-  const page = 1
-  const pageSize = 10
-  serverData.value = await initPageHandler(page, pageSize)
+  serverData.value = await initPageHandler()
 })
+
+const gotoDetails = (id: string) => {
+  router.push({
+    name: 'comment-detail',
+    params: {
+      id,
+    },
+  })
+}
 </script>
 
 <template>
-  <content-layout></content-layout>
+  <content-layout>
+    <template #content-title>برندها</template>
+    <template #content-body>
+      <div v-if="serverData.results && serverData.results.length">
+        <a-table
+          :columns="columns"
+          :pagination="pagination"
+          :data-source="serverData.results"
+          @change="onChange"
+        >
+          <template #bodyCell="{ column, record }">
+            <template v-if="column.key === 'actions'">
+              <div
+                class="customer-action-button"
+                @click="gotoDetails(record.id)"
+              >
+                <a>جزئیات</a>
+              </div>
+            </template>
+            <template v-if="column.key === 'comment'">
+              <p class="comment-container">{{ record.comment }}</p>
+            </template>
+          </template>
+        </a-table>
+      </div>
+      <div v-else>
+        <EmptyLayout>
+          <template #empty-text> برندی یافت نشد. </template>
+          <template #empty-action>
+            <a-card
+              style="margin: 8px 0; background-color: #f6f6f6; width: 700px"
+            >
+              <a-typography-title :level="4" class="title-empty"
+                >راهنما</a-typography-title
+              >
+              <ul class="text-guid">
+                <li>نظرات</li>
+              </ul>
+              <p class="guid-value">
+                شما در این بخش میتوانید لیست بردهای محصولات را مشاهده کنید.
+              </p>
+            </a-card>
+          </template>
+        </EmptyLayout>
+      </div>
+    </template>
+  </content-layout>
 </template>
 
 <style lang="scss"></style>

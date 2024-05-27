@@ -4,7 +4,7 @@ import { ref, watch, computed } from 'vue'
 
 import {
   AppstoreOutlined,
-  BookOutlined,
+  // BookOutlined,
 } from '@ant-design/icons-vue'
 import router from '../../../../resources/router'
 
@@ -52,86 +52,52 @@ const changeRoute = (to: string) => {
         </template>
         <span> داشبورد</span>
       </a-menu-item>
-      <a-menu-item key="21" @click="changeRoute('/group/list')">
+      <a-sub-menu key="sub1">
         <template #icon>
-          <book-outlined />
+          <tags-outlined />
         </template>
-        <span> وضعیت کاربر</span>
-      </a-menu-item>
+        <template #title>
+          <span>مدیریت محصولات</span>
+        </template>
 
-      <a-menu-item key="21" @click="changeRoute('/group/list')">
-        <template #icon>
-          <book-outlined />
-        </template>
-        <span> تعیین دسترسی</span>
-      </a-menu-item>
+        <a-menu-item key="1" @click="changeRoute('/brands')">برند محصولات
+        </a-menu-item>
+        <a-menu-item key="2">تگ محصولات
+        </a-menu-item>
+        <a-menu-item key="3">مدیریت مشخصات محصولات
+        </a-menu-item>
+        <a-menu-item key="4">مدیریت محصول
+        </a-menu-item>
+        <a-menu-item key="5">نظرات محصولات
+        </a-menu-item>
+      </a-sub-menu>
 
-      <a-menu-item key="21" @click="changeRoute('/group/list')">
+      <a-sub-menu key="sub2">
         <template #icon>
-          <book-outlined />
+          <tags-outlined />
         </template>
-        <span> تکنسین‌ها</span>
-      </a-menu-item>
-      <a-menu-item key="21" @click="changeRoute('/group/list')">
+        <template #title>
+          <span>مدیریت مجله</span>
+        </template>
+
+        <a-menu-item key="1">درجه
+        </a-menu-item>
+        <a-menu-item key="2">برچسب
+        </a-menu-item>
+      </a-sub-menu>
+      <a-sub-menu key="sub3">
         <template #icon>
-          <book-outlined />
+          <tags-outlined />
         </template>
-        <span> مدیریت سفارشات</span>
-      </a-menu-item>
-      <a-menu-item key="21" @click="changeRoute('/group/list')">
-        <template #icon>
-          <book-outlined />
+        <template #title>
+          <span>مدیریت کاربران</span>
         </template>
-        <span> مدیریت کیف پول</span>
-      </a-menu-item>
-      <a-menu-item key="21" @click="changeRoute('/group/list')">
-        <template #icon>
-          <book-outlined />
-        </template>
-        <span> مدیریت تراکنش‌ها</span>
-      </a-menu-item>
-      <a-menu-item key="21" @click="changeRoute('/group/list')">
-        <template #icon>
-          <book-outlined />
-        </template>
-        <span> مدیریت رخداد</span>
-      </a-menu-item>
-      <a-menu-item key="21" @click="changeRoute('/group/list')">
-        <template #icon>
-          <book-outlined />
-        </template>
-        <span> مدیریت تیکت</span>
-      </a-menu-item>
-      <a-menu-item key="21" @click="changeRoute('/group/list')">
-        <template #icon>
-          <book-outlined />
-        </template>
-        <span> مدیریت نظرسنجی</span>
-      </a-menu-item>
-      <a-menu-item key="21" @click="changeRoute('/group/list')">
-        <template #icon>
-          <book-outlined />
-        </template>
-        <span> تنظیمات</span>
-      </a-menu-item>
-      <a-menu-item key="21" @click="changeRoute('/group/list')">
-        <template #icon>
-          <book-outlined />
-        </template>
-        <span> جستجو</span>
-      </a-menu-item>
-      <a-menu-item key="21" @click="changeRoute('/group/list')">
-        <template #icon>
-          <book-outlined />
-        </template>
-        <span> repost</span>
-      </a-menu-item>
-      <a-menu-item key="21" @click="changeRoute('/group/list')">
-        <template #icon>
-          <book-outlined />
-        </template>
-        <span> repost</span>
-      </a-menu-item>
+
+        <a-menu-item key="1">درجه
+        </a-menu-item>
+        <a-menu-item key="2">برچسب
+        </a-menu-item>
+      </a-sub-menu>
 
 
     </a-menu>

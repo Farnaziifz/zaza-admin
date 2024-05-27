@@ -4,7 +4,7 @@ import LayoutHeaderItemGroup from './LayoutHeaderItemGroup.vue'
 </script>
 
 <template>
-  <a-layout-header style="background-color: #03294e">
+  <a-layout-header style="background-color: #FCBA2E">
     <layout-header-item-group>
       <layout-header-item>
         <slot name="collapseIcon" />

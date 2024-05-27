@@ -23,7 +23,7 @@ const changeCollapse = () => {
             @change-collapse="changeCollapse"
           />
         </template>
-        <template #businessName> Hermespart Panel</template>
+        <template #businessName> ZaZa Kala</template>
         <template #adminName> admin Name</template>
       </layout-header>
 

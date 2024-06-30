@@ -4,5 +4,6 @@ const api = brandsApi()
 
 export const initPageHandler = async (): Promise<brandList> => {
   const res = await api.brandListGet()
-  return res.data
+
+  return res
 }

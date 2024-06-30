@@ -62,7 +62,7 @@ const changeRoute = (to: string) => {
 
         <a-menu-item key="1" @click="changeRoute('/brands')">برند محصولات
         </a-menu-item>
-        <a-menu-item key="2">تگ محصولات
+        <a-menu-item key="2" @click="changeRoute('/tags')">تگ محصولات
         </a-menu-item>
         <a-menu-item key="3">مدیریت مشخصات محصولات
         </a-menu-item>

@@ -16,6 +16,7 @@
     "add-lint-staged": "husky add .husky/pre-commit 'yarn lint-staged'"
   },
   "dependencies": {
+    "@syncfusion/ej2-vue-richtexteditor": "^25.2.5",
     "@types/moment-jalaali": "^0.7.5",
     "ant-design-vue": "^3.2.12",
     "axios": "^0.27.2",

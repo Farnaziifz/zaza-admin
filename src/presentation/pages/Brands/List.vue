@@ -17,24 +17,9 @@ const serverData: Ref<brandList> = ref({
 })
 const columns: TableColumnType<brandItem>[] = [
   {
-    title: 'مشتری',
-    key: 'fullName',
-    dataIndex: 'fullName',
-  },
-  {
-    title: 'شماره سفارش',
-    key: 'trackingCode',
-    dataIndex: 'trackingCode',
-  },
-  {
-    title: 'امتیاز ثبت شده',
-    dataIndex: 'rate',
-    key: 'rate',
-  },
-  {
-    title: 'متن نظر',
-    dataIndex: 'comment',
-    key: 'comment',
+    title: 'نام برند',
+    key: 'title',
+    dataIndex: 'title',
   },
   {
     title: 'عملیات',
@@ -56,7 +41,6 @@ const onChange: TableProps<brandList>['onChange'] = async () => {
 onBeforeMount(async () => {
   serverData.value = await initPageHandler()
 })
-
 const gotoDetails = (id: string) => {
   router.push({
     name: 'comment-detail',
@@ -65,11 +49,20 @@ const gotoDetails = (id: string) => {
     },
   })
 }
+const goToAdd = () => {
+  router.push({ name: 'brand-add' })
+}
 </script>
 
 <template>
   <content-layout>
     <template #content-title>برندها</template>
+    <template #content-actions>
+      <a-button type="primary" @click="goToAdd">
+        <template #icon><PlusIcon color="#fff" /></template>
+        <span>افزودن برند</span>
+      </a-button>
+    </template>
     <template #content-body>
       <div v-if="serverData.results && serverData.results.length">
         <a-table
@@ -107,7 +100,7 @@ const gotoDetails = (id: string) => {
                 <li>نظرات</li>
               </ul>
               <p class="guid-value">
-                شما در این بخش میتوانید لیست بردهای محصولات را مشاهده کنید.
+                شما در این بخش میتوانید لیست برند‌های محصولات را مشاهده کنید.
               </p>
             </a-card>
           </template>

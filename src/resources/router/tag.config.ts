@@ -5,7 +5,7 @@ export const TagsConfig = {
   name: 'tags',
   path: 'tags',
   component: Tags,
-  redirect: '/brands/list',
+  redirect: '/tags/list',
   children: [
     {
       name: 'tags-list',

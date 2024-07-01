@@ -1,12 +1,13 @@
 export type brandItem = {
-  id: number
-  created_at: string
-  updated_at: string
+  id?: number
+  created_at?: string
+  updated_at?: string
   title: string
   description: string
   image: string
   seo_title: string
   seo_description: string
+  seo_slug: string
 }
 
 export type brandList = {

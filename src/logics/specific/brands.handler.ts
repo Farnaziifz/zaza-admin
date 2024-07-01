@@ -7,3 +7,8 @@ export const initPageHandler = async (): Promise<brandList> => {
 
   return res
 }
+
+export const addBrand = async (model: FormData) => {
+  const res = await api.addBrand(model)
+  return res
+}

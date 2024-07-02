@@ -4,27 +4,28 @@ import { onBeforeMount, Ref, ref, computed } from 'vue'
 import { TableProps, TableColumnType } from 'ant-design-vue'
 import EmptyLayout from '/src/presentation/layouts/EmptyLayout.vue'
 import router from '@/resources/router'
-import { brandItem, brandList } from '@/core/types/brand.type'
-import { initPageHandler } from '@/logics/specific/brands.handler'
+import { category, categoryList } from '@/core/types/category.type'
+import { initPageHandler } from '@/logics/specific/category.handler'
 
-const serverData: Ref<brandList> = ref({
+const serverData: Ref<categoryList> = ref({
   total_pages: 0,
-  next: false,
-  previous: false,
+  next: 0,
+  previous: 0,
   current_page: 0,
   results: [],
   count: 0,
 })
-const columns: TableColumnType<brandItem>[] = [
+
+const columns: TableColumnType<category>[] = [
   {
     title: 'عکس دسته بندی',
-    key: 'image',
-    dataIndex: 'image',
+    key: 'thumbnail_main',
+    dataIndex: 'thumbnail_main',
   },
   {
     title: 'نام دسته بندی',
-    key: 'title',
-    dataIndex: 'title',
+    key: 'title_main',
+    dataIndex: 'title_main',
   },
   {
     title: 'عملیات',
@@ -39,7 +40,7 @@ const pagination = computed(() => ({
   pageSize: 3,
 }))
 
-const onChange: TableProps<brandList>['onChange'] = async () => {
+const onChange: TableProps<categoryList>['onChange'] = async () => {
   serverData.value = await initPageHandler()
 }
 
@@ -48,7 +49,7 @@ onBeforeMount(async () => {
 })
 const gotoDetails = (id: string) => {
   router.push({
-    name: 'brand-add',
+    name: 'category-add',
     query: {
       id,
       mode: 'edit',
@@ -56,7 +57,7 @@ const gotoDetails = (id: string) => {
   })
 }
 const goToAdd = () => {
-  router.push({ name: 'brand-add' })
+  router.push({ name: 'category-add' })
 }
 </script>
 
@@ -78,8 +79,12 @@ const goToAdd = () => {
           @change="onChange"
         >
           <template #bodyCell="{ column, record }">
-            <template v-if="column.key === 'image'">
-              <img :src="record.image" alt="" class="w-[100px] h-[100px]" />
+            <template v-if="column.key === 'thumbnail_main'">
+              <img
+                :src="record.thumbnail_main"
+                alt=""
+                class="w-[100px] h-[100px]"
+              />
             </template>
             <template v-if="column.key === 'actions'">
               <div
@@ -106,7 +111,8 @@ const goToAdd = () => {
                 <li>نظرات</li>
               </ul>
               <p class="guid-value">
-                شما در این بخش میتوانید لیست دسته بندی‌های محصولات را مشاهده کنید.
+                شما در این بخش میتوانید لیست دسته بندی‌های محصولات را مشاهده
+                کنید.
               </p>
             </a-card>
           </template>

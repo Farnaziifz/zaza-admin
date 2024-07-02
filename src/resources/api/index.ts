@@ -8,7 +8,7 @@ type RefreshResponse = {
 }
 // Function to get the access token from local storage
 const getToken = () => {
-  return localStorage.getItem('access')
+  return localStorage.getItem('adminToken')
 }
 
 // Axios instance for API requests
@@ -43,11 +43,11 @@ api.interceptors.request.use(
 const getRefresh = async (): Promise<RefreshResponse | false> => {
   try {
     const res = await api.post<RefreshResponse>(`auth/token/refresh/`, {
-      refresh: localStorage.getItem('refresh'),
+      refresh: localStorage.getItem('adminRefresh'),
     })
 
     if (res.data && res.data.access) {
-      localStorage.setItem('access', res.data.access)
+      localStorage.setItem('adminToken', res.data.access)
       return res.data
     } else {
       return false
@@ -58,6 +58,7 @@ const getRefresh = async (): Promise<RefreshResponse | false> => {
     }
     if (axios.isAxiosError(e) && e.response && e.response.status === 401) {
       router.push('/')
+      toast.error('شما دسترسی ندارید.')
     }
     // Optionally handle other error statuses or log the error
     return false

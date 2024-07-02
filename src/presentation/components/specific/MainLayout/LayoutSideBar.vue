@@ -42,9 +42,24 @@ const changeRoute = (to: string) => {
 
 <template>
   <div :class="sideBarEffectClasses" @click="changeCollapse"></div>
-  <a-layout-sider id="side-bar" v-model:collapsed="collapsed" collapsible breakpoint="sm" reverse-arrow :trigger="null"
-    collapsed-width="0" theme="light" class="shadow-[0px_2px_8px_rgba(0,0,0,0.15)]" width="256">
-    <a-menu id="side-bar-menu" :sub-menu-open-delay="100" :sub-menu-close-delay="100" mode="inline">
+  <a-layout-sider
+    id="side-bar"
+    v-model:collapsed="collapsed"
+    collapsible
+    breakpoint="sm"
+    reverse-arrow
+    :trigger="null"
+    collapsed-width="0"
+    theme="light"
+    class="shadow-[0px_2px_8px_rgba(0,0,0,0.15)]"
+    width="256"
+  >
+    <a-menu
+      id="side-bar-menu"
+      :sub-menu-open-delay="100"
+      :sub-menu-close-delay="100"
+      mode="inline"
+    >
       <logo-icon class="mt-4" />
       <a-menu-item key="20" @click="changeRoute('/')">
         <template #icon>
@@ -60,16 +75,15 @@ const changeRoute = (to: string) => {
           <span>مدیریت محصولات</span>
         </template>
 
-        <a-menu-item key="1" @click="changeRoute('/brands')">برند محصولات
+        <a-menu-item key="1" >
+          <router-link to="/dashboard/brands/list"> برند محصولات </router-link>
         </a-menu-item>
-        <a-menu-item key="2" @click="changeRoute('/tags')">تگ محصولات
+        <a-menu-item key="2" @click="changeRoute('/dashboard/tags')"
+          >تگ محصولات
         </a-menu-item>
-        <a-menu-item key="3">مدیریت مشخصات محصولات
-        </a-menu-item>
-        <a-menu-item key="4">مدیریت محصول
-        </a-menu-item>
-        <a-menu-item key="5">نظرات محصولات
-        </a-menu-item>
+        <a-menu-item key="3">مدیریت مشخصات محصولات </a-menu-item>
+        <a-menu-item key="4">مدیریت محصول </a-menu-item>
+        <a-menu-item key="5">نظرات محصولات </a-menu-item>
       </a-sub-menu>
 
       <a-sub-menu key="sub2">
@@ -80,10 +94,8 @@ const changeRoute = (to: string) => {
           <span>مدیریت مجله</span>
         </template>
 
-        <a-menu-item key="1">درجه
-        </a-menu-item>
-        <a-menu-item key="2">برچسب
-        </a-menu-item>
+        <a-menu-item key="1">درجه </a-menu-item>
+        <a-menu-item key="2">برچسب </a-menu-item>
       </a-sub-menu>
       <a-sub-menu key="sub3">
         <template #icon>
@@ -93,13 +105,9 @@ const changeRoute = (to: string) => {
           <span>مدیریت کاربران</span>
         </template>
 
-        <a-menu-item key="1">درجه
-        </a-menu-item>
-        <a-menu-item key="2">برچسب
-        </a-menu-item>
+        <a-menu-item key="1">درجه </a-menu-item>
+        <a-menu-item key="2">برچسب </a-menu-item>
       </a-sub-menu>
-
-
     </a-menu>
   </a-layout-sider>
 </template>

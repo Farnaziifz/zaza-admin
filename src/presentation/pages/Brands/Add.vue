@@ -6,8 +6,9 @@ import { ref } from 'vue'
 import { QuillEditor } from '@vueup/vue-quill'
 import '@vueup/vue-quill/dist/vue-quill.snow.css'
 import { addBrand } from '@/logics/specific/brands.handler'
+import { useRouter } from 'vue-router'
 
-// const route = useRoute()
+const router = useRouter()
 const titleValue = ref('')
 const seoSlug = ref('')
 const seoDescription = ref('')
@@ -32,7 +33,9 @@ const onAddBrand = async () => {
   formData.append('seo_description', seoDescription.value)
   formData.append('seo_slug', seoSlug.value)
   const res = await addBrand(formData)
-  console.log(res)
+  if (res.id) {
+    router.push('/dashboard/brands/list')
+  }
 }
 </script>
 

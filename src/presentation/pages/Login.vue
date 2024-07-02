@@ -2,6 +2,7 @@
 import { ref } from 'vue'
 import Logo from '../../assets/images/logo.svg'
 import { login } from '@/logics/specific/auth.handler'
+import router from '@/resources/router'
 
 // import { useRouter } from 'vue-router'
 
@@ -27,7 +28,11 @@ const submitNumber = async () => {
     convertToEnglishDigits(username.value),
     password.value
   )
-  console.log(res)
+  if (res?.access) {
+    router.push('/dashboard')
+    localStorage.setItem('adminToken', res.access)
+    localStorage.setItem('adminRefresh', res.refresh)
+  }
 }
 </script>
 <template>

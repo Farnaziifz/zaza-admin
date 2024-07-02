@@ -20,7 +20,6 @@ const config: RouterOptions = {
       path: '/dashboard',
       name: 'Main',
       component: Main,
-      // redirect: '/login',
       children: [dashboardConfig, brandsConfig, TagsConfig],
     },
   ],

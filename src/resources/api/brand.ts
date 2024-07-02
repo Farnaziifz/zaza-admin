@@ -9,7 +9,7 @@ const brandListGet = async (): Promise<BrandResponse> => {
 }
 
 const addBrand = async (model: FormData) => {
-  const res = await api.post(`${pageUrl}/brand/add/?for_admin=true`, model)
+  const res = await api.post(`${pageUrl}/brand/?for_admin=true`, model)
   return res.data
 }
 

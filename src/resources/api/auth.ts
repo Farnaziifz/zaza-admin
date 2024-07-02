@@ -1,6 +1,8 @@
 import { api } from './index'
 import { useRouter } from 'vue-router'
 import axios from 'axios'
+import { toast } from 'vue3-toastify'
+
 const router = useRouter()
 const pageUrl = 'auth'
 
@@ -9,8 +11,18 @@ type RefreshResponse = {
   // Add other properties if needed
 }
 const login = async (username: string, password: string) => {
-  const res = await api.post(`${pageUrl}/token/`, { username, password })
-  return res.data
+  try {
+    const res = await api.post(`${pageUrl}/token/`, { username, password })
+    return res.data
+  } catch (e) {
+    if (axios.isAxiosError(e) && e.response && e.response.status === 400) {
+      return false
+    }
+    if (axios.isAxiosError(e) && e.response && e.response.status === 401) {
+      router.push('/')
+      toast.error('شما دسترسی ندارید')
+    }
+  }
 }
 
 const getRefresh = async (): Promise<RefreshResponse | false> => {

@@ -153,7 +153,6 @@ const onUpdateBrand = async () => {
       </div>
       <div v-else>
         <inputWithHadline
-          v-if="editMode && titleValue.length"
           v-model:value="titleValue"
           type="text"
           placeholder=" عنوان برند را وارد کنید"

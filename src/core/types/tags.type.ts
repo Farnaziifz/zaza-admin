@@ -1,7 +1,7 @@
 export type tag = {
-  id: number
-  created_at: string
-  updated_at: string
+  id?: number
+  created_at?: string
+  updated_at?: string
   title: string
   seo_slug: string
   seo_title: string

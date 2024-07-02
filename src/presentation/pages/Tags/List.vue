@@ -44,15 +44,18 @@ onBeforeMount(async () => {
 })
 const gotoDetails = (id: string) => {
   router.push({
-    name: 'comment-detail',
-    params: {
+    name: 'tags-add',
+    query: {
       id,
+      mode: 'edit',
     },
   })
 }
 
 const goToAdd = () => {
-  router.push({ name: 'brand-add' })
+  router.push({
+    name: 'tags-add',
+  })
 }
 </script>
 
@@ -79,11 +82,8 @@ const goToAdd = () => {
                 class="customer-action-button"
                 @click="gotoDetails(record.id)"
               >
-                <a>جزئیات</a>
+                <a>ویرایش</a>
               </div>
-            </template>
-            <template v-if="column.key === 'comment'">
-              <p class="comment-container">{{ record.comment }}</p>
             </template>
           </template>
         </a-table>

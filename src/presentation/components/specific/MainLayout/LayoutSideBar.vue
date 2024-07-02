@@ -67,12 +67,23 @@ const changeRoute = (to: string) => {
         </template>
         <span> داشبورد</span>
       </a-menu-item>
-      <a-menu-item key="7" @click="changeRoute('/dashboard/category')">
+      <a-sub-menu key="sub4">
         <template #icon>
-          <appstore-outlined />
+          <tags-outlined />
         </template>
-        <span> مدیریت دسته بندی</span>
-      </a-menu-item>
+        <template #title>
+          <span>مدیریت دسته بندی</span>
+        </template>
+        <a-menu-item key="8">
+          <router-link to="/dashboard/tags/list">
+            بنرهای دسته بندی
+          </router-link>
+        </a-menu-item>
+        <a-menu-item key="9" @click="changeRoute('/dashboard/category')">
+          <span>دسته بندی‌ها </span>
+        </a-menu-item>
+      </a-sub-menu>
+
       <a-sub-menu key="sub1">
         <template #icon>
           <tags-outlined />

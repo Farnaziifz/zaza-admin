@@ -5,9 +5,7 @@ type banner = {
 }
 
 export type category = {
-  id: 10
-  created_at: string
-  updated_at: string
+  id?: number
   title_main: string
   short_description_main: string
   description_main: string

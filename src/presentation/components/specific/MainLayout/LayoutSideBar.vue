@@ -75,9 +75,9 @@ const changeRoute = (to: string) => {
           <span>مدیریت دسته بندی</span>
         </template>
         <a-menu-item key="8">
-          <router-link to="/dashboard/tags/list">
+          <span @click="changeRoute('/dashboard/banner')">
             بنرهای دسته بندی
-          </router-link>
+          </span>
         </a-menu-item>
         <a-menu-item key="9" @click="changeRoute('/dashboard/category')">
           <span>دسته بندی‌ها </span>

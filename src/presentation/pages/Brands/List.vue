@@ -17,6 +17,11 @@ const serverData: Ref<brandList> = ref({
 })
 const columns: TableColumnType<brandItem>[] = [
   {
+    title: 'عکس برند',
+    key: 'image',
+    dataIndex: 'image',
+  },
+  {
     title: 'نام برند',
     key: 'title',
     dataIndex: 'title',
@@ -31,7 +36,7 @@ const columns: TableColumnType<brandItem>[] = [
 const pagination = computed(() => ({
   total: serverData.value.total_pages,
   current: serverData.value.current_page,
-  pageSize: 10,
+  pageSize: 3,
 }))
 
 const onChange: TableProps<brandList>['onChange'] = async () => {
@@ -72,16 +77,16 @@ const goToAdd = () => {
           @change="onChange"
         >
           <template #bodyCell="{ column, record }">
+            <template v-if="column.key === 'image'">
+              <img :src="record.image" alt="" class="w-[100px] h-[100px]" />
+            </template>
             <template v-if="column.key === 'actions'">
               <div
                 class="customer-action-button"
                 @click="gotoDetails(record.id)"
               >
-                <a>جزئیات</a>
+                <a>ویرایش</a>
               </div>
-            </template>
-            <template v-if="column.key === 'comment'">
-              <p class="comment-container">{{ record.comment }}</p>
             </template>
           </template>
         </a-table>

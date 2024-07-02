@@ -27,7 +27,11 @@ api.interceptors.request.use(
       !config.url.includes('otp')
     ) {
       const token = getToken()
+
       if (token) {
+        if (!config.headers) {
+          config.headers = {}
+        }
         config.headers['Authorization'] = 'Bearer ' + token
       }
     }

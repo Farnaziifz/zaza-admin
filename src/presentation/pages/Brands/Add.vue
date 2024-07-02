@@ -15,11 +15,12 @@ const seoDescription = ref('')
 const seoTitle = ref('')
 const descirption = ref('')
 const selectedFile = ref<File | null>(null)
-
+const imageUrl = ref<string | undefined>(undefined)
 const onFileChange = (event: Event) => {
   const target = event.target as HTMLInputElement
   if (target.files && target.files.length > 0) {
     selectedFile.value = target.files[0]
+    imageUrl.value = URL.createObjectURL(selectedFile.value)
   }
 }
 
@@ -54,7 +55,7 @@ const onAddBrand = async () => {
         >
         <input type="file" class="w-full mr-2" @change="onFileChange" />
       </div>
-      <img :src="selectedFile" alt="" />
+      <img :src="imageUrl" alt="" v-if="imageUrl" class="w-[200px] h-[200px]" />
       <inputWithHadline
         v-model:value="titleValue"
         type="text"

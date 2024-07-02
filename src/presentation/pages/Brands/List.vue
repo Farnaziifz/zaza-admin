@@ -48,9 +48,10 @@ onBeforeMount(async () => {
 })
 const gotoDetails = (id: string) => {
   router.push({
-    name: 'comment-detail',
-    params: {
+    name: 'brand-add',
+    query: {
       id,
+      mode: 'edit'
     },
   })
 }

@@ -75,11 +75,11 @@ const changeRoute = (to: string) => {
           <span>مدیریت محصولات</span>
         </template>
 
-        <a-menu-item key="1" >
+        <a-menu-item key="1">
           <router-link to="/dashboard/brands/list"> برند محصولات </router-link>
         </a-menu-item>
-        <a-menu-item key="2" @click="changeRoute('/dashboard/tags')"
-          >تگ محصولات
+        <a-menu-item key="2">
+          <router-link to="/dashboard/tags/list"> تگ محصولات </router-link>
         </a-menu-item>
         <a-menu-item key="3">مدیریت مشخصات محصولات </a-menu-item>
         <a-menu-item key="4">مدیریت محصول </a-menu-item>

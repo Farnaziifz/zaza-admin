@@ -13,9 +13,21 @@ const addBrand = async (model: FormData) => {
   return res.data
 }
 
+const getBrand = async (id: string | number) => {
+  const res = await api.get(`${pageUrl}/brand/${id}/?for_admin=true`)
+  return res.data
+}
+
+const updateBrand = async (id: string, model: FormData) => {
+  const res = await api.put(`${pageUrl}/brand/${id}?for_admin=true`, model)
+  return res.data
+}
+
 export const brandsApi = () => {
   return {
     brandListGet,
     addBrand,
+    getBrand,
+    updateBrand,
   }
 }

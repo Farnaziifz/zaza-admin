@@ -12,3 +12,13 @@ export const addBrand = async (model: FormData) => {
   const res = await api.addBrand(model)
   return res
 }
+
+export const getBrand = async (id: string | number) => {
+  const res = await api.getBrand(id)
+  return res
+}
+
+export const updateBrand = async (id: string, model: FormData) => {
+  const res = await api.updateBrand(id, model)
+  return res
+}

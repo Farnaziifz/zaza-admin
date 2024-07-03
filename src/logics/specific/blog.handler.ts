@@ -23,3 +23,8 @@ export const updateTags = async (id: string | number, model: tag) => {
   const res = await api.updateTags(id, model)
   return res
 }
+
+export const blogListGet = async () => {
+  const res = await api.blogListGet()
+  return res
+}

@@ -1,8 +1,11 @@
 import { type tagList, type tag } from '@/core/types/tags.type'
+import { type blogList } from '@/core/types/blog.type'
+
 import { api } from '../api/index'
 
 const pageUrl = 'blog'
 type TagResponse = tagList
+type BlogResponse = blogList
 
 const tagListGet = async (): Promise<TagResponse> => {
   const res = await api.get(`${pageUrl}/tag/?for_admin=true`)
@@ -23,11 +26,18 @@ const updateTags = async (id: string | number, model: tag) => {
   const res = await api.put(`${pageUrl}/tag/${id}/?for_admin=true`, model)
   return res.data
 }
+
+const blogListGet = async (): Promise<BlogResponse> => {
+  const res = await api.get(`${pageUrl}/post/?for_admin=true`)
+  return res.data
+}
+
 export const tagsApi = () => {
   return {
     tagListGet,
     addTags,
     getTag,
     updateTags,
+    blogListGet,
   }
 }

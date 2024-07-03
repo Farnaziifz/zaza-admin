@@ -62,7 +62,6 @@ const onUpdateTags = async () => {
     seo_title: seoTitle.value,
   }
   const res = await updateTags(route.query.id, model)
-  console.log(res)
   if (res) {
     router.push({ name: 'blog-tags-list' })
   }

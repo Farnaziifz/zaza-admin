@@ -118,8 +118,6 @@ const changeRoute = (to: string) => {
         <a-menu-item key="10">
           <router-link to="/dashboard/blog/list">مدیریت پست‌ها</router-link>
         </a-menu-item>
-
-        <a-menu-item key="2">مدیریت نظرات </a-menu-item>
       </a-sub-menu>
       <a-sub-menu key="sub3">
         <template #icon>

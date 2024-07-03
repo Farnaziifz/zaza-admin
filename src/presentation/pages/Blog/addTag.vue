@@ -26,7 +26,7 @@ const serverData: Ref<tag> = ref({
 onBeforeMount(async () => {
   if (route.query.mode === 'edit') editMode.value = true
   const id = route.query.id
-  if (editMode.value === true) serverData.value = await getTag(id)
+  if (editMode.value === true) serverData.value = await getTag(id as string)
 })
 
 watch(
@@ -61,7 +61,7 @@ const onUpdateTags = async () => {
     seo_description: seoDescription.value,
     seo_title: seoTitle.value,
   }
-  const res = await updateTags(route.query.id, model)
+  const res = await updateTags(route.query.id as string, model)
   if (res) {
     router.push({ name: 'blog-tags-list' })
   }

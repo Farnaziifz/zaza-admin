@@ -14,7 +14,7 @@ export type category = {
   title_blog: string
   title_service: string
   title_product: string
-  is_special: false
+  is_special: boolean
   seo_slug: string
   seo_title: string
   seo_description: string

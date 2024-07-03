@@ -1,5 +1,6 @@
 import { tagsApi } from '@/resources/api/blog'
 import { tag, type tagList } from '@/core/types/tags.type'
+import { blog } from '@/core/types/blog.type'
 
 const api = tagsApi()
 
@@ -26,5 +27,15 @@ export const updateTags = async (id: string | number, model: tag) => {
 
 export const blogListGet = async () => {
   const res = await api.blogListGet()
+  return res
+}
+
+export const blogAdd = async (model: FormData) => {
+  const res = await api.blogAdd(model)
+  return res
+}
+
+export const getBlog = async (id: string | number) => {
+  const res = await api.getBlog(id)
   return res
 }

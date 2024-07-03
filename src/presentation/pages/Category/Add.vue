@@ -62,7 +62,7 @@ onBeforeMount(async () => {
   bannerData.value = await initPageHandler()
   if (route.query.mode === 'edit') editMode.value = true
   const id = route.query.id
-  if (editMode.value === true) serverData.value = await getcategory(id)
+  if (editMode.value === true) serverData.value = await getcategory(id as string)
 })
 
 watch(
@@ -103,7 +103,7 @@ const onAddcategory = async () => {
   formData.append('seo_description', seoDescription.value)
   formData.append('title_product', title_product.value)
   formData.append('seo_slug', seoSlug.value)
-   bannerSelectedList.value.forEach((banner, index) => {
+  bannerSelectedList.value.forEach((banner, index) => {
     formData.append(`banner_main[${index}]`, banner)
   })
   const res = await addcategory(formData)
@@ -124,7 +124,7 @@ const onUpdatecategory = async () => {
   formData.append('seo_title', seoTitle.value)
   formData.append('seo_description', seoDescription.value)
   formData.append('seo_slug', seoSlug.value)
-  const res = await updatecategory(route.query.id, formData)
+  const res = await updatecategory(route.query.id as string, formData)
   console.log(res)
 }
 </script>

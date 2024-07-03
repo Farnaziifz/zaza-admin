@@ -2,6 +2,7 @@ import Blog from '@/presentation/pages/Blog/Blog.vue'
 import TagList from '@/presentation/pages/Blog/tagList.vue'
 import AddTag from '@/presentation/pages/Blog/addTag.vue'
 import BlogList from '@/presentation/pages/Blog/BlogList.vue'
+import BlogAdd from '@/presentation/pages/Blog/AddBlog.vue'
 
 export const BlogConfig = {
   name: 'blog',
@@ -23,6 +24,11 @@ export const BlogConfig = {
       name: 'blog-list',
       path: 'list',
       component: BlogList,
+    },
+    {
+      name: 'blog-add',
+      path: 'add',
+      component: BlogAdd,
     },
   ],
 }

@@ -1,5 +1,5 @@
 import { type tagList, type tag } from '@/core/types/tags.type'
-import { type blogList } from '@/core/types/blog.type'
+import { blog, type blogList } from '@/core/types/blog.type'
 
 import { api } from '../api/index'
 
@@ -32,6 +32,15 @@ const blogListGet = async (): Promise<BlogResponse> => {
   return res.data
 }
 
+const blogAdd = async (model: FormData) => {
+  const res = await api.post(`${pageUrl}/post/?for_admin=true`, model)
+  return res.data
+}
+const getBlog = async (id: string | number) => {
+  const res = await api.post(`${pageUrl}/post/${id}?for_admin=true`)
+  return res.data
+}
+
 export const tagsApi = () => {
   return {
     tagListGet,
@@ -39,5 +48,7 @@ export const tagsApi = () => {
     getTag,
     updateTags,
     blogListGet,
+    blogAdd,
+    getBlog,
   }
 }

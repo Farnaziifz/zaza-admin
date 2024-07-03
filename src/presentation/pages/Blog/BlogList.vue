@@ -36,7 +36,7 @@ const columns: TableColumnType<blog>[] = [
 const pagination = computed(() => ({
   total: serverData.value.total_pages,
   current: serverData.value.current_page,
-  pageSize: 3,
+  pageSize: 10,
 }))
 
 const onChange: TableProps<blogList>['onChange'] = async () => {
@@ -82,11 +82,25 @@ const goToAdd = () => {
               <img :src="record.thumbnail" alt="" class="w-[100px] h-[100px]" />
             </template>
             <template v-if="column.key === 'actions'">
-              <div
-                class="customer-action-button"
-                @click="gotoDetails(record.id)"
-              >
-                <a>ویرایش</a>
+              <div class="flex justify-around">
+                <div
+                  class="customer-action-button"
+                  @click="gotoDetails(record.id)"
+                >
+                  <a>ویرایش</a>
+                </div>
+                <div
+                  class="customer-action-button mx-1"
+                  @click="gotoDetails(record.id)"
+                >
+                  <a>مشاهده نظرات</a>
+                </div>
+                <div
+                  class="customer-action-button mx-1"
+                  @click="gotoDetails(record.id)"
+                >
+                  <a>حذف</a>
+                </div>
               </div>
             </template>
           </template>

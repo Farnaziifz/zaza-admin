@@ -5,6 +5,8 @@ import { brandsConfig } from '@/resources/router/brand.config'
 import { TagsConfig } from '@/resources/router/tag.config'
 import { CategoryConfig } from '@/resources/router/category.config'
 import { bannerConfig } from './banner.config'
+import { BlogConfig } from './blog.config'
+
 import Login from '@/presentation/pages/Login.vue'
 
 const config: RouterOptions = {
@@ -28,6 +30,7 @@ const config: RouterOptions = {
         TagsConfig,
         CategoryConfig,
         bannerConfig,
+        BlogConfig,
       ],
     },
   ],

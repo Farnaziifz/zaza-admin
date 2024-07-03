@@ -9,10 +9,12 @@ import {
   getcategory,
   updatecategory,
 } from '@/logics/specific/category.handler'
+import { initPageHandler } from '@/logics/specific/banner.handler'
+
 import { useRouter } from 'vue-router'
 import { useRoute } from 'vue-router'
 import { onBeforeMount } from 'vue'
-import { type category } from '@/core/types/category.type'
+import { type category, bannerList } from '@/core/types/category.type'
 
 const route = useRoute()
 const router = useRouter()
@@ -26,6 +28,7 @@ const descirption = ref('')
 const title_blog = ref('')
 const title_service = ref('')
 const title_product = ref('')
+const bannerSelectedList = ref([])
 const selectedFile = ref<File | null>(null)
 const imageUrl = ref<string | undefined>(undefined)
 const editMode = ref(false)
@@ -46,7 +49,17 @@ const serverData: Ref<category> = ref({
   children: [],
 })
 
+const bannerData: Ref<bannerList> = ref({
+  total_pages: 0,
+  next: 0,
+  previous: 0,
+  current_page: 0,
+  results: [],
+  count: 0,
+})
+
 onBeforeMount(async () => {
+  bannerData.value = await initPageHandler()
   if (route.query.mode === 'edit') editMode.value = true
   const id = route.query.id
   if (editMode.value === true) serverData.value = await getcategory(id)
@@ -78,9 +91,10 @@ const onFileChange = (event: Event) => {
 }
 
 const onAddcategory = async () => {
+  console.log(bannerSelectedList.value)
   const formData = new FormData()
-  formData.append('title', title_main.value)
-  formData.append('description', descirption.value)
+  formData.append('title_main', title_main.value)
+  formData.append('short_description_main', short_description_main.value)
   formData.append('description_main', description_main.value)
   formData.append('thumbnail_main', selectedFile.value as Blob)
   formData.append('title_blog', title_blog.value)
@@ -89,6 +103,9 @@ const onAddcategory = async () => {
   formData.append('seo_description', seoDescription.value)
   formData.append('title_product', title_product.value)
   formData.append('seo_slug', seoSlug.value)
+   bannerSelectedList.value.forEach((banner, index) => {
+    formData.append(`banner_main[${index}]`, banner)
+  })
   const res = await addcategory(formData)
   if (res.id) {
     router.push('/dashboard/category/list')
@@ -97,8 +114,9 @@ const onAddcategory = async () => {
 
 const onUpdatecategory = async () => {
   const formData = new FormData()
-  formData.append('title', title_main.value)
-  formData.append('description', descirption.value)
+
+  formData.append('title_main', title_main.value)
+  formData.append('short_description_main', short_description_main.value)
   formData.append('description_main', description_main.value)
   formData.append('title_blog', title_blog.value)
   formData.append('thumbnail_main', selectedFile.value as Blob)
@@ -237,6 +255,30 @@ const onUpdatecategory = async () => {
           headline="Seo Description"
           class="mb-2"
         />
+        <p>انتخاب بنر</p>
+        <a-select
+          v-model:value="bannerSelectedList"
+          mode="multiple"
+          style="width: 100%"
+          placeholder="select one country"
+          option-label-prop="label"
+          :options="
+            bannerData.results.map((el) => {
+              return {
+                value: el.id,
+                label: el.title,
+                icon: el.image,
+              }
+            })
+          "
+        >
+          <template #option="{ value: val, label, icon }">
+            <div class="flex justify-between items-center">
+              <span role="img" :aria-label="val">{{ label }}</span>
+              <img :src="icon" alt="" class="w-14 h-10" />
+            </div>
+          </template>
+        </a-select>
       </div>
       <div class="mt-4 w-full flex justify-end" v-if="!editMode">
         <a-button type="primary" @click="onAddcategory">افزودن</a-button>

@@ -2,6 +2,7 @@ export type banner = {
   title: string
   url: string
   image: string
+  id?: number
 }
 
 export type category = {
